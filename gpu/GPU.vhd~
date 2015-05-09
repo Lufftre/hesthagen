@@ -1,0 +1,117 @@
+library IEEE;
+    use IEEE.std_logic_1164.all;
+    use IEEE.std_logic_arith.all;
+    use IEEE.std_logic_unsigned.all;
+    
+entity GPU is
+    port (
+        CLK: in std_logic;
+	posP1, posP2, posProj1, posProj2 : in std_logic_vector (19 downto 0);
+	H_sync,V_sync : out  STD_LOGIC;
+        vgaR, vgaG : out  STD_LOGIC_VECTOR (2 downto 0); -- ?? 
+        vgaB : out  STD_LOGIC_VECTOR (2 downto 1);		  -- ???
+	NEW_FRAME : out std_logic
+    );
+end entity;
+
+architecture rtl of GPU is
+
+  signal xctr,yctr : std_logic_vector(9 downto 0) := "0000000000";
+  signal RST : std_logic := '0';
+  signal xpos1, ypos1 : std_logic_vector (9 downto 0);
+  signal xpos2, ypos2 : std_logic_vector (9 downto 0);
+  signal xposProj1, yposProj1 : std_logic_vector (9 downto 0);
+  signal xposProj2, yposProj2 : std_logic_vector (9 downto 0);
+			
+  signal pixel : std_logic_vector(1 downto 0) := "00";
+  signal video : std_logic;
+  signal hs : std_logic := '1';
+  signal vs : std_logic := '1';
+
+
+begin
+
+	xpos1 <= posP1 (19 downto 10);
+	ypos1 <= posP1 (9 downto 0);
+	xpos2 <= posP2 (19 downto 10);
+	ypos2 <= posP2 (9 downto 0);
+
+	xposProj1 <= posProj1 (19 downto 10);
+	yposProj1 <= posProj1 (9 downto 0);
+	xposProj2 <= posProj2 (19 downto 10);
+	yposProj2 <= posProj2 (9 downto 0);
+
+	  process(CLK) begin
+	     if rising_edge(CLK) then
+	       if RST='1' then
+		 pixel <= "00";
+	       else
+		 pixel <= pixel + 1;
+	       end if;
+	    end if;
+	  end process;
+
+  	process(CLK) begin
+		if rising_edge(CLK) then
+		  if RST='1' then
+			 xctr <= "0000000000";
+		  elsif pixel=3 then
+		   if xctr=799 then
+			 xctr <= "0000000000";
+
+		   else
+			 xctr <= xctr + 1;
+		   end if;
+		  end if;
+		  -- 
+		  if xctr=656 then
+			hs <= '0';
+		  elsif xctr=752 then
+			hs <= '1';
+		  end if;
+		end if;
+	  end process;
+
+	  process(CLK) begin
+		if rising_edge(CLK) then
+		  if RST='1' then
+			yctr <= "0000000000";
+		  elsif xctr=799 and pixel=0 then
+		   if yctr=520 then
+			 yctr <= "0000000000";
+			 NEW_FRAME <= '1';
+		   else
+			 yctr <= yctr + 1;
+			 NEW_FRAME <= '0';
+		   end if;
+		   --
+		   if yctr=490 then
+			 vs <= '0';
+		   elsif  yctr=492 then
+			 vs <= '1';
+		   end if;
+		  end if;
+		end if;
+	  end process;
+	  H_sync <= hs;
+	  V_sync <= vs;
+
+	  process(CLK) begin
+	    if rising_edge(CLK) then
+	      if pixel=3 then
+		if xctr=0 or xctr=639 or yctr=0 or yctr=479 then
+		  video<='1';
+		elsif yctr>ypos1 and yctr<ypos1+5 and xctr>xpos1 and xctr<xpos1+5 then
+		  	video<='1';
+		else
+		  video <= '0';
+		end if;
+	      end if;
+	    end if;
+	  end process;
+  
+	  vgaR(2 downto 0) <= (video & video & video);
+	  vgaG(2 downto 0) <= ('0' & video & video);
+	  vgaB(2 downto 1) <= (video & video);
+
+end architecture;
