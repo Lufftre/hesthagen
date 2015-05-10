@@ -168,7 +168,7 @@ begin
         pixel_to_vga <= "00000000";
       else
         CLKHORSE <= '0';
-        if xctr > xpos1 and xctr < xpos1 + 15 and yctr > ypos1 and yctr < ypos1 + 15 then
+        if xctr >= xpos1 and xctr <= xpos1 + 15 and yctr >= ypos1 and yctr <= ypos1 + 15 then
           CLKHORSE <= '1';
           pixel_to_vga <= colors(conv_integer(hest_color));
         elsif xctr > xpos2 and xctr < xpos2 + 5 and yctr > ypos2 and yctr < ypos2 + 5 then
