@@ -13,7 +13,7 @@ entity hest is
 end entity;
 
 architecture rtl of hest is 
-  signal pixel_counter : integer range 0 to 127;
+  signal pixel_counter : integer range 0 to 255 := 0;
   signal rad : std_logic_vector(5 downto 0);
   type hest_type is array (0 to 255) of std_logic_vector(2 downto 0);
   signal hest : hest_type := (
@@ -46,6 +46,9 @@ begin
         if rising_edge(CLKHORSE) then
             pixel_color <= hest(pixel_counter);
             pixel_counter <= pixel_counter + 1;
+            if pixel_counter = 255 then
+              pixel_counter <= 0;
+            end if;
         end if;
       end process;
 
