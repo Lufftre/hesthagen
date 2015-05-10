@@ -27,7 +27,7 @@ architecture rtl of GPU is
         RST: in std_logic;
         xctr : in std_logic_vector(9 downto 0);
         yctr : in std_logic_vector(9 downto 0);
-        pixel_color : out std_logic_vector(7 downto 0)
+        pixel_color : out std_logic_vector(2 downto 0)
    );
    end component;
 
@@ -43,12 +43,24 @@ architecture rtl of GPU is
   signal xposProj2, yposProj2 : std_logic_vector (9 downto 0);
             
   signal pixel : std_logic_vector(1 downto 0) := "00";
-  signal pixel_color : std_logic_vector(7 downto 0);
+  signal pixel_color : std_logic_vector(2 downto 0);
   signal video : std_logic;
   signal hs : std_logic := '1';
   signal vs : std_logic := '1';
 
   signal pixel_to_vga : std_logic_vector(7 downto 0);
+
+  type colors_type is array (0 to 7) of std_logic_vector(7 downto 0);
+  signal colors : colors_type := (
+    "000" & "000" & "00", -- BLACK 000
+    "111" & "111" & "11", -- WHITE 001
+    "110" & "000" & "00", -- RED   010
+    "000" & "111" & "00", -- GREEN 011
+    "000" & "000" & "11", -- BLUE  100
+    "111" & "000" & "11", -- PINK  101
+    "000" & "000" & "00", -- MOCHA 110
+    "100" & "111" & "11" -- ICE    111
+    );
 
   -- ----------------------------------------
   -- # GPU Architecture
@@ -137,7 +149,8 @@ begin
       elsif xctr > xpos2 and xctr < xpos2 + 5 and yctr > ypos2 and yctr < ypos2 + 5 then
         pixel_to_vga <= "11100000";
       else
-        pixel_to_vga <= pixel_color;
+
+        pixel_to_vga <= colors(conv_integer(pixel_color));
       end if;
     end if;
   end process;

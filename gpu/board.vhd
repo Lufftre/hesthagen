@@ -8,7 +8,7 @@ entity board is
         CLK: in std_logic;
         RST: in std_logic;
         xctr,yctr : in std_logic_vector(9 downto 0);
-        pixel_color : out std_logic_vector(7 downto 0)
+        pixel_color : out std_logic_vector(2 downto 0)
     );
 end entity;
 
@@ -25,17 +25,17 @@ architecture rtl of board is
   -- # Colors
   -- ----------------------------------------
 
-  type colors_type is array (0 to 7) of std_logic_vector(7 downto 0);
-  signal colors : colors_type := (
-    "000" & "000" & "00", -- BLACK 000
-    "111" & "111" & "11", -- WHITE 001
-    "110" & "000" & "00", -- RED   010
-    "000" & "111" & "00", -- GREEN 011
-    "000" & "000" & "11", -- BLUE  100
-    "111" & "000" & "11", -- PINK  101
-    "000" & "000" & "00", -- MOCHA 110
-    "100" & "111" & "11" -- ICE    111
-    );
+  --type colors_type is array (0 to 7) of std_logic_vector(7 downto 0);
+  --signal colors : colors_type := (
+  --  "000" & "000" & "00", -- BLACK 000
+  --  "111" & "111" & "11", -- WHITE 001
+  --  "110" & "000" & "00", -- RED   010
+  --  "000" & "111" & "00", -- GREEN 011
+  --  "000" & "000" & "11", -- BLUE  100
+  --  "111" & "000" & "11", -- PINK  101
+  --  "000" & "000" & "00", -- MOCHA 110
+  --  "100" & "111" & "11" -- ICE    111
+  --  );
 
   --signal colors : colors_type := (
   --  "111" & "111" & "11", -- BLACK 000
@@ -197,7 +197,8 @@ begin
                                                   conv_integer(board_tile),
                                                   conv_integer(std_logic_vector((unsigned(yctr) mod 16)*16) + std_logic_vector((unsigned(xctr) mod 16)))
                                                   );
-            pixel_color <= colors(conv_integer(pixel_color_index));
+            --pixel_color <= colors(conv_integer(pixel_color_index));
+            pixel_color <= pixel_color_index;
           end if;
         end if;
       end process;

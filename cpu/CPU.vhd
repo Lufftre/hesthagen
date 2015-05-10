@@ -40,7 +40,7 @@ architecture rtl of CPU is
     X"0000", X"0000", X"0000", X"0000");
 
     constant mram : mram_type := (
-    --ALU     TB      FB      S     P     LC     SEQ       myADR      
+--    ALU     TB      FB      S     P     LC     SEQ       myADR      
     "0000" & "011" & "111" & "0" & "00" & "0" & "0000" & "0000000", --0x00 -- Ladda nästa PM
     "0000" & "010" & "001" & "0" & "00" & "0" & "0000" & "0000000", --0x01
     "0000" & "000" & "000" & "0" & "00" & "0" & "0010" & "0000000", --0x02
@@ -57,6 +57,7 @@ architecture rtl of CPU is
     "0001" & "110" & "000" & "0" & "00" & "0" & "0000" & "0000000", --0x0D - Handle X
     "1110" & "000" & "000" & "0" & "00" & "0" & "0000" & "0000000", --0x0E 
     "0000" & "100" & "110" & "0" & "01" & "0" & "0011" & "0000000", --0x0F
+--    ALU     TB      FB      S     P     LC     SEQ       myADR      
     "0001" & "110" & "000" & "0" & "00" & "0" & "0000" & "0000000", --0x20 - Handle Y
     "1111" & "000" & "000" & "0" & "00" & "0" & "0000" & "0000000", --0x21
     "0000" & "100" & "110" & "0" & "01" & "0" & "0011" & "0000000", --0x22
@@ -148,22 +149,6 @@ begin
 
     process(NEW_FRAME) begin
         if rising_edge(NEW_FRAME) then
-            --if (b1='1' and lastvalue='0') then
-            --    ind<=ind + 1;
-            --end if;
-
-            --with joystick1(25 downto 24) & joystick1(39 downto 32) select
-            --xpos1 <= 
-            --    xpos1 + 1 when 600 to 1023,
-            --    xpos1 - 1 when 0 to 300,
-            --    xpos1 when others;
-
-            --with joystick1(9 downto 8) & joystick1(23 downto 16) select
-            --ypos1 <= 
-            --    ypos1 + 1 when 600 to 1023,
-            --    ypos1 - 1 when 0 to 300,
-            --    ypos1 when others;
-
 
             if(joystick1(25 downto 24) & joystick1(39 downto 32) > 600) then
                 xpos1 <= xpos1 + 1;
