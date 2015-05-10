@@ -130,6 +130,9 @@ architecture rtl of CPU is
 
     signal xpos1 : std_logic_vector (9 downto 0) := "00" & X"F0";
     signal ypos1 : std_logic_vector (9 downto 0) := "00" & X"F0";
+    signal xpos2 : std_logic_vector (9 downto 0) := "00" & X"F0";
+    signal ypos2 : std_logic_vector (9 downto 0) := "00" & X"F0";
+
 
     signal ind : std_logic_vector (3 downto 0);
 
