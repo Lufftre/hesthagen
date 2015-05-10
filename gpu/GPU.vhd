@@ -167,6 +167,7 @@ begin
 
   process(CLK) begin
     if rising_edge(CLK) then
+      CLKHORSE <= '0';
       if pixel=3 then
         if xctr > 639 or yctr > 479 then
           pixel_to_vga <= "00000000";
@@ -176,9 +177,9 @@ begin
             pixel_to_vga <= colors(conv_integer(hest_color));
           elsif xctr > xpos2 and xctr < xpos2 + 5 and yctr > ypos2 and yctr < ypos2 + 5 then
             pixel_to_vga <= "11100000";
-            CLKHORSE <= '0';
+            
           else
-            CLKHORSE <= '0';
+            
             pixel_to_vga <= colors(conv_integer(pixel_color));
           end if;
         end if;

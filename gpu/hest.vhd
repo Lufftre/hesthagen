@@ -45,11 +45,8 @@ begin
 
       process(CLKHORSE) begin
         if rising_edge(CLKHORSE) then
-          if xctr >= xpos and xctr < xpos + 16 and yctr >= ypos and yctr < ypos + 16 then
             pixel_color <= hest(pixel_counter);
             pixel_counter <= pixel_counter + 1;
-
-          end if;
         end if;
       end process;
 
