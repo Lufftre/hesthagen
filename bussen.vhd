@@ -171,7 +171,7 @@ gpu1 : GPU port map(
 	NEW_FRAME=>frame_pulse,
 	btnu=>btnu,
 	joystick1=>joystick1,
-	posP1=>pos_P1,
+	joystick2=>joystick2,
 	mem=>m,
 	outPos1=>pos_P1,
 	outPos2=>pos_P2
