@@ -3,8 +3,6 @@ library IEEE;
     use IEEE.NUMERIC_STD.ALL;
     use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
--- yoyo
-
 entity CPU is
     Port ( 
         CLK : in  STD_LOGIC;
