@@ -185,9 +185,7 @@ begin
 
       process(CLK) begin
         if rising_edge(CLK) then
-          if xctr > 639 or yctr > 479 then
-            pixel_color <= "00000000";
-          else 
+
             rad <= yctr (9 downto 4);
             tile_index <= std_logic_vector(unsigned(rad)*32) + xctr(9 downto 4);
 
@@ -199,7 +197,6 @@ begin
                                                   );
             --pixel_color <= colors(conv_integer(pixel_color_index));
             pixel_color <= pixel_color_index;
-          end if;
         end if;
       end process;
 
