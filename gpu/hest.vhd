@@ -5,7 +5,7 @@ library IEEE;
     
 entity hest is
     port (
-        CLK: in std_logic;
+        CLKHORSE: in std_logic;
         RST: in std_logic;
         xctr,yctr : in std_logic_vector(9 downto 0);
         xpos,ypos : in std_logic_vector(9 downto 0);
