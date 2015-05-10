@@ -134,6 +134,7 @@ begin
     if rising_edge(CLK) then
       if xctr > xpos1 and xctr < xpos1 + 5 and yctr > ypos1 and yctr < ypos1 + 5 then
         pixel_to_vga <= "11111111";
+      elsif xctr > xpos2 and xctr < xpos2 + 5 and yctr > ypos2 and yctr < ypos2 + 5 then
       else
         pixel_to_vga <= pixel_color;
       end if;
