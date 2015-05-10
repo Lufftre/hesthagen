@@ -93,6 +93,8 @@ begin
      RST=>RST,
      xctr=>xctr,
      yctr=>yctr,
+     xpos=>xpos1,
+     ypos=>ypos1,
      pixel_color=>hest_color
     );
 
