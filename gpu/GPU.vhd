@@ -132,7 +132,7 @@ begin
 
   process(CLK) begin
     if rising_edge(CLK) then
-      if xctr > xpos1 and xctr < xpos1 + 5 then
+      if xctr > xpos1 and xctr < xpos1 + 5 and yctr > ypos1 and yctr < ypos1 + 5 then
         pixel_to_vga <= "11111111";
       else
         pixel_to_vga <= pixel_color;
