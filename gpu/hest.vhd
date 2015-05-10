@@ -15,7 +15,7 @@ end entity;
 architecture rtl of hest is 
   signal pixel_counter : integer range 0 to 255 := 0;
   signal rad : std_logic_vector(5 downto 0);
-  type hest_type is array (0 to 255) of std_logic_vector(2 downto 0);
+  type hest_type is array (255 down to 0) of std_logic_vector(2 downto 0);
   signal hest : hest_type := (
 
     "000","000","000","000","000","000","000","011","000","000","000","011","000","000","000","000",
