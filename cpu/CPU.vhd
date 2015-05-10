@@ -2,8 +2,11 @@ library IEEE;
     use IEEE.STD_LOGIC_1164.ALL;
     use IEEE.NUMERIC_STD.ALL;
     use IEEE.STD_LOGIC_UNSIGNED.ALL;
-    use test
+<<<<<<< HEAD
 -- yoyo
+=======
+	use testEriksCPU
+>>>>>>> 93292c9f92e4988407733409128e15999cd48087
 entity CPU is
     Port ( 
         CLK : in  STD_LOGIC;
