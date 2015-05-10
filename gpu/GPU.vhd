@@ -60,7 +60,7 @@ architecture rtl of GPU is
   signal vs : std_logic := '1';
 
   signal pixel_to_vga : std_logic_vector(7 downto 0);
-  signal CLKHORSE : std_logic;
+  signal CLKHORSE : std_logic := '0';
 
   type colors_type is array (0 to 7) of std_logic_vector(7 downto 0);
   signal colors : colors_type := (
