@@ -5,14 +5,15 @@ library IEEE;
     
 entity hest is
     port (
-        CLK: in std_logic;
+        CLKHORSE: inout std_logic;
         RST: in std_logic;
         xctr,yctr : in std_logic_vector(9 downto 0);
-        pixel_color : out std_logic_vector(7 downto 0)
+        pixel_color : out std_logic_vector(2 downto 0)
     );
 end entity;
 
 architecture rtl of hest is 
+  signal pixel_counter : std_logic_vector(7 downto 0) := "00000000";
   signal rad : std_logic_vector(5 downto 0);
   type hest_type is array (0 to 15) of std_logic_vector(15 downto 0);
   signal hest : hest_type := (
@@ -40,18 +41,11 @@ begin
       --  # Fetching pixelcolor
       -- ----------------------------------------
 
-      process(CLK) begin
-        if rising_edge(CLK) then
-            rad <= yctr (9 downto 4);
-            tile_index <= std_logic_vector(unsigned(rad)*32) + xctr(9 downto 4);
-
-
-            board_tile <= board(conv_integer(tile_index));
-            pixel_color_index <= pixel_color_array(
-                                                  conv_integer(board_tile),
-                                                  conv_integer(std_logic_vector((unsigned(yctr) mod 16)*16) + std_logic_vector((unsigned(xctr) mod 16)))
-                                                  );
-            pixel_color <= colors(conv_integer(pixel_color_index));
+      process(CLKHORSE) begin
+        if rising_edge(CLKHORSE) then
+            pixel_color <= hest(conv_integer(pixel_counter));
+            pixel_counter <= pixel_counter + 1;
+            CLKHORSE <= '0';
         end if;
       end process;
 

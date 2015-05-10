@@ -60,6 +60,7 @@ architecture rtl of GPU is
   signal vs : std_logic := '1';
 
   signal pixel_to_vga : std_logic_vector(7 downto 0);
+  signal CLKHORSE : std_logic;
 
   type colors_type is array (0 to 7) of std_logic_vector(7 downto 0);
   signal colors : colors_type := (
@@ -87,7 +88,7 @@ begin
     );
 
     h : hest port map(
-     CLK=>CLK,
+     CLKHORSE=>CLKHORSE,
      RST=>RST,
      xctr=>xctr,
      yctr=>yctr,
@@ -168,6 +169,7 @@ begin
       else
 
         if xctr > xpos1 and xctr < xpos1 + 16 and yctr > ypos1 and yctr < ypos1 + 16 then
+          CLKHORSE <= '1';
           pixel_to_vga <= colors(conv_integer(hest_color));
         elsif xctr > xpos2 and xctr < xpos2 + 5 and yctr > ypos2 and yctr < ypos2 + 5 then
           pixel_to_vga <= "11100000";
