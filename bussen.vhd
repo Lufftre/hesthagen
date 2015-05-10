@@ -15,6 +15,10 @@ entity bussen is
         SS_1 : out  STD_LOGIC;								-- Slave 
         MOSI_1 : out  STD_LOGIC;							-- Master Out Slave In, 
         SCLK_1 : out  STD_LOGIC;
+       	MISO_2 : in  STD_LOGIC;								-- 
+        SS_2 : out  STD_LOGIC;								-- Slave 
+        MOSI_2 : out  STD_LOGIC;							-- Master Out Slave In, 
+        SCLK_2 : out  STD_LOGIC;
 
 	Hsync,Vsync : out  STD_LOGIC;
         vga: out  STD_LOGIC_VECTOR (7 downto 0); -- ?? 
