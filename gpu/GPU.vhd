@@ -33,10 +33,11 @@ architecture rtl of GPU is
 
   component hest
   Port (
-        CLKHORSE: in std_logic;
+        CLK: in std_logic;
         RST: in std_logic;
         xctr : in std_logic_vector(9 downto 0);
         yctr : in std_logic_vector(9 downto 0);
+        xpos,ypos : in std_logic_vector(9 downto 0);
         pixel_color : out std_logic_vector(2 downto 0)
    );
    end component;
@@ -88,7 +89,7 @@ begin
     );
 
     h : hest port map(
-     CLKHORSE=>CLKHORSE,
+     CLK=>CLK,
      RST=>RST,
      xctr=>xctr,
      yctr=>yctr,
