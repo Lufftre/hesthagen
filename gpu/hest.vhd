@@ -5,7 +5,7 @@ library IEEE;
     
 entity hest is
     port (
-        CLKHORSE: inout std_logic;
+        CLKHORSE: in std_logic;
         RST: in std_logic;
         xctr,yctr : in std_logic_vector(9 downto 0);
         pixel_color : out std_logic_vector(2 downto 0)
@@ -45,7 +45,6 @@ begin
         if rising_edge(CLKHORSE) then
             pixel_color <= hest(conv_integer(pixel_counter));
             pixel_counter <= pixel_counter + 1;
-            CLKHORSE <= '0';
         end if;
       end process;
 

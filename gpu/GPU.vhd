@@ -33,7 +33,7 @@ architecture rtl of GPU is
 
   component hest
   Port (
-        CLKHORSE: inout std_logic;
+        CLKHORSE: in std_logic;
         RST: in std_logic;
         xctr : in std_logic_vector(9 downto 0);
         yctr : in std_logic_vector(9 downto 0);
@@ -167,7 +167,7 @@ begin
       if xctr > 639 or yctr > 479 then
         pixel_to_vga <= "00000000";
       else
-
+        CLKHORSE <= '0';
         if xctr > xpos1 and xctr < xpos1 + 16 and yctr > ypos1 and yctr < ypos1 + 16 then
           CLKHORSE <= '1';
           pixel_to_vga <= colors(conv_integer(hest_color));
