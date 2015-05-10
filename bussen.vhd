@@ -70,8 +70,7 @@ architecture rtl of bussen is
 	NEW_FRAME : in std_logic;
 	RST : in  STD_LOGIC;
 	btnu : in std_logic;
-	joystick1 : in  STD_LOGIC_VECTOR (39 downto 0);
-	posP1 : in std_logic_vector (19 downto 0);
+	joystick1, joystick2 : in  STD_LOGIC_VECTOR (39 downto 0);
 	mem : out std_logic_vector(15 downto 0);
 	outPos1, outPos2 : out std_logic_vector (19 downto 0)
 	
@@ -95,6 +94,7 @@ architecture rtl of bussen is
 
    -- JOYSTICK 1
    signal joystick1 : STD_LOGIC_VECTOR (39 downto 0);
+   signal joystick2 : STD_LOGIC_VECTOR (39 downto 0);
 	-- Holds data to be sent to PmodJSTK
    signal sndData : STD_LOGIC_VECTOR(7 downto 0) := X"83";
 	-- Signal to send/receive data to/from PmodJSTK
@@ -129,7 +129,7 @@ gpu1 : GPU port map(
 	NEW_FRAME=>frame_pulse
 );
 	
-  PmodJSTK_Int : PmodJSTK port map(
+  JSTK1 : PmodJSTK port map(
 	CLK=>CLK,
 	RST=>RST,
 	sndRec=>sndRec,
@@ -139,6 +139,18 @@ gpu1 : GPU port map(
 	SCLK=>SCLK_1,
 	MOSI=>MOSI_1,
 	DOUT=>joystick1
+);
+
+  JSTK2 : PmodJSTK port map(
+	CLK=>CLK,
+	RST=>RST,
+	sndRec=>sndRec,
+	DIN=>sndData,
+	MISO=>MISO_2,
+	SS=>SS_2,
+	SCLK=>SCLK_2,
+	MOSI=>MOSI_2,
+	DOUT=>joystick2
 );
 
    DispCtrl : ssdCtrl port map(
