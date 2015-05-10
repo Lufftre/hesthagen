@@ -46,6 +46,8 @@ architecture rtl of GPU is
   signal hs : std_logic := '1';
   signal vs : std_logic := '1';
 
+  signal pixel_to_vga : std_logic_vector(7 downto 0);
+
   -- ----------------------------------------
   -- # GPU Architecture
   -- ----------------------------------------
@@ -122,70 +124,20 @@ begin
           end if;
         end if;
       end process;
-
-    --process(CLK) begin
-    --    if rising_edge(CLK) then
-    --        pixel <= pixel + 1;
-    --    end if;
-    --end process;
-    
-    ---- X/Y-räknare
-    --process(CLK) begin
-    --    if rising_edge(CLK) then
-    --        if pixel = "01" then
-    --            if RST = '1' then
-    --                xctr <= "0000000000";
-    --                yctr <= "0000000000";
-    --            else
-    --                if xctr = 799 then
-    --                    xctr <= "0000000000";
-    --                    if yctr = 520 then
-    --                        yctr <= "0000000000";
-    --                    else 
-    --                        yctr <= yctr + 1;
-    --                    end if;
-    --                else
-    --                    xctr <= xctr + 1;
-    --                end if;
-    --            end if;
-    --        end if;
-    --    end if;
-    --end process;
-    
-    ---- Generera H/V-Sync och new_frame 
-    --process(CLK) begin
-    --    if rising_edge(CLK) then
-    --        if RST = '1' then
-    --            hs <= '1';
-    --            vs <= '1';
-    --            NEW_FRAME <= '0';
-    --        else
-    --            if xctr = 652 then
-    --                hs <= '0';
-    --            elsif xctr = 746 then
-    --                hs <= '1';
-    --            end if;
-                
-    --            if yctr = 492 then
-    --                vs <= '0';
-    --            elsif yctr = 494 then
-    --                vs <= '1';
-    --            end if;
-                
-    --            if (xctr = 652 and yctr = 490) then
-    --                NEW_FRAME <= '1';
-    --            elsif (xctr = 0 and yctr = 0) then
-    --                NEW_FRAME <= '0';
-    --            end if;
-                
-    --        end if;
-    --    end if;
-    --end process;
     
     Hsync <= hs;
     Vsync <= vs;
-    
 
-    vga <= pixel_color; 
+  process(CLK) begin
+    if rising_edge(CLK) then
+      if xctr > xpos1 and xctr < xpos1 + 5 then
+        pixel_to_vga <= "11111111";
+      else
+        pixel_to_vga <= pixel_color;
+      end if;
+    end if;
+  end process;
+
+    vga <= pixel_to_vga; 
 
 end architecture;
