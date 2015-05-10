@@ -31,6 +31,16 @@ architecture rtl of GPU is
    );
    end component;
 
+  component hest
+  Port (
+        CLK: in std_logic;
+        RST: in std_logic;
+        xctr : in std_logic_vector(9 downto 0);
+        yctr : in std_logic_vector(9 downto 0);
+        pixel_color : out std_logic_vector(2 downto 0)
+   );
+   end component;
+
 
   -- ----------------------------------------
   -- # Signals
@@ -44,6 +54,7 @@ architecture rtl of GPU is
             
   signal pixel : std_logic_vector(1 downto 0) := "00";
   signal pixel_color : std_logic_vector(2 downto 0);
+  signal hest_color : std_logic_vector(2 downto 0);
   signal video : std_logic;
   signal hs : std_logic := '1';
   signal vs : std_logic := '1';
@@ -73,6 +84,14 @@ begin
      xctr=>xctr,
      yctr=>yctr,
      pixel_color=>pixel_color
+    );
+
+    h : hest port map(
+     CLK=>CLK,
+     RST=>RST,
+     xctr=>xctr,
+     yctr=>yctr,
+     pixel_color=>hest_color
     );
 
     xpos1 <= posP1 (19 downto 10);
@@ -147,8 +166,9 @@ begin
       if xctr > 639 or yctr > 479 then
         pixel_to_vga <= "00000000";
       else
-        if xctr > xpos1 and xctr < xpos1 + 5 and yctr > ypos1 and yctr < ypos1 + 5 then
-          pixel_to_vga <= "00000011";
+
+        if xctr > xpos1 and xctr < xpos1 + 16 and yctr > ypos1 and yctr < ypos1 + 16 then
+          pixel_to_vga <= colors(conv_integer(hest_color));
         elsif xctr > xpos2 and xctr < xpos2 + 5 and yctr > ypos2 and yctr < ypos2 + 5 then
           pixel_to_vga <= "11100000";
         else
