@@ -9,8 +9,8 @@ entity CPU is
 	NEW_FRAME : in std_logic;
 	RST : in  STD_LOGIC;
 	btnu : in std_logic;
-	joystick1 : in  STD_LOGIC_VECTOR (39 downto 0);
-	posP1 : in std_logic_vector (19 downto 0);
+    joystick1 : in  STD_LOGIC_VECTOR (39 downto 0);
+	joystick2 : in  STD_LOGIC_VECTOR (39 downto 0);
 	mem : out std_logic_vector(15 downto 0);
 	outPos1 : out std_logic_vector(19 downto 0);
 	outPos2 : out std_logic_vector (19 downto 0)
@@ -148,18 +148,34 @@ begin
             --if (b1='1' and lastvalue='0') then
             --    ind<=ind + 1;
             --end if;
-            x <=joystick1(25 downto 24) & joystick1(39 downto 32);
-            y <=joystick1(9 downto 8) & joystick1(23 downto 16);
-            if(x > 600) then
-                xpos1 <= xpos1 + 1;
-            elsif(x < 300) then
-                xpos1 <= xpos1 - 1;
-            end if;
-            if(y > 600) then
-                ypos1 <= ypos1 - 1;
-            elsif(y < 300) then
-                ypos1 <= ypos1 + 1;
-            end if;
+
+            with joystick1(25 downto 24) & joystick1(39 downto 32) select
+            xpos1 <= 
+                xpos1 + 1 when 600 to 1023,
+                xpos1 - 1 when 0 to 300,
+                xpos1 when others;
+
+            with joystick1(9 downto 8) & joystick1(23 downto 16) select
+            ypos1 <= 
+                ypos1 + 1 when 600 to 1023,
+                ypos1 - 1 when 0 to 300,
+                ypos1 when others;
+
+
+            --x <=joystick1(25 downto 24) & joystick1(39 downto 32);
+            --y <=joystick1(9 downto 8) & joystick1(23 downto 16);
+            --if(x > 600) then
+            --    xpos1 <= xpos1 + 1;
+            --elsif(x < 300) then
+            --    xpos1 <= xpos1 - 1;
+            --end if;
+
+
+            --if(y > 600) then
+            --    ypos1 <= ypos1 - 1;
+            --elsif(y < 300) then
+            --    ypos1 <= ypos1 + 1;
+            --end if;
             outPos1 <= xpos1 & ypos1;
 
         --lastvalue<=b1;
