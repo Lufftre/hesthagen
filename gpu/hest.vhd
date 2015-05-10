@@ -13,10 +13,11 @@ entity hest is
 end entity;
 
 architecture rtl of hest is 
-  signal pixel_counter : std_logic_vector(7 downto 0) := X"00";
+  signal pixel_counter : unsgined(7 downto 0) := 0;
   signal rad : std_logic_vector(5 downto 0);
   type hest_type is array (0 to 255) of std_logic_vector(2 downto 0);
   signal hest : hest_type := (
+
     "000","000","000","000","000","000","000","011","000","000","000","000","000","000","000","000",
     "000","000","000","000","000","000","000","011","000","000","000","000","000","000","000","000",
     "000","000","000","000","100","000","000","011","000","000","000","000","000","000","000","000",
@@ -43,7 +44,7 @@ begin
 
       process(CLKHORSE) begin
         if rising_edge(CLKHORSE) then
-            pixel_color <= hest(conv_integer(pixel_counter));
+            pixel_color <= hest(pixel_counter);
             pixel_counter <= pixel_counter + 1;
         end if;
       end process;
