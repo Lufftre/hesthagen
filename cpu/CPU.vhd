@@ -149,36 +149,47 @@ begin
             --    ind<=ind + 1;
             --end if;
 
-            with joystick1(25 downto 24) & joystick1(39 downto 32) select
-            xpos1 <= 
-                xpos1 + 1 when 600 to 1023,
-                xpos1 - 1 when 0 to 300,
-                xpos1 when others;
+            --with joystick1(25 downto 24) & joystick1(39 downto 32) select
+            --xpos1 <= 
+            --    xpos1 + 1 when 600 to 1023,
+            --    xpos1 - 1 when 0 to 300,
+            --    xpos1 when others;
 
-            with joystick1(9 downto 8) & joystick1(23 downto 16) select
-            ypos1 <= 
-                ypos1 + 1 when 600 to 1023,
-                ypos1 - 1 when 0 to 300,
-                ypos1 when others;
-
-
-            --x <=joystick1(25 downto 24) & joystick1(39 downto 32);
-            --y <=joystick1(9 downto 8) & joystick1(23 downto 16);
-            --if(x > 600) then
-            --    xpos1 <= xpos1 + 1;
-            --elsif(x < 300) then
-            --    xpos1 <= xpos1 - 1;
-            --end if;
+            --with joystick1(9 downto 8) & joystick1(23 downto 16) select
+            --ypos1 <= 
+            --    ypos1 + 1 when 600 to 1023,
+            --    ypos1 - 1 when 0 to 300,
+            --    ypos1 when others;
 
 
-            --if(y > 600) then
-            --    ypos1 <= ypos1 - 1;
-            --elsif(y < 300) then
-            --    ypos1 <= ypos1 + 1;
-            --end if;
+            if(joystick1(25 downto 24) & joystick1(39 downto 32) > 600) then
+                xpos1 <= xpos1 + 1;
+            elsif(joystick1(25 downto 24) & joystick1(39 downto 32) < 300) then
+                xpos1 <= xpos1 - 1;
+            end if;
+
+            if(joystick1(9 downto 8) & joystick1(23 downto 16) > 600) then
+                ypos1 <= ypos1 - 1;
+            elsif(joystick1(9 downto 8) & joystick1(23 downto 16) < 300) then
+                ypos1 <= ypos1 + 1;
+            end if;
             outPos1 <= xpos1 & ypos1;
 
-        --lastvalue<=b1;
+            if(joystick2(25 downto 24) & joystick2(39 downto 32) > 600) then
+                xpos2 <= xpos2 + 1;
+            elsif(joystick2(25 downto 24) & joystick2(39 downto 32) < 300) then
+                xpos2 <= xpos2 - 1;
+            end if;
+
+            if(joystick2(9 downto 8) & joystick2(23 downto 16) > 600) then
+                ypos2 <= ypos2 - 1;
+            elsif(joystick2(9 downto 8) & joystick2(23 downto 16) < 300) then
+                ypos2 <= ypos2 + 1;
+            end if;
+
+            outPos1 <= xpos1 & ypos1;
+            outPos2 <= xpos2 & ypos2;
+
         end if;
     end process;
 
