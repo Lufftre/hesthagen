@@ -200,7 +200,7 @@ begin
     process(CLK) begin
         if rising_edge(CLK) then
             if FB="010" then
-                ram(conv_integer(ASR_REG(7 downto 0))) <= buss(15 downto 0);
+                ram((ASR_REG(7 downto 0))) <= buss(15 downto 0);
             else 
                 ram <= ram;
             end if;
