@@ -172,7 +172,7 @@ begin
             jstk_y <= (joystick1(9 downto 8) & joystick1(23 downto 16)) xor "1000000000";
             delta_y <= resize(to_sfixed(jstk_y,0,-9),2,-9);
             vel_y <= resize(vel_y + delta_y,2,-9);
-            ypos_real <= resize(ypos_real + vel_y,9,-4);
+            ypos_real <= resize(ypos_real - vel_y,9,-4);
             ypos_int <= to_integer(ypos_real);
             --if(joystick1(25 downto 24) & joystick1(39 downto 32) > 600) then
             --    xpos1 <= xpos1 + 1;
