@@ -160,7 +160,7 @@ begin
         if rising_edge(NEW_FRAME) then
 
 
-            delta <= resize((to_integer(unsigned(joystick1(25 downto 24) & joystick1(39 downto 32))) - 512) / 512,0,-10);
+            delta <= resize((to_integer(unsigned(std_logic_vector(joystick1(25 downto 24) & joystick1(39 downto 32)))) - 512) / 512,0,-10);
 
             xpos_real <= resize(xpos_real + delta,9,-4);
             xpos_int <= to_integer(xpos_real);
