@@ -159,8 +159,8 @@ begin
     process(NEW_FRAME) begin
         if rising_edge(NEW_FRAME) then
 
-            jstk_x <= "00" & ((joystick1(25 downto 24) & joystick1(39 downto 32)) xor "1000000000");
-            delta <= to_sfixed(jstk_x,2,-9);
+            jstk_x <= (joystick1(25 downto 24) & joystick1(39 downto 32)) xor "1000000000";
+            delta <= to_sfixed(jstk_x,0,-9);
             vel_x <= vel_x + delta;
             xpos_real <= resize(xpos_real + delta,9,-4);
             xpos_int <= to_integer(xpos_real);
