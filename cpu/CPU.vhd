@@ -159,7 +159,7 @@ begin
         if rising_edge(NEW_FRAME) then
 
             xpos_real <= xpos_real + delta;
-            xpos_int <= integer(xpos_real);
+            xpos_int <= to_integer(xpos_real);
             --if(joystick1(25 downto 24) & joystick1(39 downto 32) > 600) then
             --    xpos1 <= xpos1 + 1;
             --elsif(joystick1(25 downto 24) & joystick1(39 downto 32) < 300) then
