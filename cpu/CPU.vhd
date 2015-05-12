@@ -1,7 +1,7 @@
 library IEEE;
     use IEEE.STD_LOGIC_1164.ALL;
     use IEEE.NUMERIC_STD.ALL;
-    use IEEE.STD_LOGIC_UNSIGNED.ALL;
+    --use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity CPU is
     Port ( 
@@ -139,6 +139,7 @@ architecture rtl of CPU is
 
     signal lastvalue : std_logic := '0';
 
+    signal delta : real := 0.1;
     
 begin
     --mem<=ram(to_integer(unsigned(ind)));
