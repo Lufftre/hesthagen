@@ -147,7 +147,7 @@ architecture rtl of CPU is
     signal delta : sfixed(0 downto -10) := to_sfixed(0, 0, -10);
     signal xpos_real : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
     signal ypos_real : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
-    signal jstk_x : std_logic_vector(9 downto 0);
+    signal jstk_x : std_logic_vector(9 downto 0) := "0000000000";
     --signal delta_x : sfixed(9 downto )
     
 begin
