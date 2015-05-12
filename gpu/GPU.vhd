@@ -12,7 +12,9 @@ entity GPU is
         posP1, posP2, posProj1, posProj2 : in std_logic_vector (19 downto 0);
         Hsync,Vsync : out  STD_LOGIC;
         vga : out  STD_LOGIC_VECTOR (7 downto 0); 
-        NEW_FRAME : out std_logic
+        NEW_FRAME : out std_logic;
+        xpos_int : in integer range 0 to 639;
+        ypos_int : in integer range 0 to 479
     );
 end entity;
 
@@ -188,7 +190,7 @@ begin
         else
           pixel_to_vga <= colors(conv_integer(tile_color));
 
-          if xctr >= xpos1 and xctr < xpos1 + 16 and yctr >= ypos1 and yctr < ypos1 + 16 then
+          if xctr >= xpos_int and xctr < xpos_int + 16 and yctr >= ypos_int and yctr < ypos_int + 16 then
             CLKHORSE1 <= '1';
             if hest_color1 /= "111" then
               pixel_to_vga <= colors(conv_integer(hest_color1));

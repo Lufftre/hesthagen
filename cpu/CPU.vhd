@@ -1,7 +1,7 @@
 library IEEE;
     use IEEE.STD_LOGIC_1164.ALL;
     use IEEE.NUMERIC_STD.ALL;
-    --use IEEE.STD_LOGIC_UNSIGNED.ALL;
+    use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity CPU is
     Port ( 
@@ -13,7 +13,9 @@ entity CPU is
 	joystick2 : in  STD_LOGIC_VECTOR (39 downto 0);
 	mem : out std_logic_vector(15 downto 0);
 	outPos1 : out std_logic_vector(19 downto 0);
-	outPos2 : out std_logic_vector (19 downto 0)
+	outPos2 : out std_logic_vector (19 downto 0);
+    xpos_int : out integer range 0 to 639;
+    ypos_int : out integer range 0 to 479
     );
 end entity;
 architecture rtl of CPU is
@@ -140,6 +142,7 @@ architecture rtl of CPU is
     signal lastvalue : std_logic := '0';
 
     signal xpos_real : real := 320.00;
+    signal ypos_real : real := 320.00;
     signal delta : real := 0.10;
     
 begin
@@ -153,7 +156,8 @@ begin
         if rising_edge(NEW_FRAME) then
 
             xpos_real <= xpos_real + delta;
-            xpos1 <= to_unsigned(integer(xpos_real),xpos1'length);
+            xpos_int <= integer(xpos_real);
+            ypos_int <= ypos_int;
             --if(joystick1(25 downto 24) & joystick1(39 downto 32) > 600) then
             --    xpos1 <= xpos1 + 1;
             --elsif(joystick1(25 downto 24) & joystick1(39 downto 32) < 300) then
