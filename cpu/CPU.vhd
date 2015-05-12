@@ -157,7 +157,6 @@ begin
 
             xpos_real <= xpos_real + delta;
             xpos_int <= integer(xpos_real);
-            ypos_int <= ypos_int;
             --if(joystick1(25 downto 24) & joystick1(39 downto 32) > 600) then
             --    xpos1 <= xpos1 + 1;
             --elsif(joystick1(25 downto 24) & joystick1(39 downto 32) < 300) then
