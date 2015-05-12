@@ -153,14 +153,13 @@ architecture rtl of CPU is
 begin
     --mem<=ram(to_integer(unsigned(ind)));
     --b1<= joystick1(1);
- 
 
 
 
     process(NEW_FRAME) begin
         if rising_edge(NEW_FRAME) then
 
-            jstk_x <= signed(joystick1(25 downto 24) & joystick1(39 downto 32));
+            jstk_x <= to_integer(signed((joystick1(25 downto 24) & joystick1(39 downto 32)) + 512));
 
             delta <= resize(jstk_x / 512,0,-10);
 
