@@ -145,7 +145,7 @@ architecture rtl of CPU is
 
 
     signal vel_x : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
-    signal delta : sfixed(0 downto -9) := to_sfixed(0, 0, -9);
+    signal delta : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal xpos_real : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
     signal ypos_real : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
     signal jstk_x : std_logic_vector(9 downto 0);
@@ -160,7 +160,7 @@ begin
         if rising_edge(NEW_FRAME) then
 
             jstk_x <= (joystick1(25 downto 24) & joystick1(39 downto 32)) xor "1000000000";
-            delta <= to_sfixed(jstk_x,0,-9);
+            delta <= to_sfixed(jstk_x,2,-9);
             vel_x <= vel_x + delta;
             xpos_real <= resize(xpos_real + delta,9,-4);
             xpos_int <= to_integer(xpos_real);
