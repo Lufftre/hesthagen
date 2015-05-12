@@ -151,33 +151,33 @@ begin
     process(NEW_FRAME) begin
         if rising_edge(NEW_FRAME) then
 
-            if(joystick1(25 downto 24) & joystick1(39 downto 32) > 600) then
-                xpos1 <= xpos1 + 1;
-            elsif(joystick1(25 downto 24) & joystick1(39 downto 32) < 300) then
-                xpos1 <= xpos1 - 1;
-            end if;
+            --if(joystick1(25 downto 24) & joystick1(39 downto 32) > 600) then
+            --    xpos1 <= xpos1 + 1;
+            --elsif(joystick1(25 downto 24) & joystick1(39 downto 32) < 300) then
+            --    xpos1 <= xpos1 - 1;
+            --end if;
 
-            if(joystick1(9 downto 8) & joystick1(23 downto 16) > 600) then
-                ypos1 <= ypos1 - 1;
-            elsif(joystick1(9 downto 8) & joystick1(23 downto 16) < 300) then
-                ypos1 <= ypos1 + 1;
-            end if;
-            outPos1 <= xpos1 & ypos1;
+            --if(joystick1(9 downto 8) & joystick1(23 downto 16) > 600) then
+            --    ypos1 <= ypos1 - 1;
+            --elsif(joystick1(9 downto 8) & joystick1(23 downto 16) < 300) then
+            --    ypos1 <= ypos1 + 1;
+            --end if;
+            --outPos1 <= xpos1 & ypos1;
 
-            if(joystick2(25 downto 24) & joystick2(39 downto 32) > 600) then
-                xpos2 <= xpos2 + 1;
-            elsif(joystick2(25 downto 24) & joystick2(39 downto 32) < 300) then
-                xpos2 <= xpos2 - 1;
-            end if;
+            --if(joystick2(25 downto 24) & joystick2(39 downto 32) > 600) then
+            --    xpos2 <= xpos2 + 1;
+            --elsif(joystick2(25 downto 24) & joystick2(39 downto 32) < 300) then
+            --    xpos2 <= xpos2 - 1;
+            --end if;
 
-            if(joystick2(9 downto 8) & joystick2(23 downto 16) > 600) then
-                ypos2 <= ypos2 - 1;
-            elsif(joystick2(9 downto 8) & joystick2(23 downto 16) < 300) then
-                ypos2 <= ypos2 + 1;
-            end if;
+            --if(joystick2(9 downto 8) & joystick2(23 downto 16) > 600) then
+            --    ypos2 <= ypos2 - 1;
+            --elsif(joystick2(9 downto 8) & joystick2(23 downto 16) < 300) then
+            --    ypos2 <= ypos2 + 1;
+            --end if;
 
-            outPos1 <= xpos1 & ypos1;
-            outPos2 <= xpos2 & ypos2;
+            --outPos1 <= xpos1 & ypos1;
+            --outPos2 <= xpos2 & ypos2;
 
         end if;
     end process;
