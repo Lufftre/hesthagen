@@ -1,4 +1,6 @@
 library IEEE;
+library ieee_proposed;
+  use ieee_proposed.fixed_pkg.all;
     use IEEE.STD_LOGIC_1164.ALL;
     use IEEE.NUMERIC_STD.ALL;
     use IEEE.STD_LOGIC_UNSIGNED.ALL;
