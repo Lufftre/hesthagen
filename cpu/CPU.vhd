@@ -164,7 +164,7 @@ begin
         if rising_edge(NEW_FRAME) then
 
             if (joystick1(25 downto 24) & joystick1(39 downto 32)) > 450 and (joystick1(25 downto 24) & joystick1(39 downto 32)) < 560 then
-                vel_x <= vel_x / 2;
+                vel_x <= resize(vel_x / 2,2,-9);
             else
                 jstk_x <= (joystick1(25 downto 24) & joystick1(39 downto 32)) xor "1000000000";
                 delta_x <= resize(to_sfixed(jstk_x,0,-9),2,-9);
@@ -174,7 +174,7 @@ begin
             xpos_int <= to_integer(xpos_real);
 
             if (joystick1(9 downto 8) & joystick1(23 downto 16)) > 450 and (joystick1(9 downto 8) & joystick1(23 downto 16)) < 560 then
-                vel_y <= vel_y / 2;
+                vel_y <= resize(vel_y / 2,2,-9);
             else
                 jstk_y <= (joystick1(9 downto 8) & joystick1(23 downto 16)) xor "1000000000";
                 delta_y <= resize(to_sfixed(jstk_y,0,-9),2,-9);
