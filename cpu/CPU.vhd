@@ -141,9 +141,10 @@ architecture rtl of CPU is
 
     signal lastvalue : std_logic := '0';
 
-    signal xpos_real : real := 320.00;
-    signal ypos_real : real := 320.00;
-    signal delta : real := 0.10;
+
+    signal delta : sfixed(3 downto -3) := to_sfixed(0.1, 3, -3);
+    signal xpos_real : sfixed(640 downto 0) := to_sfixed(320, 640, 0);
+    signal ypos_real : sfixed(640 downto 0) := to_sfixed(320, 640, 0);
     
 begin
     --mem<=ram(to_integer(unsigned(ind)));
