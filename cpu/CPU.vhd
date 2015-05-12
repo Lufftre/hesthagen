@@ -144,9 +144,10 @@ architecture rtl of CPU is
     signal lastvalue : std_logic := '0';
 
 
-    signal delta : sfixed(3 downto -3) := to_sfixed(0.1, 3, -3);
+    signal delta : sfixed(0 downto -10) := to_sfixed(0, 0, -10);
     signal xpos_real : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
     signal ypos_real : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
+    signal delta_x : sfixed(9 downto )
     
 begin
     --mem<=ram(to_integer(unsigned(ind)));
@@ -157,6 +158,9 @@ begin
 
     process(NEW_FRAME) begin
         if rising_edge(NEW_FRAME) then
+
+
+            delta <= resize((to_integer(unsigned(joystick1(25 downto 24) & joystick1(39 downto 32))) - 512) / 512,0,-10);
 
             xpos_real <= resize(xpos_real + delta,9,-4);
             xpos_int <= to_integer(xpos_real);
