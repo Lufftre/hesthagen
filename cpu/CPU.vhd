@@ -139,7 +139,8 @@ architecture rtl of CPU is
 
     signal lastvalue : std_logic := '0';
 
-    signal delta : real := 0.1;
+    signal delta : real := 0.1
+    asf
     
 begin
     --mem<=ram(to_integer(unsigned(ind)));
