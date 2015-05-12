@@ -160,7 +160,7 @@ begin
     process(NEW_FRAME) begin
         if rising_edge(NEW_FRAME) then
 
-            jstk_x <= signed((joystick1(25 downto 24) & joystick1(39 downto 32)) - 512);
+            jstk_x <= signed(joystick1(25 downto 24) & joystick1(39 downto 32));
 
             delta <= resize(jstk_x / 512,0,-10);
 
