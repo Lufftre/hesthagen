@@ -155,13 +155,12 @@ begin
     --b1<= joystick1(1);
 
 
-
     process(NEW_FRAME) begin
         if rising_edge(NEW_FRAME) then
 
-            jstk_x <= to_integer(signed((joystick1(25 downto 24) & joystick1(39 downto 32)) + 512));
+            jstk_x <= to_integer(signed((joystick1(25 downto 24) & joystick1(39 downto 32)) xor "1000000000"));
 
-            delta <= resize(jstk_x / 512,0,-10);
+            delta <= resize(4,0,-10);
 
             xpos_real <= resize(xpos_real + delta,9,-4);
             xpos_int <= to_integer(xpos_real);
