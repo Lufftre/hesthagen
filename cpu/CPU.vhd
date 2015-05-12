@@ -145,10 +145,14 @@ architecture rtl of CPU is
 
 
     signal vel_x : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
-    signal delta : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
+    signal delta_x : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal xpos_real : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
+    signal jstk_x : std_logic_vector(9 downto 0);
+
+    signal vel_y : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
+    signal delta_y : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal ypos_real : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
-    signal jstk_x : std_logic_vector(11 downto 0);
+    signal jstk_y : std_logic_vector(9 downto 0);
     --signal delta_x : sfixed(9 downto )
     
 begin
@@ -159,11 +163,17 @@ begin
     process(NEW_FRAME) begin
         if rising_edge(NEW_FRAME) then
 
-            jstk_x <= "00" & (joystick1(25 downto 24) & joystick1(39 downto 32)) xor "1000000000";
-            delta <= resize(to_sfixed(jstk_x,0,-11),2,-9);
-            vel_x <= resize(vel_x + delta,2,-9);
+            jstk_x <= (joystick1(25 downto 24) & joystick1(39 downto 32)) xor "1000000000";
+            delta_x <= resize(to_sfixed(jstk_x,0,-9),2,-9);
+            vel_x <= resize(vel_x + delta_x,2,-9);
             xpos_real <= resize(xpos_real + vel_x,9,-4);
             xpos_int <= to_integer(xpos_real);
+
+            jstk_y <= (joystick1(9 downto 8) & joystick1(23 downto 16)) xor "1000000000";
+            delta_y <= resize(to_sfixed(jstk_y,0,-9),2,-9);
+            vel_y <= resize(vel_y + delta_y,2,-9);
+            ypos_real <= resize(ypos_real + vel_y,9,-4);
+            ypos_int <= to_integer(ypos_real);
             --if(joystick1(25 downto 24) & joystick1(39 downto 32) > 600) then
             --    xpos1 <= xpos1 + 1;
             --elsif(joystick1(25 downto 24) & joystick1(39 downto 32) < 300) then
