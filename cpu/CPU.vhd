@@ -139,7 +139,8 @@ architecture rtl of CPU is
 
     signal lastvalue : std_logic := '0';
 
-    signal delta : real := 0.1;
+    signal xpos_real : real := 320.00;
+    signal delta : real := 0.10;
     
 begin
     --mem<=ram(to_integer(unsigned(ind)));
@@ -151,6 +152,7 @@ begin
     process(NEW_FRAME) begin
         if rising_edge(NEW_FRAME) then
 
+            xpos_real <= xpos_real + delta;
             --if(joystick1(25 downto 24) & joystick1(39 downto 32) > 600) then
             --    xpos1 <= xpos1 + 1;
             --elsif(joystick1(25 downto 24) & joystick1(39 downto 32) < 300) then
