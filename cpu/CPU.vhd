@@ -7,7 +7,7 @@ library ieee_proposed;
 
 entity CPU is
     Port ( 
-        CLK : in  STD_LOGIC;
+    CLK : in  STD_LOGIC;
 	NEW_FRAME : in std_logic;
 	RST : in  STD_LOGIC;
 	btnu : in std_logic;
@@ -43,39 +43,53 @@ architecture rtl of CPU is
     X"0000", X"0000", X"0000", X"0000", 
     X"0000", X"0000", X"0000", X"0000");
 
+
+    -- ----------------------------------------
+    -- # Components of computer
+
+    -- Bus   Name
+    -- 001   IR  
+    -- 010   PM
+    -- 011   PC counter
+    -- 100   AR (can only go to buss)
+    -- 101   HR 
+    -- 110   GRx
+    -- 111   ASR
+    -- ----------------------------------------
+
     constant mram : mram_type := (
 --    ALU     TB      FB      S     P     LC     SEQ       myADR      
-    "0000" & "011" & "111" & "0" & "00" & "0" & "0000" & "0000000", --0x00 -- Ladda nästa PM
-    "0000" & "010" & "001" & "0" & "00" & "0" & "0000" & "0000000", --0x01
-    "0000" & "000" & "000" & "0" & "00" & "0" & "0010" & "0000000", --0x02
-    "0000" & "001" & "111" & "0" & "00" & "0" & "0001" & "0000000", --0x03
-    "0000" & "000" & "000" & "0" & "00" & "0" & "0000" & "0000000", --0x04
-    "0000" & "010" & "110" & "0" & "01" & "0" & "0011" & "0000000", --0x05 - Load
-    "0000" & "110" & "010" & "0" & "01" & "0" & "0011" & "0000000", --0x06 - Store
-    "0001" & "110" & "000" & "0" & "00" & "0" & "0000" & "0000000", --0x07 - Add
-    "0100" & "010" & "000" & "0" & "00" & "0" & "0000" & "0000000", --0x08
-    "0000" & "100" & "110" & "0" & "01" & "0" & "0011" & "0000000", --0x09
-    "0001" & "110" & "000" & "0" & "00" & "0" & "0000" & "0000000", --0x0A - Sub
-    "0101" & "010" & "000" & "0" & "00" & "0" & "0000" & "0000000", --0x0B
-    "0000" & "100" & "110" & "0" & "01" & "0" & "0011" & "0000000", --0x0C
-    "0001" & "110" & "000" & "0" & "00" & "0" & "0000" & "0000000", --0x0D - Handle X
-    "1110" & "000" & "000" & "0" & "00" & "0" & "0000" & "0000000", --0x0E 
-    "0000" & "100" & "110" & "0" & "01" & "0" & "0011" & "0000000", --0x0F
---    ALU     TB      FB      S     P     LC     SEQ       myADR      
-    "0001" & "110" & "000" & "0" & "00" & "0" & "0000" & "0000000", --0x20 - Handle Y
-    "1111" & "000" & "000" & "0" & "00" & "0" & "0000" & "0000000", --0x21
-    "0000" & "100" & "110" & "0" & "01" & "0" & "0011" & "0000000", --0x22
-    "0110" & "000" & "000" & "0" & "01" & "0" & "0011" & "0000000", --0x23 - Update horse
-    "0000" & "000" & "000" & "0" & "00" & "0" & "0000" & "0000000", --0x24
-    "0000" & "001" & "111" & "0" & "11" & "0" & "0011" & "0000000", --0x25 -- JMP
-    "0000" & "000" & "000" & "0" & "00" & "0" & "0000" & "0000000", --0x26
-    "0000" & "000" & "000" & "0" & "00" & "0" & "0000" & "0000000", --0x27
-    "0000" & "000" & "000" & "0" & "00" & "0" & "0000" & "0000000", --0x28
-    "0000" & "000" & "000" & "0" & "00" & "0" & "0000" & "0000000", --0x29
-    "0000" & "000" & "000" & "0" & "00" & "0" & "0000" & "0000000", --0x2A
-    "0000" & "000" & "000" & "0" & "00" & "0" & "0000" & "0000000", --0x2B
-    "0000" & "000" & "000" & "0" & "00" & "0" & "0000" & "0000000", --0x0E
-    "0000" & "000" & "000" & "0" & "00" & "0" & "0000" & "0000000"  --0x0F
+    "0000" & "011" & "111" & "0" & "0" & "00" & "0000" & "0000000", --0x00 PC => ASR, mpc++, (HÄMTFAS)
+    "0000" & "010" & "001" & "0" & "0" & "00" & "0000" & "0000000", --0x01 PM => IR, mpc++ 
+    "0000" & "000" & "000" & "0" & "0" & "00" & "0010" & "0000000", --0x02 K1 => mpc
+    "0000" & "001" & "111" & "0" & "0" & "00" & "0001" & "0000000", --0x03 IR => ASR, K1 => mpc
+    "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x04
+    "0000" & "010" & "110" & "0" & "1" & "00" & "0011" & "0000000", --0x05 PM => GRx, mpc = 0, (LOAD)
+    "0000" & "110" & "010" & "0" & "1" & "00" & "0011" & "0000000", --0x06 GRx => PM, mpc = 0, (STORE)
+    "0001" & "110" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x07 Grx => AR, mpc++,   (ADD)
+    "0100" & "010" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x08 (AR + PM) => AR, mpc++
+    "0000" & "100" & "110" & "0" & "1" & "00" & "0011" & "0000000", --0x09 AR => GRx, PC++, mpc = 0
+    "0001" & "110" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x0A Grx => AR, mpc++,   (SUB)
+    "0101" & "010" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x0B (AR - PM) => AR, mpc++
+    "0000" & "100" & "110" & "0" & "1" & "00" & "0011" & "0000000", --0x0C AR => GRx, PC++, mpc = 0
+    "0001" & "110" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x0D - Handle X
+    "1110" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x0E 
+    "0000" & "100" & "110" & "0" & "1" & "00" & "0011" & "0000000", --0x0F
+--    ALU     TB      FB      S     P    LC      SEQ       myADR      
+    "0001" & "110" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x20 - Handle Y
+    "1111" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x21
+    "0000" & "100" & "110" & "0" & "1" & "00" & "0011" & "0000000", --0x22
+    "0110" & "000" & "000" & "0" & "1" & "00" & "0011" & "0000000", --0x23 - Update horse
+    "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x24
+    "0000" & "010" & "011" & "0" & "0" & "00" & "0011" & "0000000", --0x25 - JMP, PM => PC, mpc = 0 (JMP)
+    "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x26
+    "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x27
+    "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x28
+    "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x29
+    "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x2A
+    "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x2B
+    "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x0E
+    "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000"  --0x0F
     );
     
     -- K1 och K2
@@ -153,65 +167,8 @@ architecture rtl of CPU is
     signal delta_y : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal ypos_real : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
     signal jstk_y : std_logic_vector(9 downto 0);
-    --signal delta_x : sfixed(9 downto )
     
 begin
-    --mem<=ram(to_integer(unsigned(ind)));
-    --b1<= joystick1(1);
-
-
-    process(NEW_FRAME) begin
-        if rising_edge(NEW_FRAME) then
-
-            if (joystick1(25 downto 24) & joystick1(39 downto 32)) > 450 and (joystick1(25 downto 24) & joystick1(39 downto 32)) < 560 then
-                vel_x <= resize(vel_x / 2,2,-9);
-            else
-                jstk_x <= (joystick1(25 downto 24) & joystick1(39 downto 32)) xor "1000000000";
-                delta_x <= resize(to_sfixed(jstk_x,0,-9),2,-9);
-                vel_x <= resize(vel_x + delta_x,2,-9);
-            end if;
-            xpos_real <= resize(xpos_real + vel_x,9,-4);
-            xpos_int <= to_integer(xpos_real);
-
-            if (joystick1(9 downto 8) & joystick1(23 downto 16)) > 450 and (joystick1(9 downto 8) & joystick1(23 downto 16)) < 560 then
-                vel_y <= resize(vel_y / 2,2,-9);
-            else
-                jstk_y <= (joystick1(9 downto 8) & joystick1(23 downto 16)) xor "1000000000";
-                delta_y <= resize(to_sfixed(jstk_y,0,-9),2,-9);
-                vel_y <= resize(vel_y + delta_y,2,-9);
-            end if;
-            ypos_real <= resize(ypos_real - vel_y,9,-4);
-            ypos_int <= to_integer(ypos_real);
-            --if(joystick1(25 downto 24) & joystick1(39 downto 32) > 600) then
-            --    xpos1 <= xpos1 + 1;
-            --elsif(joystick1(25 downto 24) & joystick1(39 downto 32) < 300) then
-            --    xpos1 <= xpos1 - 1;
-            --end if;
-
-            --if(joystick1(9 downto 8) & joystick1(23 downto 16) > 600) then
-            --    ypos1 <= ypos1 - 1;
-            --elsif(joystick1(9 downto 8) & joystick1(23 downto 16) < 300) then
-            --    ypos1 <= ypos1 + 1;
-            --end if;
-            --outPos1 <= xpos1 & ypos1;
-
-            --if(joystick2(25 downto 24) & joystick2(39 downto 32) > 600) then
-            --    xpos2 <= xpos2 + 1;
-            --elsif(joystick2(25 downto 24) & joystick2(39 downto 32) < 300) then
-            --    xpos2 <= xpos2 - 1;
-            --end if;
-
-            --if(joystick2(9 downto 8) & joystick2(23 downto 16) > 600) then
-            --    ypos2 <= ypos2 - 1;
-            --elsif(joystick2(9 downto 8) & joystick2(23 downto 16) < 300) then
-            --    ypos2 <= ypos2 + 1;
-            --end if;
-
-            --outPos1 <= xpos1 & ypos1;
-            --outPos2 <= xpos2 & ypos2;
-
-        end if;
-    end process;
 
     -- ----------------------------------------
     -- # ASR Register
@@ -252,19 +209,18 @@ begin
     -- ----------------------------------------
     -- # PC Register
     -- ----------------------------------------
-    process(CLK) begin
-        if rising_edge(CLK) then
-	       if FB="011" then
-                PC_REG(15 downto 0) <= buss(15 downto 0);
-            elsif (P = "01") then
-                PC_REG <= PC_REG + 1;
-            elsif (P="11") then
-                PC_REG <= ASR_REG;
-            else
-                PC_REG(15 downto 0) <= PC_REG(15 downto 0);
-            end if;
-        end if;
-    end process;    
+     process(CLK) begin
+         if rising_edge(CLK) then
+            if FB="011" then
+                 PC_REG(15 downto 0) <= buss(15 downto 0);
+            elsif (P = "1") then
+                PC_REG <= PC_reg + 1;
+             else
+                 PC_REG(15 downto 0) <= PC_REG(15 downto 0);
+             end if;
+          end if;
+      end process;         
+ 
     -- ----------------------------------------
     -- # HR Register
     -- ----------------------------------------
@@ -346,29 +302,36 @@ begin
     -- ----------------------------------------
     process(CLK) begin
         if rising_edge(CLK) then
-  --          case ALU_OP is
-  --              when "0000" => null;
-  --              when "0100" => AR_REG(15 downto 0) <= AR_REG(15 downto 0) + buss(15 downto 0); -- ADD
-  --              when "0101" => AR_REG(15 downto 0) <= AR_REG(15 downto 0) - buss(15 downto 0); -- SUB
-  --              when "0001" => AR_REG(15 downto 0) <= buss(15 downto 0); -- LOAD
-		--when "0011" => AR_REG(15 downto 0) <= X"0000"; -- RESET
-		--when "1110" => -- handle X
-		--	x <=joystick1(25 downto 24) & joystick1(39 downto 32);
-		--	if(x > 600) then
-		--		AR_REG(15 downto 0) <= AR_REG(15 downto 0) + 1;
-		--	elsif(x < 300) then
-		--		AR_REG(15 downto 0) <= AR_REG(15 downto 0) - 1;
-		--	end if;
-		--when "1111" => -- handle Y
-		--	y<=joystick1(9 downto 8) & joystick1(23 downto 16);
-		--	if(y > 600) then
-		--		AR_REG(15 downto 0) <= AR_REG(15 downto 0) - 1;
-		--	elsif(y < 300) then
-		--		AR_REG(15 downto 0) <= AR_REG(15 downto 0) + 1;
-		--	end if;
-		--when "0110" => --outPos1 <= GR1_REG(9 downto 0) & GR2_REG (9 downto 0);
-  --              when others => null;
-  --          end case;
+            case ALU_OP is
+                 when "0000" => null;
+                 when "0100" => AR_REG(15 downto 0) <= AR_REG(15 downto 0) + buss(15 downto 0);
+                 when "0101" => AR_REG(15 downto 0) <= AR_REG(15 downto 0) - buss(15 downto 0);
+                 when "0001" => AR_REG(15 downto 0) <= buss(15 downto 0);
+		         when "0011" => AR_REG(15 downto 0) <= X"0000";
+		         when "1110" =>
+                    if (joystick1(25 downto 24) & joystick1(39 downto 32)) > 450 and (joystick1(25 downto 24) & joystick1(39 downto 32)) < 560 then
+                        vel_x <= resize(vel_x / 2,2,-9);
+                    else
+                        jstk_x <= (joystick1(25 downto 24) & joystick1(39 downto 32)) xor "1000000000";
+                        delta_x <= resize(to_sfixed(jstk_x,0,-9),2,-9);
+                        vel_x <= resize(vel_x + delta_x,2,-9);
+                    end if;
+                    xpos_real <= resize(xpos_real + vel_x,9,-4);
+                    xpos_int <= to_integer(xpos_real);  
+		         when "1111" => 
+                    if (joystick1(9 downto 8) & joystick1(23 downto 16)) > 450 and (joystick1(9 downto 8) & joystick1(23 downto 16)) < 560 then
+                        vel_y <= resize(vel_y / 2,2,-9);
+                    else
+                        jstk_y <= (joystick1(9 downto 8) & joystick1(23 downto 16)) xor "1000000000";
+                        delta_y <= resize(to_sfixed(jstk_y,0,-9),2,-9);
+                        vel_y <= resize(vel_y + delta_y,2,-9);
+                    end if;
+                    ypos_real <= resize(ypos_real - vel_y,9,-4);
+                    ypos_int <= to_integer(ypos_real);
+                    when others => null;
+                --when "0110" => --outPos1 <= GR1_REG(9 downto 0) & GR2_REG (9 downto 0);
+      
+            end case;
         end if;
     end process;
 
