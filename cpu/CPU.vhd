@@ -316,8 +316,6 @@ begin
                     ypos_real <= resize(ypos_real - vel_y,9,-4);
                     ypos_int <= to_integer(ypos_real);
                     when others => null;
-                --when "0110" => --outPos1 <= GR1_REG(9 downto 0) & GR2_REG (9 downto 0);
-      
             end case;
         end if;
     end process;
