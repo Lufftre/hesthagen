@@ -8,14 +8,14 @@ library ieee_proposed;
 entity CPU is
     Port ( 
     CLK : in  STD_LOGIC;
-	NEW_FRAME : in std_logic;
-	RST : in  STD_LOGIC;
-	btnu : in std_logic;
+    NEW_FRAME : in std_logic;
+    RST : in  STD_LOGIC;
+    btnu : in std_logic;
     joystick1 : in  STD_LOGIC_VECTOR (39 downto 0);
-	joystick2 : in  STD_LOGIC_VECTOR (39 downto 0);
-	mem : out std_logic_vector(15 downto 0);
-	outPos1 : out std_logic_vector(19 downto 0);
-	outPos2 : out std_logic_vector (19 downto 0);
+    joystick2 : in  STD_LOGIC_VECTOR (39 downto 0);
+    mem : out std_logic_vector(15 downto 0);
+    outPos1 : out std_logic_vector(19 downto 0);
+    outPos2 : out std_logic_vector (19 downto 0);
     xpos_int : out integer range 0 to 639;
     ypos_int : out integer range 0 to 479
     );
@@ -44,51 +44,38 @@ architecture rtl of CPU is
     X"0000", X"0000", X"0000", X"0000");
 
 
-    -- ----------------------------------------
-    -- # Components of computer
-
-    -- Bus   Name
-    -- 001   IR  
-    -- 010   PM
-    -- 011   PC counter
-    -- 100   AR (can only go to buss)
-    -- 101   HR 
-    -- 110   GRx
-    -- 111   ASR
-    -- ----------------------------------------
-
     constant mram : mram_type := (
 --    ALU     TB      FB      S     P     LC     SEQ       myADR      
-    "0000" & "011" & "111" & "0" & "0" & "00" & "0000" & "0000000", --0x00 PC => ASR, mpc++, (HÄMTFAS)
+    "0000" & "011" & "111" & "0" & "0" & "00" & "0000" & "0000000", --0x00 PC => ASR, mpc++,        (HÄMTFAS)
     "0000" & "010" & "001" & "0" & "0" & "00" & "0000" & "0000000", --0x01 PM => IR, mpc++ 
     "0000" & "000" & "000" & "0" & "0" & "00" & "0010" & "0000000", --0x02 K1 => mpc
     "0000" & "001" & "111" & "0" & "0" & "00" & "0001" & "0000000", --0x03 IR => ASR, K1 => mpc
     "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x04
-    "0000" & "010" & "110" & "0" & "1" & "00" & "0011" & "0000000", --0x05 PM => GRx, mpc = 0, (LOAD)
-    "0000" & "110" & "010" & "0" & "1" & "00" & "0011" & "0000000", --0x06 GRx => PM, mpc = 0, (STORE)
-    "0001" & "110" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x07 Grx => AR, mpc++,   (ADD)
+    "0000" & "010" & "110" & "0" & "1" & "00" & "0011" & "0000000", --0x05 PM => GRx, mpc = 0,      (LOAD)
+    "0000" & "110" & "010" & "0" & "1" & "00" & "0011" & "0000000", --0x06 GRx => PM, mpc = 0,      (STORE)
+    "0001" & "110" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x07 Grx => AR, mpc++,        (ADD)
     "0100" & "010" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x08 (AR + PM) => AR, mpc++
     "0000" & "100" & "110" & "0" & "1" & "00" & "0011" & "0000000", --0x09 AR => GRx, PC++, mpc = 0
-    "0001" & "110" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x0A Grx => AR, mpc++,   (SUB)
+    "0001" & "110" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x0A Grx => AR, mpc++,        (SUB)
     "0101" & "010" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x0B (AR - PM) => AR, mpc++
     "0000" & "100" & "110" & "0" & "1" & "00" & "0011" & "0000000", --0x0C AR => GRx, PC++, mpc = 0
-    "0001" & "110" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x0D - Handle X
-    "1110" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x0E 
-    "0000" & "100" & "110" & "0" & "1" & "00" & "0011" & "0000000", --0x0F
+    "0001" & "110" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x0D GRx => AR, mpc++         (x-move)
+    "1110" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x0E ALU magic, mpc++ 
+    "0000" & "100" & "110" & "0" & "1" & "00" & "0011" & "0000000", --0x0F AR => GRx, PC++, mpc = 0
 --    ALU     TB      FB      S     P    LC      SEQ       myADR      
-    "0001" & "110" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x20 - Handle Y
-    "1111" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x21
-    "0000" & "100" & "110" & "0" & "1" & "00" & "0011" & "0000000", --0x22
-    "0110" & "000" & "000" & "0" & "1" & "00" & "0011" & "0000000", --0x23 - Update horse
+    "0001" & "110" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x20 GRx => AR, mpc++         (y-move)
+    "1111" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x21 ALU magic, mp++
+    "0000" & "100" & "110" & "0" & "1" & "00" & "0011" & "0000000", --0x22 AR => GRx, PC++, mpc = 0
+    "0000" & "010" & "011" & "0" & "0" & "00" & "0011" & "0000000", --0x23 PM => PC, mpc = 0        (JMP)
     "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x24
-    "0000" & "010" & "011" & "0" & "0" & "00" & "0011" & "0000000", --0x25 - JMP, PM => PC, mpc = 0 (JMP)
+    "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x25
     "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x26
     "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x27
     "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x28
     "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x29
     "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x2A
     "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x2B
-    "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x0E
+    "0000" & "000" & "000" & "0" & "0" & "00" & "0011" & "0000000", --0x0E mpc = 0                  (NOP)
     "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000"  --0x0F
     );
     
@@ -97,15 +84,15 @@ architecture rtl of CPU is
     type k2_type is array(0 to 3) of std_logic_vector(7 downto 0);
 
     constant k1 : k1_type := (
-    X"00", -- NOP
-    X"05", -- Load	1
-    X"06", -- Store	2
-    X"07", -- Add	3
-    X"0A", -- Sub	4
-    X"0D", -- Handle X	5
-    X"20", -- Handle Y	6
-    X"23", -- Horse	7
-    X"25", -- JMP   8
+    X"00", -- NOP    0x0E
+    X"05", -- LOAD   0x05
+    X"06", -- STORE  0x06   
+    X"07", -- ADD    0x07
+    X"0A", -- SUB    0x0A
+    X"0D", -- x-move 0x0D
+    X"20", -- y-move 0x20
+    X"23", -- JMP    0x23
+    X"25",
     X"00",
     X"00",
     X"00",
@@ -175,7 +162,7 @@ begin
     -- ----------------------------------------
     process(CLK) begin
         if rising_edge(CLK) then
-	    if (FB = "111") then
+        if (FB = "111") then
                 ASR_REG(15 downto 0) <= buss(15 downto 0);
             else
                 ASR_REG(15 downto 0) <= ASR_REG(15 downto 0);
@@ -199,7 +186,7 @@ begin
     -- ----------------------------------------
     process(CLK) begin
         if rising_edge(CLK) then
-	    if FB="001" then
+        if FB="001" then
                 IR_REG(15 downto 0) <= buss(15 downto 0);
             else
                 IR_REG(15 downto 0) <= IR_REG(15 downto 0);
@@ -226,7 +213,7 @@ begin
     -- ----------------------------------------
     process(CLK) begin
         if rising_edge(CLK) then
-	    if FB="101" then
+        if FB="101" then
                 HR_REG(15 downto 0) <= buss(15 downto 0);
             else
                 HR_REG(15 downto 0) <= HR_REG(15 downto 0);
@@ -239,7 +226,7 @@ begin
     mux1 <= IR_REG(11 downto 10);
     process(CLK) begin
         if rising_edge(CLK) then
-	    if FB="110" then
+        if FB="110" then
                 case mux1 is
                     when "00" => GR0_REG(15 downto 0) <= buss(15 downto 0);
                     when "01" => GR1_REG(15 downto 0) <= buss(15 downto 0);
@@ -307,8 +294,8 @@ begin
                  when "0100" => AR_REG(15 downto 0) <= AR_REG(15 downto 0) + buss(15 downto 0);
                  when "0101" => AR_REG(15 downto 0) <= AR_REG(15 downto 0) - buss(15 downto 0);
                  when "0001" => AR_REG(15 downto 0) <= buss(15 downto 0);
-		         when "0011" => AR_REG(15 downto 0) <= X"0000";
-		         when "1110" =>
+                 when "0011" => AR_REG(15 downto 0) <= X"0000";
+                 when "1110" =>
                     if (joystick1(25 downto 24) & joystick1(39 downto 32)) > 450 and (joystick1(25 downto 24) & joystick1(39 downto 32)) < 560 then
                         vel_x <= resize(vel_x / 2,2,-9);
                     else
@@ -318,7 +305,7 @@ begin
                     end if;
                     xpos_real <= resize(xpos_real + vel_x,9,-4);
                     xpos_int <= to_integer(xpos_real);  
-		         when "1111" => 
+                 when "1111" => 
                     if (joystick1(9 downto 8) & joystick1(23 downto 16)) > 450 and (joystick1(9 downto 8) & joystick1(23 downto 16)) < 560 then
                         vel_y <= resize(vel_y / 2,2,-9);
                     else
