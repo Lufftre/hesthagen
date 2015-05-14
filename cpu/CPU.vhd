@@ -177,6 +177,7 @@ architecture rtl of CPU is
     signal jstk_y : std_logic_vector(9 downto 0);
     
 begin
+    mem <= PC_REG;
     flag_newframe <= NEW_FRAME;
     outPos1 <= ram(28)(9 downto 0) & ram(29)(9 downto 0);
     outPos2 <= ram(26)(9 downto 0) & ram(27)(9 downto 0);
