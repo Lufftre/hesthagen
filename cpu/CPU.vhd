@@ -335,6 +335,7 @@ begin
                  when "0011" => AR_REG(15 downto 0) <= X"0000";
                  when "1110" => AR_REG(15 downto 0) <= '0' & AR_REG(15 downto 1);
                  when "1111" => AR_REG(15 downto 0) <=  AR_REG(15 downto 0) xor X"0800";
+                 when others => null;
             end case;
         end if;
     end process;
