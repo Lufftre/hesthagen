@@ -39,8 +39,8 @@ architecture rtl of CPU is
 
     signal ram : ram_type := (
     -- Programkod
-    X"B01B", X"101E", X"201C", X"101F",
-    X"201D", X"701B", X"0000", X"0000", 
+    X"B01B", X"141E", X"241C", X"141F",
+    X"241D", X"701B", X"0000", X"0000", 
     X"0000", X"0000", X"0000", X"0000", 
     X"0000", X"0000", X"0000", X"0000",
     X"0000", X"0000", X"0000", X"0000",
