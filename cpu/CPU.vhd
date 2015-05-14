@@ -252,7 +252,7 @@ begin
     -- ----------------------------------------
     -- # MUX1 Register
     -- ----------------------------------------
-    mux1 <= IR_REG(11 downto 9);
+    mux1 <= IR_REG(11 downto 10);
     process(CLK) begin
         if rising_edge(CLK) then
         if FB="110" then
