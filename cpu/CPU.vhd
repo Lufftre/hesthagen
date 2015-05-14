@@ -177,11 +177,10 @@ architecture rtl of CPU is
     signal jstk_y : std_logic_vector(9 downto 0);
     
 begin
-
+    flag_newframe <= NEW_FRAME;
     outPos1 <= ram(28)(9 downto 0) & ram(29)(9 downto 0);
     process(NEW_FRAME) begin
         if rising_edge(NEW_FRAME) then
-            flag_newframe <= '1';
             ram(30) <= "000000" & not joystick1(25) & joystick1(24) & joystick1(39 downto 32);
             ram(31) <= "000000" & not joystick1(9) & joystick1(8) & joystick1(23 downto 16);
         end if;
@@ -314,7 +313,6 @@ begin
             if SEQ = "1000" then
                 if flag_newframe = '1' then
                     MPC <= MPC + 1;
-                    flag_newframe <= '0';
                 else
                     MPC <= '0' & myADR;
                 end if;
