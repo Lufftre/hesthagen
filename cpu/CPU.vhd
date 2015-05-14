@@ -28,8 +28,8 @@ architecture rtl of CPU is
     signal HR_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000";
     signal IR_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000";
     signal GR0_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000"; 
-    signal GR1_REG : STD_LOGIC_VECTOR(15 downto 0) := X"00F0"; 
-    signal GR2_REG : STD_LOGIC_VECTOR(15 downto 0) := X"00F0"; 
+    signal GR1_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000"; 
+    signal GR2_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000"; 
     signal GR3_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000";
     signal flag_newframe : STD_LOGIC := '0';
     
@@ -39,14 +39,14 @@ architecture rtl of CPU is
 
     signal ram : ram_type := (
     -- Programkod
-    X"B01B", X"141E", X"241C", X"141F",
+    X"B018", X"141E", X"241C", X"141F",
     X"241D", X"701B", X"0000", X"0000", 
     X"0000", X"0000", X"0000", X"0000", 
     X"0000", X"0000", X"0000", X"0000",
     X"0000", X"0000", X"0000", X"0000",
     X"0000", X"0000", X"0000", X"0000", 
-    X"0000", X"0000", X"0000", X"0000", 
-    X"0000", X"0000", X"0000", X"0000"
+    X"0000", X"0000", X"00F0", X"00F0", 
+    X"00FF", X"00FF", X"0000", X"0000"
     );
 
 
@@ -179,6 +179,7 @@ architecture rtl of CPU is
 begin
     flag_newframe <= NEW_FRAME;
     outPos1 <= ram(28)(9 downto 0) & ram(29)(9 downto 0);
+    outPos2 <= ram(26)(9 downto 0) & ram(27)(9 downto 0);
     -- ----------------------------------------
     -- # ASR Register
     -- ----------------------------------------
