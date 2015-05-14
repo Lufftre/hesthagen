@@ -261,6 +261,7 @@ begin
                     when "01" => GR1_REG(15 downto 0) <= buss(15 downto 0);
                     when "10" => GR2_REG(15 downto 0) <= buss(15 downto 0);
                     when "11" => GR3_REG(15 downto 0) <= buss(15 downto 0);
+                    when others => null;
                 end case;
             end if;
         end if;
