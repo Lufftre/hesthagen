@@ -179,12 +179,6 @@ architecture rtl of CPU is
 begin
     flag_newframe <= NEW_FRAME;
     outPos1 <= ram(28)(9 downto 0) & ram(29)(9 downto 0);
-    process(NEW_FRAME) begin
-        if rising_edge(NEW_FRAME) then
-            ram(30) <= "000000" & not joystick1(25) & joystick1(24) & joystick1(39 downto 32);
-            ram(31) <= "000000" & not joystick1(9) & joystick1(8) & joystick1(23 downto 16);
-        end if;
-    end process;
     -- ----------------------------------------
     -- # ASR Register
     -- ----------------------------------------
@@ -206,6 +200,10 @@ begin
                 ram(conv_integer(ASR_REG(7 downto 0))) <= buss(15 downto 0);
             else 
                 ram <= ram;
+            end if;
+            if flag_newframe = '1' then
+                ram(30) <= "000000" & not joystick1(25) & joystick1(24) & joystick1(39 downto 32);
+                ram(31) <= "000000" & not joystick1(9) & joystick1(8) & joystick1(23 downto 16);
             end if;
         end if;
     end process;
