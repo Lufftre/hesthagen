@@ -35,7 +35,7 @@ architecture rtl of CPU is
     
     -- PM/RAM och MyM
     type ram_type is array (0 to 31) of std_logic_vector(15 downto 0);
-    type mram_type is array (0 to 29) of std_logic_vector(24 downto 0);
+    type mram_type is array (0 to 45) of std_logic_vector(24 downto 0);
 
     signal ram : ram_type := (
     -- Programkod
