@@ -306,7 +306,7 @@ begin
             case SEQ is
                 when "0000" => MPC <= MPC + 1;
                 when "0001" => MPC <= k1(conv_integer(IR_REG(15 downto 12)));
-                when "0010" => MPC <= k2(IR_REG(9));
+                when "0010" => MPC <= k2(conv_integer('0'&IR_REG(9)));
                 when "0011" => MPC <= '0' & myADR;
                 when others => MPC <= MPC;
             end case;
