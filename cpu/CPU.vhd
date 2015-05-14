@@ -182,8 +182,8 @@ begin
     process(NEW_FRAME) begin
         if rising_edge(NEW_FRAME) then
             flag_newframe <= '1';
-            ram(30) <= "000000" & not joystick1(25) & joystick1(24) & joystick1(39 downto 32));
-            ram(31) <= "000000" & not joystick1(9) & joystick1(8) & joystick1(23 downto 16));
+            ram(30) <= "000000" & not joystick1(25) & joystick1(24) & joystick1(39 downto 32);
+            ram(31) <= "000000" & not joystick1(9) & joystick1(8) & joystick1(23 downto 16);
         end if;
     end process;
     -- ----------------------------------------
