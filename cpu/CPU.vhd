@@ -497,6 +497,8 @@ begin
                     if proj_active1 = '0' then
                         proj_deltax1 <= resize(to_sfixed((not joystick1(25)&joystick1(24)&joystick1(39 downto 32)),3,-6),2,-9);
                         proj_deltay1 <= resize(to_sfixed((not joystick1(9)&joystick1(8)&joystick1(23 downto 16)),3,-6),2,-9);
+                        proj_velx1 <= resize(proj_deltax1,2,-9);
+                        proj_vely1 <= resize(proj_deltay1,2,-9);
                         proj_real_xpos1 <= xpos_real1;
                         proj_real_ypos1 <= ypos_real1;
                     end if;
