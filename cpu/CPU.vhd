@@ -489,8 +489,8 @@ begin
             if ALU_OP = "1011" then
                 -- # Projectile 1
                 if joystick1(1) = '1' and proj_active1 = '0' then
-                   proj_dirx1 <= (joystick1(25 downto 24) & joystick1(39 downto 32));
-                   proj_diry1 <= (joystick1(9 downto 8) & joystick1(23 downto 16));
+                   proj_dirx1 <= (joystick1(25 downto 24) & joystick1(39 downto 32)) xor "1000000000";
+                   proj_diry1 <= (joystick1(9 downto 8) & joystick1(23 downto 16)) xor "1000000000";
                     proj_deltax1 <= resize(to_sfixed(proj_dirx1,0,-9),2,-9);
                     proj_deltay1 <= resize(to_sfixed(proj_diry1,0,-9),2,-9);
                     proj_real_xpos1 <= xpos_real1;
@@ -507,8 +507,8 @@ begin
 
                 -- # Projectile 2
                 if joystick2(1) = '1' and proj_active2 = '0' then
-                   proj_dirx2 <= (joystick2(25 downto 24) & joystick2(39 downto 32));
-                   proj_diry2 <= (joystick2(9 downto 8) & joystick2(23 downto 16));
+                   proj_dirx2 <= (joystick2(25 downto 24) & joystick2(39 downto 32)) xor "1000000000";
+                   proj_diry2 <= (joystick2(9 downto 8) & joystick2(23 downto 16)) xor "1000000000";
                     proj_deltax2 <= resize(to_sfixed(proj_dirx2,0,-9),2,-9);
                     proj_deltay2 <= resize(to_sfixed(proj_diry2,0,-9),2,-9);
                    proj_active2 <= '1';
