@@ -12,8 +12,14 @@ entity GPU is
         Hsync,Vsync : out  STD_LOGIC;
         vga : out  STD_LOGIC_VECTOR (7 downto 0); 
         NEW_FRAME : out std_logic;
-        xpos_int : in integer range 0 to 639;
-        ypos_int : in integer range 0 to 479
+        xpos_int1 : in integer range 0 to 639;
+        ypos_int1 : in integer range 0 to 479;
+        xpos_int2 : in integer range 0 to 639;
+        ypos_int2 : in integer range 0 to 479;
+        proj_xpos1 : in integer range 0 to 639;
+        proj_ypos1 : in integer range 0 to 479;
+        proj_xpos2 : in integer range 0 to 639;
+        proj_ypos2 : in integer range 0 to 479
     );
 end entity;
 
@@ -76,6 +82,8 @@ architecture rtl of GPU is
 
   signal CLKHORSE1 : std_logic := '0';
   signal CLKHORSE2 : std_logic := '0';
+  signal CLKPROJECTILE1 : std_logic := '0';
+  signal CLKPROJECTILE2 : std_logic := '0';
   signal hest_color1 : std_logic_vector(2 downto 0);
   signal hest_color2 : std_logic_vector(2 downto 0);
 
@@ -226,16 +234,30 @@ begin
         else
           pixel_to_vga <= colors(conv_integer(tile_color));
 
-          if xctr >= xpos_int and xctr < xpos_int + 16 and yctr >= ypos_int and yctr < ypos_int + 16 then
+          if xctr >= xpos_int1 and xctr < xpos_int1 + 16 and yctr >= ypos_int1 and yctr < ypos_int1 + 16 then
             CLKHORSE1 <= '1';
             if hest_color1 /= "111" then
               pixel_to_vga <= colors(conv_integer(hest_color1));
             end if;
           end if;
-          if xctr >= xpos2 and xctr < xpos2 + 16 and yctr >= ypos2 and yctr < ypos2 + 16 then
+          if xctr >= xpos_int2 and xctr < xpos_int2 + 16 and yctr >= ypos_int2 and yctr < ypos_int2 + 16 then
             CLKHORSE2 <= '1';
             if hest_color2 /= "111" then
               pixel_to_vga <= colors(conv_integer(hest_color2));
+            end if;
+          end if;
+
+          if xctr >= proj_xpos1 and xctr < proj_xpos1 + 16 and yctr >= proj_ypos1 and yctr < proj_ypos1 + 16 then
+            CLKPROJECTILE1 <= '1';
+            if projectile_color1 /= "111" then
+              pixel_to_vga <= colors(conv_integer(projectile_color1));
+            end if;
+          end if;
+
+          if xctr >= proj_xpos2 and xctr < proj_xpos2 + 16 and yctr >= proj_ypos2 and yctr < proj_ypos2 + 16 then
+            CLKPROJECTILE2 <= '1';
+            if projectile_color2 /= "111" then
+              pixel_to_vga <= colors(conv_integer(projectile_color2));
             end if;
           end if;
             
