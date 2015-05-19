@@ -68,7 +68,11 @@ architecture rtl of bussen is
 	    xpos_int1 : in integer range 0 to 639;
 	    ypos_int1 : in integer range 0 to 479;
 	    xpos_int2 : in integer range 0 to 639;
-	    ypos_int2 : in integer range 0 to 479
+	    ypos_int2 : in integer range 0 to 479;
+	    proj_xpos1 : in integer range 0 to 639;
+	    proj_ypos1 : in integer range 0 to 479;
+	    proj_xpos2 : in integer range 0 to 639;
+	    proj_ypos2 : in integer range 0 to 479
 	    );
 	end component;
 
@@ -84,7 +88,11 @@ architecture rtl of bussen is
     xpos_int1 : out integer range 0 to 639;
     ypos_int1 : out integer range 0 to 479;
     xpos_int2 : out integer range 0 to 639;
-    ypos_int2 : out integer range 0 to 479
+    ypos_int2 : out integer range 0 to 479,
+    proj_xpos1 : out integer range 0 to 639;
+    proj_ypos1 : out integer range 0 to 479;
+    proj_xpos2 : out integer range 0 to 639;
+    proj_ypos2 : out integer range 0 to 479
 	
 );
 	end component;
