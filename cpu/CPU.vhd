@@ -405,6 +405,7 @@ begin
                 end if;
                 ypos_real <= resize(ypos_real - vel_y,9,-4);
                 ypos_int <= to_integer(ypos_real);
+                --yoo
                     
                     --utPos2 <= ram(26)(9 downto 0) & ram(27)(9 downto 0);
 
