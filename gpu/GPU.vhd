@@ -208,10 +208,8 @@ begin
           elsif xctr=799 and pixel=0 then
            if yctr=520 then
              yctr <= "0000000000";
-             NEW_FRAME <= '1';
            else
              yctr <= yctr + 1;
-             NEW_FRAME <= '0';
            end if;
            --
            if yctr >= (479+10) and yctr <= (479+10+2) then
@@ -225,6 +223,15 @@ begin
     Hsync <= hs;
     Vsync <= vs;
 
+  process(CLK) begin
+    if rising_edge(CLK) then
+      if yctr = 0 and xctr < 2 then
+        NEW_FRAME <= '1';
+      else
+        NEW_FRAME <= '0';
+      end if;
+    end if;
+  end process;
 
   process(CLK) begin
     if rising_edge(CLK) then

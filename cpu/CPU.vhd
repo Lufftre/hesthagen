@@ -493,6 +493,8 @@ begin
                    proj_diry1 <= (joystick1(9 downto 8) & joystick1(23 downto 16));
                     proj_deltax1 <= resize(to_sfixed(proj_dirx1,0,-9),2,-9);
                     proj_deltay1 <= resize(to_sfixed(proj_diry1,0,-9),2,-9);
+                    proj_real_xpos1 <= xpos_real1;
+                    proj_real_ypos1 <= ypos_real1;
                    proj_active1 <= '1';
                 end if;
 
@@ -510,6 +512,8 @@ begin
                     proj_deltax2 <= resize(to_sfixed(proj_dirx2,0,-9),2,-9);
                     proj_deltay2 <= resize(to_sfixed(proj_diry2,0,-9),2,-9);
                    proj_active2 <= '1';
+                    proj_real_xpos2 <= xpos_real2;
+                    proj_real_ypos2 <= ypos_real2;
                 end if;
 
                 if proj_active2 = '1' then
