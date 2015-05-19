@@ -45,6 +45,19 @@ architecture rtl of GPU is
    end component;
 
 
+  component projectile
+  Port (
+        CLKPROJECTILE: in std_logic;
+        RST: in std_logic;
+        xctr : in std_logic_vector(9 downto 0);
+        yctr : in std_logic_vector(9 downto 0);
+        xpos,ypos : in std_logic_vector(9 downto 0);
+        pixel_color : out std_logic_vector(2 downto 0)
+   );
+   end component;
+
+
+
   -- ----------------------------------------
   -- # Signals
   -- ----------------------------------------
@@ -113,6 +126,26 @@ begin
      pixel_color=>hest_color2
     );
 
+    p1 : projectile port map(
+     PROJECTILE=>PROJECTILE1,
+     RST=>RST,
+     xctr=>xctr,
+     yctr=>yctr,
+     xpos=>xpos1,
+     ypos=>ypos1,
+     pixel_color=>projectile_color1
+    );
+
+    p2 : projectile port map(
+     PROJECTILE=>PROJECTILE2,
+     RST=>RST,
+     xctr=>xctr,
+     yctr=>yctr,
+     xpos=>xpos2,
+     ypos=>ypos2,
+     pixel_color=>projectile_color2
+    );
+
     xpos1 <= posP1 (19 downto 10);
     ypos1 <= posP1 (9 downto 0);
     xpos2 <= posP2 (19 downto 10);
@@ -121,6 +154,8 @@ begin
     yposProj1 <= posProj1 (9 downto 0);
     xposProj2 <= posProj2 (19 downto 10);
     yposProj2 <= posProj2 (9 downto 0);
+
+    
 
     -- 25 MHz
     process(CLK) begin
