@@ -243,7 +243,7 @@ architecture rtl of CPU is
     signal proj_diry2 : std_logic_vector(9 downto 0);
     signal proj_deltax2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal proj_deltay2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
-    signal proj_active2 : std_logic := '0';
+    signal proj_active2 : boolean := false;
     signal proj_real_xpos2 : sfixed(9 downto -4) := to_sfixed(240, 9, -4);
     signal proj_real_ypos2 : sfixed(9 downto -4) := to_sfixed(240, 9, -4);
 
@@ -511,23 +511,23 @@ begin
 
 
                 -- # Projectile 2
-                if joystick2(1) = '1' then-- and proj_active2 = '0' then
+                if joystick2(1) = '1' and proj_active2 = false then
                    proj_dirx2 <= (joystick2(25 downto 24) & joystick2(39 downto 32)) xor "1000000000";
                    proj_diry2 <= (joystick2(9 downto 8) & joystick2(23 downto 16)) xor "1000000000";
                     proj_deltax2 <= resize(to_sfixed(proj_dirx2,3,-6),2,-9);
                     proj_deltay2 <= resize(to_sfixed(proj_diry2,3,-6),2,-9);
-                   proj_active2 <= '1';
+                   proj_active2 <= true;
                     proj_real_xpos2 <= xpos_real2;
                     proj_real_ypos2 <= ypos_real2;
                 end if;
 
-                if proj_active2 = '1' then
+                if proj_active2 = true then
                     proj_real_xpos2 <= resize(proj_real_xpos2 + proj_deltax2,9,-4);
                     proj_xpos2 <= to_integer(proj_real_xpos2);
                     proj_real_ypos2 <= resize(proj_real_ypos2 - proj_deltay2,9,-4);
                     proj_ypos2 <= to_integer(proj_real_ypos2);
                     if to_integer(proj_real_xpos2) < 0 or to_integer(proj_real_xpos2) > 639 or to_integer(proj_real_ypos2) < 0 or to_integer(proj_real_ypos2) > 479 then
-                        proj_active2 <= '0';
+                        proj_active2 <= false;
                     end if;        
                 end if;
             end if;
