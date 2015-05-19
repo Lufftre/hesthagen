@@ -488,7 +488,7 @@ begin
             -- ----------------------------------------
             if ALU_OP = "1011" then
                 -- # Projectile 1
-                if joystick1(1) = '1' and not proj_active1 then
+                if joystick1(1) = '1' and proj_active1 = '0' then
                    proj_dirx1 <= (joystick1(25 downto 24) & joystick1(39 downto 32));
                    proj_diry1 <= (joystick1(9 downto 8) & joystick1(23 downto 16));
                     proj_deltax1 <= resize(to_sfixed(proj_dirx1,0,-9),2,-9);
@@ -496,15 +496,15 @@ begin
                    proj_active1 <= '1';
                 end if;
 
-                if proj_active1 then
-                    proj_real_xpos1 <= resize(proj_xpos1 + proj_deltax1,9,-4);
+                if proj_active1 = '1' then
+                    proj_real_xpos1 <= resize(proj_real_xpos1 + proj_deltax1,9,-4);
                     proj_xpos1 <= to_integer(proj_real_xpos1);
-                    proj_real_ypos1 <= resize(proj_xpos1 + proj_deltay1,9,-4);
+                    proj_real_ypos1 <= resize(proj_real_ypos1 + proj_deltay1,9,-4);
                     proj_ypos1 <= to_integer(proj_real_ypos1);
                 end if;
 
                 -- # Projectile 2
-                if joystick2(1) = '1' and not proj_active2 then
+                if joystick2(1) = '1' and not proj_active2 = '0' then
                    proj_dirx2 <= (joystick2(25 downto 24) & joystick2(39 downto 32));
                    proj_diry2 <= (joystick2(9 downto 8) & joystick2(23 downto 16));
                     proj_deltax2 <= resize(to_sfixed(proj_dirx2,0,-9),2,-9);
@@ -512,7 +512,7 @@ begin
                    proj_active2 <= '1';
                 end if;
 
-                if proj_active2 then
+                if proj_active2 = '1' then
                     proj_real_xpos2 <= resize(proj_xpos2 + proj_deltax2,9,-4);
                     proj_xpos2 <= to_integer(proj_real_xpos2);
                     proj_real_ypos2 <= resize(proj_xpos2 + proj_deltay2,9,-4);
