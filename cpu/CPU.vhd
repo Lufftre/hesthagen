@@ -493,11 +493,11 @@ begin
                     if proj_active1 = '0' then
                         proj_dirx1 <= (joystick1(25 downto 24) & joystick1(39 downto 32));
                         proj_diry1 <= (joystick1(9 downto 8) & joystick1(23 downto 16));
-                        proj_deltax1 <= resize(to_sfixed(proj_dirx1,0,-9),2,-9);
-                        proj_deltay1 <= resize(to_sfixed(proj_diry1,0,-9),2,-9);
+                        proj_deltax1 <= resize(to_sfixed((not joystick1(25)&joystick1(24)&joystick1(39 downto 32)),0,-9),2,-9);
+                        proj_deltay1 <= resize(to_sfixed((not joystick1(25)&joystick1(24)&joystick1(39 downto 32)),0,-9),2,-9);
                         proj_real_xpos1 <= xpos_real1;
                         proj_real_ypos1 <= ypos_real1;
-                        mem <= "000000"&(joystick1(25 downto 24) & joystick1(39 downto 32));
+                        mem <= (not joystick1(25)&joystick1(24)&joystick1(39 downto 32));
                     end if;
                    proj_active1 <= '1';
                 end if;
