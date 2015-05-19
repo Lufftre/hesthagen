@@ -219,8 +219,9 @@ architecture rtl of CPU is
 begin
     mem <= ram(24);
     flag_newframe <= NEW_FRAME;
-    process(NEW_FRAME) begin
-        if rising_edge(NEW_FRAME) then
+    process(CLK) begin
+        if rising_edge(CLK) then
+            if flag_newframe = '1' then
                 if (joystick1(25 downto 24) & joystick1(39 downto 32)) > 450 and (joystick1(25 downto 24) & joystick1(39 downto 32)) < 560 then
                     vel_x <= resize(vel_x / 2,2,-9);
                 else
@@ -240,6 +241,7 @@ begin
                 end if;
                 ypos_real <= resize(ypos_real - vel_y,9,-4);
                 ypos_int <= to_integer(ypos_real);
+            end if;
         end if;
     end process;
 
