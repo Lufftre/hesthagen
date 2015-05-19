@@ -492,7 +492,9 @@ begin
                 if joystick1(1) = '1' then
                     if proj_active1 = '0' then
                         proj_deltax1 <= resize(to_sfixed((not joystick1(25)&joystick1(24)&joystick1(39 downto 32)),3,-6),2,-9);
+                        proj_deltax1 <= resize(proj_deltax1*5,2,-9);
                         proj_deltay1 <= resize(to_sfixed((not joystick1(9)&joystick1(8)&joystick1(23 downto 16)),3,-6),2,-9);
+                        proj_deltay1 <= resize(proj_deltay1*5,2,-9);
                         proj_real_xpos1 <= xpos_real1;
                         proj_real_ypos1 <= ypos_real1;
                     end if;
@@ -505,7 +507,7 @@ begin
                     proj_real_ypos1 <= resize(proj_real_ypos1 - proj_deltay1,9,-4);
                     proj_ypos1 <= to_integer(proj_real_ypos1);
 
-                    if to_integer(proj_real_xpos1) < 0 or to_integer(proj_real_xpos1) > 639 or to_integer(proj_real_ypos1) < 0 or to_integer(proj_real_ypos1) > 479 then
+                    if to_integer(proj_real_xpos1) < 0 or to_integer(proj_real_xpos1) > 620 or to_integer(proj_real_ypos1) < 0 or to_integer(proj_real_ypos1) > 479 then
                         proj_active1 <= '0';
                     else 
                         proj_active1 <= '1';
@@ -530,7 +532,7 @@ begin
                     proj_real_ypos2 <= resize(proj_real_ypos2 - proj_deltay2,9,-4);
                     proj_ypos2 <= to_integer(proj_real_ypos2);
 
-                    if to_integer(proj_real_xpos2) < 0 or to_integer(proj_real_xpos2) > 639 or to_integer(proj_real_ypos2) < 0 or to_integer(proj_real_ypos2) > 479 then
+                    if to_integer(proj_real_xpos2) < 0 or to_integer(proj_real_xpos2) > 620 or to_integer(proj_real_ypos2) < 0 or to_integer(proj_real_ypos2) > 479 then
                         proj_active2 <= '0';
                     else 
                         proj_active2 <= '1';
