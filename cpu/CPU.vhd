@@ -497,7 +497,7 @@ begin
                         proj_deltay1 <= resize(to_sfixed((not joystick1(25)&joystick1(24)&joystick1(39 downto 32)),0,-9),2,-9);
                         proj_real_xpos1 <= xpos_real1;
                         proj_real_ypos1 <= ypos_real1;
-                        mem <= (not joystick1(25)&joystick1(24)&joystick1(39 downto 32));
+                        --mem <= (not joystick1(25)&joystick1(24)&joystick1(39 downto 32));
                     end if;
                    proj_active1 <= '1';
                 end if;
