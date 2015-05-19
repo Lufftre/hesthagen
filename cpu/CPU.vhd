@@ -519,9 +519,9 @@ begin
                    proj_active2 <= true;
                     proj_real_xpos2 <= xpos_real2;
                     proj_real_ypos2 <= ypos_real2;
-                end if;
-
-                if proj_active2 = true then
+                --end if;
+                else
+                --if proj_active2 = true then
                     proj_real_xpos2 <= resize(proj_real_xpos2 + proj_deltax2,9,-4);
                     proj_xpos2 <= to_integer(proj_real_xpos2);
                     proj_real_ypos2 <= resize(proj_real_ypos2 - proj_deltay2,9,-4);
