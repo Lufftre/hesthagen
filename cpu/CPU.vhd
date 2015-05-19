@@ -218,14 +218,7 @@ architecture rtl of CPU is
     
 begin
     mem <= ram(24);
-    process(NEW_FRAME) begin
-        if rising_edge(NEW_FRAME) then
-            flag_newframe <= '1';
-        end if;
-        if falling_edge(NEW_FRAME) then
-            flag_newframe <= '0';
-        end if;
-    end process;
+    flag_newframe <= NEW_FRAME;
 
     --process(CLK) begin
     --    if rising_edge(CLK) then
@@ -387,6 +380,7 @@ begin
             if SEQ = "1000" then
                 if flag_newframe = '1' then
                     MPC <= MPC + 1;
+                    flag_newframe <= '0';
                 else
                     MPC <= '0' & myADR;
                 end if;
