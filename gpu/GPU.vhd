@@ -3,7 +3,6 @@ library IEEE;
     use IEEE.std_logic_arith.all;
     use IEEE.std_logic_unsigned.all;
 
---horseballs    
 
 entity GPU is
     port (
@@ -13,14 +12,14 @@ entity GPU is
         Hsync,Vsync : out  STD_LOGIC;
         vga : out  STD_LOGIC_VECTOR (7 downto 0); 
         NEW_FRAME : out std_logic;
-        xpos_int1 : in integer range 0 to 639;
-        ypos_int1 : in integer range 0 to 479;
-        xpos_int2 : in integer range 0 to 639;
-        ypos_int2 : in integer range 0 to 479
+        xpos_int : in integer range 0 to 639;
+        ypos_int : in integer range 0 to 479
     );
 end entity;
 
+
 architecture rtl of GPU is
+
 
   -- ----------------------------------------
   -- # Components
@@ -46,11 +45,21 @@ architecture rtl of GPU is
    );
    end component;
 
+  component projectile
+  Port (
+        CLKPROJECTILE: in std_logic;
+        RST: in std_logic;
+        xctr : in std_logic_vector(9 downto 0);
+        yctr : in std_logic_vector(9 downto 0);
+        xpos,ypos : in std_logic_vector(9 downto 0);
+        pixel_color : out std_logic_vector(2 downto 0)
+   );
+   end component;
+
 
   -- ----------------------------------------
   -- # Signals
   -- ----------------------------------------
-
   signal xctr,yctr : std_logic_vector(9 downto 0) := "0000000000";
   signal xpos1, ypos1 : std_logic_vector (9 downto 0);
   signal xpos2, ypos2 : std_logic_vector (9 downto 0);
@@ -81,6 +90,7 @@ architecture rtl of GPU is
     "011" & "001" & "00", -- MOCHA 110
     "100" & "111" & "11" -- ICE    111
     );
+
 
   -- ----------------------------------------
   -- # GPU Architecture
@@ -115,6 +125,26 @@ begin
      pixel_color=>hest_color2
     );
 
+    p1 : projectile port map(
+     PROJECTILE=>PROJECTILE1,
+     RST=>RST,
+     xctr=>xctr,
+     yctr=>yctr,
+     xpos=>xpos1,
+     ypos=>ypos1,
+     pixel_color=>projectile_color1
+    );
+
+    p2 : projectile port map(
+     PROJECTILE=>PROJECTILE2,
+     RST=>RST,
+     xctr=>xctr,
+     yctr=>yctr,
+     xpos=>xpos2,
+     ypos=>ypos2,
+     pixel_color=>projectile_color2
+    );
+
     xpos1 <= posP1 (19 downto 10);
     ypos1 <= posP1 (9 downto 0);
     xpos2 <= posP2 (19 downto 10);
@@ -124,6 +154,10 @@ begin
     xposProj2 <= posProj2 (19 downto 10);
     yposProj2 <= posProj2 (9 downto 0);
 
+
+  -- ----------------------------------------
+  -- # Yolo comment
+  -- ----------------------------------------
     -- 25 MHz
     process(CLK) begin
          if rising_edge(CLK) then
@@ -164,8 +198,10 @@ begin
           elsif xctr=799 and pixel=0 then
            if yctr=520 then
              yctr <= "0000000000";
+             NEW_FRAME <= '1';
            else
              yctr <= yctr + 1;
+             NEW_FRAME <= '0';
            end if;
            --
            if yctr >= (479+10) and yctr <= (479+10+2) then
@@ -176,20 +212,8 @@ begin
           end if;
         end if;
       end process;
-    
     Hsync <= hs;
     Vsync <= vs;
-
-      -- NEW FRAME
-      process(CLK) begin
-        if rising_edge(CLK) then
-            if yctr = 0 and xctr < 2 then
-              NEW_FRAME <= '1';
-            else
-              NEW_FRAME <= '0';
-            end if;
-        end if;
-      end process;
 
 
   process(CLK) begin
@@ -202,13 +226,13 @@ begin
         else
           pixel_to_vga <= colors(conv_integer(tile_color));
 
-          if xctr >= xpos_int1 and xctr < xpos_int1 + 16 and yctr >= ypos_int1 and yctr < ypos_int1 + 16 then
+          if xctr >= xpos_int and xctr < xpos_int + 16 and yctr >= ypos_int and yctr < ypos_int + 16 then
             CLKHORSE1 <= '1';
             if hest_color1 /= "111" then
               pixel_to_vga <= colors(conv_integer(hest_color1));
             end if;
           end if;
-          if xctr >= xpos_int2 and xctr < xpos_int2 + 16 and yctr >= ypos_int2 and yctr < ypos_int2 + 16 then
+          if xctr >= xpos2 and xctr < xpos2 + 16 and yctr >= ypos2 and yctr < ypos2 + 16 then
             CLKHORSE2 <= '1';
             if hest_color2 /= "111" then
               pixel_to_vga <= colors(conv_integer(hest_color2));
@@ -220,7 +244,6 @@ begin
       end if;
     end if;
   end process;
-
-    vga <= pixel_to_vga; 
+  vga <= pixel_to_vga; 
 
 end architecture;
