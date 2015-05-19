@@ -219,15 +219,29 @@ architecture rtl of CPU is
 begin
     mem <= ram(24);
     flag_newframe <= NEW_FRAME;
-    --process(CLK) begin
-    --    if rising_edge(CLK) then
-    --        if btnu = '1' and lastvalue = '0' then
-    --            flag_newframe <= '1';
-    --        end if;
-    --        flag_newframe <= '0';
-    --        lastvalue <= btnu;
-    --    end if;
-    --end process;
+    process(NEW_FRAME) begin
+        if rising_edge(NEW_FRAME) then
+                if (joystick1(25 downto 24) & joystick1(39 downto 32)) > 450 and (joystick1(25 downto 24) & joystick1(39 downto 32)) < 560 then
+                    vel_x <= resize(vel_x / 2,2,-9);
+                else
+                    jstk_x <= (joystick1(25 downto 24) & joystick1(39 downto 32)) xor "1000000000";
+                    delta_x <= resize(to_sfixed(jstk_x,0,-9),2,-9);
+                    vel_x <= resize(vel_x + delta_x,2,-9);
+                end if;
+                xpos_real <= resize(xpos_real + vel_x,9,-4);
+                xpos_int <= to_integer(xpos_real);
+
+                if (joystick1(9 downto 8) & joystick1(23 downto 16)) > 450 and (joystick1(9 downto 8) & joystick1(23 downto 16)) < 560 then
+                    vel_y <= resize(vel_y / 2,2,-9);
+                else
+                    jstk_y <= (joystick1(9 downto 8) & joystick1(23 downto 16)) xor "1000000000";
+                    delta_y <= resize(to_sfixed(jstk_y,0,-9),2,-9);
+                    vel_y <= resize(vel_y + delta_y,2,-9);
+                end if;
+                ypos_real <= resize(ypos_real - vel_y,9,-4);
+                ypos_int <= to_integer(ypos_real);
+        end if;
+    end process;
 
 
 
@@ -387,28 +401,15 @@ begin
                  when others => null;
             end case;
             if ALU_OP = "1001" then
-                if (joystick1(25 downto 24) & joystick1(39 downto 32)) > 450 and (joystick1(25 downto 24) & joystick1(39 downto 32)) < 560 then
-                    vel_x <= resize(vel_x / 2,2,-9);
-                else
-                    jstk_x <= (joystick1(25 downto 24) & joystick1(39 downto 32)) xor "1000000000";
-                    delta_x <= resize(to_sfixed(jstk_x,0,-9),2,-9);
-                    vel_x <= resize(vel_x + delta_x,2,-9);
-                end if;
-                xpos_real <= resize(xpos_real + vel_x,9,-4);
-                xpos_int <= to_integer(xpos_real);
-
-                if (joystick1(9 downto 8) & joystick1(23 downto 16)) > 450 and (joystick1(9 downto 8) & joystick1(23 downto 16)) < 560 then
-                    vel_y <= resize(vel_y / 2,2,-9);
-                else
-                    jstk_y <= (joystick1(9 downto 8) & joystick1(23 downto 16)) xor "1000000000";
-                    delta_y <= resize(to_sfixed(jstk_y,0,-9),2,-9);
-                    vel_y <= resize(vel_y + delta_y,2,-9);
-                end if;
-                ypos_real <= resize(ypos_real - vel_y,9,-4);
-                ypos_int <= to_integer(ypos_real);
-                --yoo
-                    
-                    --utPos2 <= ram(26)(9 downto 0) & ram(27)(9 downto 0);
+                --if (joystick1(25 downto 24) & joystick1(39 downto 32)) > 450 and (joystick1(25 downto 24) & joystick1(39 downto 32)) < 560 then
+                --    vel_x <= resize(vel_x / 2,2,-9);
+                --else
+                --    jstk_x <= (joystick1(25 downto 24) & joystick1(39 downto 32)) xor "1000000000";
+                --    delta_x <= resize(to_sfixed(jstk_x,0,-9),2,-9);
+                --    vel_x <= resize(vel_x + delta_x,2,-9);
+                --end if;
+                --xpos_real <= resize(xpos_real + vel_x,9,-4);
+                --xpos_int <= to_integer(xpos_real);
 
                 --if (joystick1(9 downto 8) & joystick1(23 downto 16)) > 450 and (joystick1(9 downto 8) & joystick1(23 downto 16)) < 560 then
                 --    vel_y <= resize(vel_y / 2,2,-9);
