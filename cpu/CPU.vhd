@@ -244,7 +244,7 @@ architecture rtl of CPU is
     signal proj_deltax2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal proj_deltay2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal zero_vel : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
-    signal proj_active2 : boolean := false;
+    signal proj_active2 : std_logic := '0';
     signal proj_real_xpos2 : sfixed(9 downto -4) := to_sfixed(240, 9, -4);
     signal proj_real_ypos2 : sfixed(9 downto -4) := to_sfixed(240, 9, -4);
 
