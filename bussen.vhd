@@ -83,8 +83,8 @@ architecture rtl of bussen is
 	outPos1, outPos2 : out std_logic_vector (19 downto 0);
     xpos_int1 : out integer range 0 to 639;
     ypos_int1 : out integer range 0 to 479;
-    xpos_int2 : in integer range 0 to 639;
-    ypos_int2 : in integer range 0 to 479
+    xpos_int2 : out integer range 0 to 639;
+    ypos_int2 : out integer range 0 to 479
 	
 );
 	end component;
