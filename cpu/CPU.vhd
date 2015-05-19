@@ -59,8 +59,8 @@ architecture rtl of CPU is
     -- Programkod
     X"B00C", -- 0x00 B??
     X"C000",--  0x01 LOAD VEL-X gr0
-    X"700C", -- 0x02 ADD gr0 JSTK-X
-    X"0000", -- 0x03 STORE gr0 VELX
+    X"D000", -- 0x02 ADD gr0 JSTK-X
+    X"700C", -- 0x03 STORE gr0 VELX
     X"0000",--  0x04 ADD gr0 POSX1
     X"0000", -- 0x05 STORE gr0 POSX1
     X"0000",--  0x01 LOAD VEL-Y gr0
@@ -163,7 +163,7 @@ architecture rtl of CPU is
     X"20", -- AND    0x0A
     X"1E", -- B??    0x0B
     X"20", -- SADD   0x0C
-    X"00",
+    X"21", -- proj   0x0D
     X"00",
     X"00"
     );
