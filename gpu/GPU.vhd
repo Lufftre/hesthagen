@@ -13,8 +13,10 @@ entity GPU is
         Hsync,Vsync : out  STD_LOGIC;
         vga : out  STD_LOGIC_VECTOR (7 downto 0); 
         NEW_FRAME : out std_logic;
-        xpos_int : in integer range 0 to 639;
-        ypos_int : in integer range 0 to 479
+        xpos_int1 : in integer range 0 to 639;
+        ypos_int1 : in integer range 0 to 479;
+        xpos_int2 : in integer range 0 to 639;
+        ypos_int2 : in integer range 0 to 479
     );
 end entity;
 

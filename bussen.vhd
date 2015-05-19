@@ -65,8 +65,10 @@ architecture rtl of bussen is
 		Hsync,Vsync : out  STD_LOGIC;
 		vga : out  STD_LOGIC_VECTOR (7 downto 0);
 		NEW_FRAME : out std_logic;
-	    xpos_int : in integer range 0 to 639;
-	    ypos_int : in integer range 0 to 479
+	    xpos_int1 : in integer range 0 to 639;
+	    ypos_int1 : in integer range 0 to 479;
+	    xpos_int2 : in integer range 0 to 639;
+	    ypos_int2 : in integer range 0 to 479
 	    );
 	end component;
 
@@ -79,8 +81,10 @@ architecture rtl of bussen is
 	joystick1, joystick2 : in  STD_LOGIC_VECTOR (39 downto 0);
 	mem : out std_logic_vector(15 downto 0);
 	outPos1, outPos2 : out std_logic_vector (19 downto 0);
-    xpos_int : out integer range 0 to 639;
-    ypos_int : out integer range 0 to 479
+    xpos_int1 : out integer range 0 to 639;
+    ypos_int1 : out integer range 0 to 479;
+    xpos_int2 : in integer range 0 to 639;
+    ypos_int2 : in integer range 0 to 479
 	
 );
 	end component;
@@ -114,8 +118,10 @@ architecture rtl of bussen is
 
    signal frame_pulse : std_logic;
 
-   signal xpos_int : integer range 0 to 639;
-   signal ypos_int : integer range 0 to 479;
+   signal xpos_int1 : integer range 0 to 639;
+   signal ypos_int1 : integer range 0 to 479;
+   signal xpos_int2 : integer range 0 to 639;
+   signal ypos_int2 : integer range 0 to 479;
 
     
 begin
@@ -138,8 +144,10 @@ gpu1 : GPU port map(
 	Vsync=>Vsync,
 	vga=>vga,
 	NEW_FRAME=>frame_pulse,
-	xpos_int=>xpos_int,
-	ypos_int=>ypos_int
+	xpos_int1=>xpos_int1,
+	ypos_int1=>ypos_int1,
+	xpos_int2=>xpos_int2,
+	ypos_int2=>ypos_int2
 );
 	
   JSTK1 : PmodJSTK port map(
@@ -184,8 +192,10 @@ gpu1 : GPU port map(
 	mem=>m,
 	outPos1=>pos_P1,
 	outPos2=>pos_P2,
-	xpos_int=>xpos_int,
-	ypos_int=>ypos_int
+	xpos_int1=>xpos_int1,
+	ypos_int1=>ypos_int1,
+	xpos_int2=>xpos_int2,
+	ypos_int2=>ypos_int2
     ); 
 
 end architecture;
