@@ -489,18 +489,19 @@ begin
             -- ----------------------------------------
             if ALU_OP = "1011" then
                 -- # Projectile 1
-                if joystick1(1) = '1' and proj_active1 = '0' then
-                   proj_dirx1 <= (joystick1(25 downto 24) & joystick1(39 downto 32)) xor "1000000000";
-                   proj_diry1 <= (joystick1(9 downto 8) & joystick1(23 downto 16)) xor "1000000000";
-                    proj_deltax1 <= resize(to_sfixed(proj_dirx1,0,-9),2,-9);
-                    proj_deltay1 <= resize(to_sfixed(proj_diry1,0,-9),2,-9);
-                    proj_real_xpos1 <= xpos_real1;
-                    proj_real_ypos1 <= ypos_real1;
+                if joystick1(1) = '1' then
+                    if proj_active1 = '0' then
+                        proj_dirx1 <= (joystick1(25 downto 24) & joystick1(39 downto 32)) xor "1000000000";
+                        proj_diry1 <= (joystick1(9 downto 8) & joystick1(23 downto 16)) xor "1000000000";
+                        proj_deltax1 <= resize(to_sfixed(proj_dirx1,0,-9),2,-9);
+                        proj_deltay1 <= resize(to_sfixed(proj_diry1,0,-9),2,-9);
+                        proj_real_xpos1 <= xpos_real1;
+                        proj_real_ypos1 <= ypos_real1;
+                    end if;
                    proj_active1 <= '1';
                 end if;
 
                 if proj_active1 = '1' then
-                    proj_active1 <= '1';
                     proj_real_xpos1 <= resize(proj_real_xpos1 + proj_deltax1,9,-4);
                     proj_xpos1 <= to_integer(proj_real_xpos1);
                     proj_real_ypos1 <= resize(proj_real_ypos1 - proj_deltay1,9,-4);
@@ -508,6 +509,8 @@ begin
 
                     if to_integer(proj_real_xpos1) < 0 or to_integer(proj_real_xpos1) > 639 or to_integer(proj_real_ypos1) < 0 or to_integer(proj_real_ypos1) > 479 then
                         proj_active1 <= '0';
+                    else 
+                        proj_active1 <= '1';
                     end if;
                 end if;
 
