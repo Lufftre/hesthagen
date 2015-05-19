@@ -123,6 +123,11 @@ architecture rtl of bussen is
    signal xpos_int2 : integer range 0 to 639;
    signal ypos_int2 : integer range 0 to 479;
 
+   signal proj_xpos1 : integer range 0 to 639;
+   signal proj_ypos1 : integer range 0 to 479;
+   signal proj_xpos2 : integer range 0 to 639;
+   signal proj_ypos2 : integer range 0 to 479;
+
     
 begin
 
@@ -147,7 +152,11 @@ gpu1 : GPU port map(
 	xpos_int1=>xpos_int1,
 	ypos_int1=>ypos_int1,
 	xpos_int2=>xpos_int2,
-	ypos_int2=>ypos_int2
+	ypos_int2=>ypos_int2,
+	proj_xpos1=>proj_xpos1,
+	proj_ypos1=>proj_ypos1,
+	proj_xpos2=>proj_xpos2,
+	proj_ypos2=>proj_ypos2
 );
 	
   JSTK1 : PmodJSTK port map(
@@ -196,6 +205,10 @@ gpu1 : GPU port map(
 	ypos_int1=>ypos_int1,
 	xpos_int2=>xpos_int2,
 	ypos_int2=>ypos_int2
+	proj_xpos1=>proj_xpos1,
+	proj_ypos1=>proj_ypos1,
+	proj_xpos2=>proj_xpos2,
+	proj_ypos2=>proj_ypos2
     ); 
 
 end architecture;

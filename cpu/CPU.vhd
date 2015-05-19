@@ -19,7 +19,11 @@ entity CPU is
     xpos_int1 : out integer range 0 to 639;
     ypos_int1 : out integer range 0 to 479;
     xpos_int2 : out integer range 0 to 639;
-    ypos_int2 : out integer range 0 to 479
+    ypos_int2 : out integer range 0 to 479;
+    proj_xpos1 : out integer range 0 to 639;
+    proj_ypos1 : out integer range 0 to 479;
+    proj_xpos2 : out integer range 0 to 639;
+    proj_ypos2 : out integer range 0 to 479
     );
 end entity;
 architecture rtl of CPU is
@@ -126,7 +130,7 @@ architecture rtl of CPU is
     "0000" & "000" & "000" & "0" & "1" & "00" & "0011" & "0000000", --0x1F PC++, mpc = 0
 --    ALU     TB      FB      S     P    LC      SEQ       myADR      
     "1001" & "000" & "000" & "0" & "1" & "00" & "0011" & "0000000", --0x07 Grx => AR, mpc++,        (SUPER ADD)
-    "1001" & "010" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x08 (AR + PM) => AR, mpc++
+    "1011" & "000" & "000" & "0" & "1" & "00" & "0011" & "0000000", --0x07 Grx => AR, mpc++,        (SUPER PROJ)
     "0000" & "100" & "110" & "0" & "1" & "00" & "0011" & "0000000", --0x09 AR => GRx, PC++, mpc = 0
     "0000" & "010" & "011" & "0" & "0" & "00" & "0011" & "0000000", --0x23 
     "0001" & "110" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x24 
@@ -226,7 +230,23 @@ architecture rtl of CPU is
     signal delta_y2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal ypos_real2 : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
     signal jstk_y2 : std_logic_vector(9 downto 0);
-    
+
+    signal proj_dirx1 : std_logic_vector(9 downto 0);
+    signal proj_diry1 : std_logic_vector(9 downto 0);
+    signal proj_deltax1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
+    signal proj_deltay1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
+    signal proj_active1 : std_logic := '0';
+    signal proj_real_xpos1 : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
+    signal proj_real_ypos1 : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
+
+    signal proj_dirx2 : std_logic_vector(9 downto 0);
+    signal proj_diry2 : std_logic_vector(9 downto 0);
+    signal proj_deltax2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
+    signal proj_deltay2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
+    signal proj_active2 : std_logic := '0';
+    signal proj_real_xpos2 : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
+    signal proj_real_ypos2 : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
+
 begin
     mem <= ram(24);
 
@@ -417,9 +437,9 @@ begin
                  when others => null;
             end case;
 
-                -- ----------------------------------------
-                -- # PLAYER MOVER
-                -- ----------------------------------------
+            -- ----------------------------------------
+            -- # PLAYER MOVER
+            -- ----------------------------------------
             if ALU_OP = "1001" then
                 -- # Player 1
                 if (joystick1(25 downto 24) & joystick1(39 downto 32)) > 450 and (joystick1(25 downto 24) & joystick1(39 downto 32)) < 560 then
@@ -461,9 +481,46 @@ begin
                 end if;
                 ypos_real2 <= resize(ypos_real2 - vel_y2,9,-4);
                 ypos_int2 <= to_integer(ypos_real2);
-
-
             end if;
+
+            -- ----------------------------------------
+            -- # PROJECTILES
+            -- ----------------------------------------
+            if ALU_OP = "1011" then
+                -- # Projectile 1
+                if joystick1(1) = '1' and not proj_active1 then
+                   proj_dirx1 <= (joystick1(25 downto 24) & joystick1(39 downto 32));
+                   proj_diry1 <= (joystick1(9 downto 8) & joystick1(23 downto 16));
+                    proj_deltax1 <= resize(to_sfixed(proj_dirx1,0,-9),2,-9);
+                    proj_deltay1 <= resize(to_sfixed(proj_diry1,0,-9),2,-9);
+                   proj_active1 <= '1';
+                end if;
+
+                if proj_active1 then
+                    proj_real_xpos1 <= resize(proj_xpos1 + proj_deltax1,9,-4);
+                    proj_xpos1 <= to_integer(proj_real_xpos1);
+                    proj_real_ypos1 <= resize(proj_xpos1 + proj_deltay1,9,-4);
+                    proj_ypos1 <= to_integer(proj_real_ypos1);
+                end if;
+
+                -- # Projectile 2
+                if joystick2(1) = '1' and not proj_active2 then
+                   proj_dirx2 <= (joystick2(25 downto 24) & joystick2(39 downto 32));
+                   proj_diry2 <= (joystick2(9 downto 8) & joystick2(23 downto 16));
+                    proj_deltax2 <= resize(to_sfixed(proj_dirx2,0,-9),2,-9);
+                    proj_deltay2 <= resize(to_sfixed(proj_diry2,0,-9),2,-9);
+                   proj_active2 <= '1';
+                end if;
+
+                if proj_active2 then
+                    proj_real_xpos2 <= resize(proj_xpos2 + proj_deltax2,9,-4);
+                    proj_xpos2 <= to_integer(proj_real_xpos2);
+                    proj_real_ypos2 <= resize(proj_xpos2 + proj_deltay2,9,-4);
+                    proj_ypos2 <= to_integer(proj_real_ypos2);
+                end if;
+            end if;
+
+
         end if;
     end process;
 
