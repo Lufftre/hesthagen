@@ -488,7 +488,7 @@ begin
             -- ----------------------------------------
             if ALU_OP = "1011" then
                 -- # Projectile 1
-                if joystick1(1) = '1' then-- and proj_active1 = '0' then
+                if joystick1(1) = '1' and proj_active1 = '0' then
                    proj_dirx1 <= (joystick1(25 downto 24) & joystick1(39 downto 32)) xor "1000000000";
                    proj_diry1 <= (joystick1(9 downto 8) & joystick1(23 downto 16)) xor "1000000000";
                     proj_deltax1 <= resize(to_sfixed(proj_dirx1,0,-9),2,-9);
@@ -503,14 +503,19 @@ begin
                     proj_xpos1 <= to_integer(proj_real_xpos1);
                     proj_real_ypos1 <= resize(proj_real_ypos1 + proj_deltay1,9,-4);
                     proj_ypos1 <= to_integer(proj_real_ypos1);
+
+                    if proj_xpos1 < 0 or proj_xpos1 > 639 or proj_ypos1 < 0 or proj_ypos1 > 479 then
+                        proj_active1 <= '0';
+                    end if;
                 end if;
 
+
                 -- # Projectile 2
-                if joystick2(1) = '1' then-- and proj_active2 = '0' then
+                if joystick2(1) = '1' and proj_active2 = '0' then
                    proj_dirx2 <= (joystick2(25 downto 24) & joystick2(39 downto 32)) xor "1000000000";
                    proj_diry2 <= (joystick2(9 downto 8) & joystick2(23 downto 16)) xor "1000000000";
-                    proj_deltax2 <= resize(to_sfixed(proj_dirx2,0,-9),2,-9);
-                    proj_deltay2 <= resize(to_sfixed(proj_diry2,0,-9),2,-9);
+                    proj_deltax2 <= resize(to_sfixed(proj_dirx2,1,-8),2,-9);
+                    proj_deltay2 <= resize(to_sfixed(proj_diry2,1,-8),2,-9);
                    proj_active2 <= '1';
                     proj_real_xpos2 <= xpos_real2;
                     proj_real_ypos2 <= ypos_real2;
@@ -521,6 +526,9 @@ begin
                     proj_xpos2 <= to_integer(proj_real_xpos2);
                     proj_real_ypos2 <= resize(proj_real_ypos2 + proj_deltay2,9,-4);
                     proj_ypos2 <= to_integer(proj_real_ypos2);
+                    if proj_xpos2 < 0 or proj_xpos2 > 639 or proj_ypos2 < 0 or proj_ypos2 > 479 then
+                        proj_active2 <= '0';
+                    end if;        
                 end if;
             end if;
 

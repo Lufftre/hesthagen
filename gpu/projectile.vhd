@@ -18,10 +18,10 @@ architecture rtl of projectile is
   signal rad : std_logic_vector(5 downto 0);
   type projectile_type is array (0 to 15) of std_logic_vector(2 downto 0);
   signal projectile : projectile_type := (
-    "001","111","111","001",
-    "111","001","001","111",
-    "111","001","001","111",
-    "001","111","111","001"
+    "001","100","100","001",
+    "100","001","001","100",
+    "100","001","001","100",
+    "001","100","100","001"
 );
 
 begin 
