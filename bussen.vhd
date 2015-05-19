@@ -164,8 +164,8 @@ gpu1 : GPU port map(
 	ypos_int1=>ypos_int1,
 	xpos_int2=>xpos_int2,
 	ypos_int2=>ypos_int2,
-	proj_xpos1=>testx,
-	proj_ypos1=>testy,
+	proj_xpos1=>proj_xpos1,
+	proj_ypos1=>proj_ypos1,
 	proj_xpos2=>proj_xpos2,
 	proj_ypos2=>proj_ypos2
 );
