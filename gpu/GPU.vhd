@@ -181,7 +181,7 @@ begin
       -- NEW FRAME
       process(CLK) begin
         if rising_edge(CLK) then
-            if yctr = 0 then
+            if yctr = 0 and xctr < 2 then
               NEW_FRAME <= '1';
             else
               NEW_FRAME <= '0';
