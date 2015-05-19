@@ -235,6 +235,8 @@ architecture rtl of CPU is
     signal proj_diry1 : std_logic_vector(9 downto 0);
     signal proj_deltax1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal proj_deltay1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
+    signal proj_velx1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
+    signal proj_vely1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal proj_active1 : std_logic := '0';
     signal proj_real_xpos1 : sfixed(9 downto -4) := to_sfixed(120, 9, -4);
     signal proj_real_ypos1 : sfixed(9 downto -4) := to_sfixed(120, 9, -4);
@@ -243,6 +245,8 @@ architecture rtl of CPU is
     signal proj_diry2 : std_logic_vector(9 downto 0);
     signal proj_deltax2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal proj_deltay2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
+    signal proj_velx2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
+    signal proj_vely2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal zero_vel : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal proj_active2 : std_logic := '0';
     signal proj_real_xpos2 : sfixed(9 downto -4) := to_sfixed(240, 9, -4);
@@ -492,9 +496,7 @@ begin
                 if joystick1(1) = '1' then
                     if proj_active1 = '0' then
                         proj_deltax1 <= resize(to_sfixed((not joystick1(25)&joystick1(24)&joystick1(39 downto 32)),3,-6),2,-9);
-                        proj_deltax1 <= resize(proj_deltax1*5,2,-9);
                         proj_deltay1 <= resize(to_sfixed((not joystick1(9)&joystick1(8)&joystick1(23 downto 16)),3,-6),2,-9);
-                        proj_deltay1 <= resize(proj_deltay1*5,2,-9);
                         proj_real_xpos1 <= xpos_real1;
                         proj_real_ypos1 <= ypos_real1;
                     end if;
@@ -502,9 +504,11 @@ begin
                 end if;
 
                 if proj_active1 = '1' then
-                    proj_real_xpos1 <= resize(proj_real_xpos1 + proj_deltax1,9,-4);
+                    proj_velx1 <= resize(proj_velx1 + proj_deltax1,2,-9);
+                    proj_vely1 <= resize(proj_vely1 + proj_deltay1,2,-9);
+                    proj_real_xpos1 <= resize(proj_real_xpos1 + proj_velx1,9,-4);
                     proj_xpos1 <= to_integer(proj_real_xpos1);
-                    proj_real_ypos1 <= resize(proj_real_ypos1 - proj_deltay1,9,-4);
+                    proj_real_ypos1 <= resize(proj_real_ypos1 - proj_vely1,9,-4);
                     proj_ypos1 <= to_integer(proj_real_ypos1);
 
                     if to_integer(proj_real_xpos1) < 0 or to_integer(proj_real_xpos1) > 620 or to_integer(proj_real_ypos1) < 0 or to_integer(proj_real_ypos1) > 479 then
