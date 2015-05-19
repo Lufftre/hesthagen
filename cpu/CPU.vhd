@@ -243,6 +243,7 @@ architecture rtl of CPU is
     signal proj_diry2 : std_logic_vector(9 downto 0);
     signal proj_deltax2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal proj_deltay2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
+    signal zero_vel : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal proj_active2 : boolean := false;
     signal proj_real_xpos2 : sfixed(9 downto -4) := to_sfixed(240, 9, -4);
     signal proj_real_ypos2 : sfixed(9 downto -4) := to_sfixed(240, 9, -4);
@@ -511,7 +512,7 @@ begin
 
 
                 -- # Projectile 2
-                if joystick2(1) = '1' and proj_deltax2 = to_sfixed(0, 2, -9) and proj_deltay2 = to_sfixed(0, 2, -9) then
+                if joystick2(1) = '1' and proj_deltax2 = zero_vel and proj_deltay2 = zero_vel then
                    proj_dirx2 <= (joystick2(25 downto 24) & joystick2(39 downto 32)) xor "1000000000";
                    proj_diry2 <= (joystick2(9 downto 8) & joystick2(23 downto 16)) xor "1000000000";
                     proj_deltax2 <= resize(to_sfixed(proj_dirx2,3,-6),2,-9);
