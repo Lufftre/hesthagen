@@ -495,8 +495,8 @@ begin
                 -- # Projectile 1
                 if joystick1(1) = '1' then
                     if proj_active1 = '0' then
-                        proj_deltax1 <= resize(to_sfixed((not joystick1(25)&joystick1(24)&joystick1(39 downto 32)),3,-6),2,-9);
-                        proj_deltay1 <= resize(to_sfixed((not joystick1(9)&joystick1(8)&joystick1(23 downto 16)),3,-6),2,-9);
+                        proj_deltax1 <= resize(to_sfixed((not joystick1(25)&joystick1(24)&joystick1(39 downto 32)),0,-9),2,-9);
+                        proj_deltay1 <= resize(to_sfixed((not joystick1(9)&joystick1(8)&joystick1(23 downto 16)),0,-9),2,-9);
                         proj_velx1 <= resize(proj_deltax1,2,-9);
                         proj_vely1 <= resize(proj_deltay1,2,-9);
                         proj_real_xpos1 <= xpos_real1;
@@ -507,7 +507,7 @@ begin
 
                 if proj_active1 = '1' then
                     proj_velx1 <= resize(proj_velx1 + proj_deltax1,2,-9);
-                    proj_vely1 <= resize(proj_vely1 + proj_deltay1,2,-9);
+                    proj_vely1 <= resize(proj_vely1 - proj_deltay1,2,-9);
                     proj_real_xpos1 <= resize(proj_real_xpos1 + proj_velx1,9,-4);
                     proj_xpos1 <= to_integer(proj_real_xpos1);
                     proj_real_ypos1 <= resize(proj_real_ypos1 - proj_vely1,9,-4);
