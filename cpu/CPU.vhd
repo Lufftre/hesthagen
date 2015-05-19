@@ -16,8 +16,10 @@ entity CPU is
     mem : out std_logic_vector(15 downto 0);
     outPos1 : out std_logic_vector(19 downto 0);
     outPos2 : out std_logic_vector (19 downto 0);
-    xpos_int : out integer range 0 to 639;
-    ypos_int : out integer range 0 to 479
+    xpos_int1 : out integer range 0 to 639;
+    ypos_int1 : out integer range 0 to 479;
+    xpos_int2 : out integer range 0 to 639;
+    ypos_int2 : out integer range 0 to 479
     );
 end entity;
 architecture rtl of CPU is
@@ -205,16 +207,25 @@ architecture rtl of CPU is
     signal isNeg : std_logic := '0';
 
 
-    signal vel_x : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
-    signal delta_x : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
-    signal xpos_real : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
-    signal jstk_x : std_logic_vector(9 downto 0);
+    signal vel_x1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
+    signal delta_x1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
+    signal xpos_real1 : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
+    signal jstk_x1 : std_logic_vector(9 downto 0);
 
-    signal vel_y : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
-    signal delta_y : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
-    signal ypos_real : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
-    signal jstk_y : std_logic_vector(9 downto 0);
+    signal vel_y1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
+    signal delta_y1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
+    signal ypos_real1 : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
+    signal jstk_y1 : std_logic_vector(9 downto 0);
 
+    signal vel_x2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
+    signal delta_x2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
+    signal xpos_real2 : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
+    signal jstk_x2 : std_logic_vector(9 downto 0);
+
+    signal vel_y2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
+    signal delta_y2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
+    signal ypos_real2 : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
+    signal jstk_y2 : std_logic_vector(9 downto 0);
     
 begin
     mem <= ram(24);
@@ -405,26 +416,53 @@ begin
                  when "1111" => AR_REG(15 downto 0) <=  AR_REG(15 downto 0) xor X"0800";
                  when others => null;
             end case;
+
+                -- ----------------------------------------
+                -- # PLAYER MOVER
+                -- ----------------------------------------
             if ALU_OP = "1001" then
+                -- # Player 1
                 if (joystick1(25 downto 24) & joystick1(39 downto 32)) > 450 and (joystick1(25 downto 24) & joystick1(39 downto 32)) < 560 then
-                    vel_x <= resize(vel_x / 2,2,-9);
+                    vel_x1 <= resize(vel_x1 / 2,2,-9);
                 else
-                    jstk_x <= (joystick1(25 downto 24) & joystick1(39 downto 32)) xor "1000000000";
-                    delta_x <= resize(to_sfixed(jstk_x,0,-9),2,-9);
-                    vel_x <= resize(vel_x + delta_x,2,-9);
+                    jstk_x1 <= (joystick1(25 downto 24) & joystick1(39 downto 32)) xor "1000000000";
+                    delta_x1 <= resize(to_sfixed(jstk_x1,0,-9),2,-9);
+                    vel_x1 <= resize(vel_x1 + delta_x1,2,-9);
                 end if;
-                xpos_real <= resize(xpos_real + vel_x,9,-4);
-                xpos_int <= to_integer(xpos_real);
+                xpos_real1 <= resize(xpos_real1 + vel_x1,9,-4);
+                xpos_int1 <= to_integer(xpos_real1);
 
                 if (joystick1(9 downto 8) & joystick1(23 downto 16)) > 450 and (joystick1(9 downto 8) & joystick1(23 downto 16)) < 560 then
-                    vel_y <= resize(vel_y / 2,2,-9);
+                    vel_y1 <= resize(vel_y1 / 2,2,-9);
                 else
-                    jstk_y <= (joystick1(9 downto 8) & joystick1(23 downto 16)) xor "1000000000";
-                    delta_y <= resize(to_sfixed(jstk_y,0,-9),2,-9);
-                    vel_y <= resize(vel_y + delta_y,2,-9);
+                    jstk_y1 <= (joystick1(9 downto 8) & joystick1(23 downto 16)) xor "1000000000";
+                    delta_y1 <= resize(to_sfixed(jstk_y1,0,-9),2,-9);
+                    vel_y1 <= resize(vel_y1 + delta_y1,2,-9);
                 end if;
-                ypos_real <= resize(ypos_real - vel_y,9,-4);
-                ypos_int <= to_integer(ypos_real);
+                ypos_real1 <= resize(ypos_real1 - vel_y1,9,-4);
+                ypos_int1 <= to_integer(ypos_real1);
+                -- # Player 2
+                if (joystick2(25 downto 24) & joystick2(39 downto 32)) > 450 and (joystick2(25 downto 24) & joystick2(39 downto 32)) < 560 then
+                    vel_x2 <= resize(vel_x2 / 2,2,-9);
+                else
+                    jstk_x2 <= (joystick2(25 downto 24) & joystick2(39 downto 32)) xor "1000000000";
+                    delta_x2 <= resize(to_sfixed(jstk_x2,0,-9),2,-9);
+                    vel_x2 <= resize(vel_x2 + delta_x2,2,-9);
+                end if;
+                xpos_real2 <= resize(xpos_real2 + vel_x2,9,-4);
+                xpos_int2 <= to_integer(xpos_real2);
+
+                if (joystick2(9 downto 8) & joystick2(23 downto 16)) > 450 and (joystick2(9 downto 8) & joystick2(23 downto 16)) < 560 then
+                    vel_y2 <= resize(vel_y2 / 2,2,-9);
+                else
+                    jstk_y2 <= (joystick2(9 downto 8) & joystick2(23 downto 16)) xor "1000000000";
+                    delta_y2 <= resize(to_sfixed(jstk_y2,0,-9),2,-9);
+                    vel_y2 <= resize(vel_y2 + delta_y2,2,-9);
+                end if;
+                ypos_real2 <= resize(ypos_real2 - vel_y2,9,-4);
+                ypos_int2 <= to_integer(ypos_real2);
+
+
             end if;
         end if;
     end process;
