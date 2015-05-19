@@ -511,7 +511,7 @@ begin
 
 
                 -- # Projectile 2
-                if joystick2(1) = '1' and to_integer(proj_deltax2) = 0 then
+                if joystick2(1) = '1' and proj_deltax2 = to_sfixed(0, 2, -9) and proj_deltay2 = to_sfixed(0, 2, -9) then
                    proj_dirx2 <= (joystick2(25 downto 24) & joystick2(39 downto 32)) xor "1000000000";
                    proj_diry2 <= (joystick2(9 downto 8) & joystick2(23 downto 16)) xor "1000000000";
                     proj_deltax2 <= resize(to_sfixed(proj_dirx2,3,-6),2,-9);
@@ -526,9 +526,9 @@ begin
                     proj_xpos2 <= to_integer(proj_real_xpos2);
                     proj_real_ypos2 <= resize(proj_real_ypos2 - proj_deltay2,9,-4);
                     proj_ypos2 <= to_integer(proj_real_ypos2);
-                    if to_integer(proj_real_xpos2) < 0 or to_integer(proj_real_xpos2) > 639 or to_integer(proj_real_ypos2) < 0 or to_integer(proj_real_ypos2) > 479 then
-                        proj_deltax2 <= resize(to_sfixed(0,2,-9),2,-9);
-                        proj_deltay2 <= resize(to_sfixed(0,2,-9),2,-9);
+                    if to_integer(proj_real_xpos2) < 0 or to_integer(proj_real_xpos2) > 600 or to_integer(proj_real_ypos2) < 0 or to_integer(proj_real_ypos2) > 479 then
+                        proj_deltax2 <= to_sfixed(0,2,-9);
+                        proj_deltay2 <= to_sfixed(0,2,-9);
                     end if;        
                 end if;
             end if;
