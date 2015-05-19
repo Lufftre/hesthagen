@@ -136,7 +136,7 @@ begin
     );
 
     p1 : projectile port map(
-     CLKPROJECTILE1=>CLKPROJECTILE1,
+     CLKPROJECTILE=>CLKPROJECTILE1,
      RST=>RST,
      xctr=>xctr,
      yctr=>yctr,
@@ -146,7 +146,7 @@ begin
     );
 
     p2 : projectile port map(
-     CLKPROJECTILE2=>CLKPROJECTILE2,
+     CLKPROJECTILE=>CLKPROJECTILE2,
      RST=>RST,
      xctr=>xctr,
      yctr=>yctr,
