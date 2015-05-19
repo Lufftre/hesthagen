@@ -514,8 +514,8 @@ begin
                 if joystick2(1) = '1' then-- and proj_active2 = '0' then
                    proj_dirx2 <= (joystick2(25 downto 24) & joystick2(39 downto 32)) xor "1000000000";
                    proj_diry2 <= (joystick2(9 downto 8) & joystick2(23 downto 16)) xor "1000000000";
-                    proj_deltax2 <= resize(to_sfixed(proj_dirx2,1,-8),2,-9);
-                    proj_deltay2 <= resize(to_sfixed(proj_diry2,1,-8),2,-9);
+                    proj_deltax2 <= resize(to_sfixed(proj_dirx2,2,-7),2,-9);
+                    proj_deltay2 <= resize(to_sfixed(proj_diry2,2,-7),2,-9);
                    proj_active2 <= '1';
                     proj_real_xpos2 <= xpos_real2;
                     proj_real_ypos2 <= ypos_real2;
