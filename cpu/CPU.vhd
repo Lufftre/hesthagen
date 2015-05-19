@@ -489,7 +489,7 @@ begin
             -- ----------------------------------------
             if ALU_OP = "1011" then
                 -- # Projectile 1
-                if joystick1(1) = '1' then-- and proj_active1 = '0' then
+                if joystick1(1) = '1' and proj_active1 = '0' then
                    proj_dirx1 <= (joystick1(25 downto 24) & joystick1(39 downto 32)) xor "1000000000";
                    proj_diry1 <= (joystick1(9 downto 8) & joystick1(23 downto 16)) xor "1000000000";
                     proj_deltax1 <= resize(to_sfixed(proj_dirx1,0,-9),2,-9);
@@ -500,6 +500,7 @@ begin
                 end if;
 
                 if proj_active1 = '1' then
+                    proj_active1 <= '1';
                     proj_real_xpos1 <= resize(proj_real_xpos1 + proj_deltax1,9,-4);
                     proj_xpos1 <= to_integer(proj_real_xpos1);
                     proj_real_ypos1 <= resize(proj_real_ypos1 - proj_deltay1,9,-4);
