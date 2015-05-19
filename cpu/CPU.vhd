@@ -497,7 +497,7 @@ begin
                         proj_deltay1 <= resize(to_sfixed(proj_diry1,0,-9),2,-9);
                         proj_real_xpos1 <= xpos_real1;
                         proj_real_ypos1 <= ypos_real1;
-                        mem <= (joystick1(25 downto 24) & joystick1(39 downto 32));
+                        mem <= "000000"&(joystick1(25 downto 24) & joystick1(39 downto 32));
                     end if;
                    proj_active1 <= '1';
                 end if;
