@@ -202,13 +202,13 @@ begin
         else
           pixel_to_vga <= colors(conv_integer(tile_color));
 
-          if xctr >= xpos_int and xctr < xpos_int + 16 and yctr >= ypos_int and yctr < ypos_int + 16 then
+          if xctr >= xpos_int1 and xctr < xpos_int1 + 16 and yctr >= ypos_int1 and yctr < ypos_int1 + 16 then
             CLKHORSE1 <= '1';
             if hest_color1 /= "111" then
               pixel_to_vga <= colors(conv_integer(hest_color1));
             end if;
           end if;
-          if xctr >= xpos2 and xctr < xpos2 + 16 and yctr >= ypos2 and yctr < ypos2 + 16 then
+          if xctr >= xpos_int2 and xctr < xpos_int2 + 16 and yctr >= ypos_int2 and yctr < ypos_int2 + 16 then
             CLKHORSE2 <= '1';
             if hest_color2 /= "111" then
               pixel_to_vga <= colors(conv_integer(hest_color2));
