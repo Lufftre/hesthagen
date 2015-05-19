@@ -381,7 +381,7 @@ begin
             end case;
             if SEQ = "1000" then
                 if flag_newframe = '1' then
-                   2
+                    MPC <= MPC + 1;
                 else
                     MPC <= '0' & myADR;
                 end if;
