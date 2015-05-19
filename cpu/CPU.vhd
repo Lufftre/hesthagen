@@ -513,9 +513,9 @@ begin
                 end if;
 
                 if proj_active2 = '1' then
-                    proj_real_xpos2 <= resize(proj_xpos2 + proj_deltax2,9,-4);
+                    proj_real_xpos2 <= resize(proj_real_xpos2 + proj_deltax2,9,-4);
                     proj_xpos2 <= to_integer(proj_real_xpos2);
-                    proj_real_ypos2 <= resize(proj_xpos2 + proj_deltay2,9,-4);
+                    proj_real_ypos2 <= resize(proj_real_ypos2 + proj_deltay2,9,-4);
                     proj_ypos2 <= to_integer(proj_real_ypos2);
                 end if;
             end if;
