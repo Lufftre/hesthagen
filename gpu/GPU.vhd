@@ -86,6 +86,8 @@ architecture rtl of GPU is
   signal CLKPROJECTILE2 : std_logic := '0';
   signal hest_color1 : std_logic_vector(2 downto 0);
   signal hest_color2 : std_logic_vector(2 downto 0);
+  signal projectile_color1 : std_logic_vector(2 downto 0);
+  signal projectile_color2 : std_logic_vector(2 downto 0);
 
   type colors_type is array (0 to 7) of std_logic_vector(7 downto 0);
   signal colors : colors_type := (
@@ -134,7 +136,7 @@ begin
     );
 
     p1 : projectile port map(
-     PROJECTILE=>PROJECTILE1,
+     CLKPROJECTILE1=>CLKPROJECTILE1,
      RST=>RST,
      xctr=>xctr,
      yctr=>yctr,
@@ -144,7 +146,7 @@ begin
     );
 
     p2 : projectile port map(
-     PROJECTILE=>PROJECTILE2,
+     CLKPROJECTILE2=>CLKPROJECTILE2,
      RST=>RST,
      xctr=>xctr,
      yctr=>yctr,
