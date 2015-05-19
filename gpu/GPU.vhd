@@ -237,6 +237,9 @@ begin
     if rising_edge(CLK) then
       CLKHORSE1 <= '0';
       CLKHORSE2 <= '0';
+      CLKPROJECTILE1 <= '0';
+      CLKPROJECTILE2 <= '0';
+
       if pixel=3 then
         if xctr > 639 or yctr > 479 then
           pixel_to_vga <= "00000000";
