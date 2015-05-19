@@ -259,14 +259,14 @@ begin
             end if;
           end if;
 
-          if xctr >= proj_xpos1 and xctr < proj_xpos1 + 4 and yctr >= proj_ypos1 and yctr < proj_ypos1 + 4 then
+          if xctr >= proj_xpos1 and xctr < proj_xpos1 + 16 and yctr >= proj_ypos1 and yctr < proj_ypos1 + 16 then
             CLKPROJECTILE1 <= '1';
             if projectile_color1 /= "111" then
               pixel_to_vga <= colors(conv_integer(projectile_color1));
             end if;
           end if;
 
-          if xctr >= proj_xpos2 and xctr < proj_xpos2 + 4 and yctr >= proj_ypos2 and yctr < proj_ypos2 + 4 then
+          if xctr >= proj_xpos2 and xctr < proj_xpos2 + 16 and yctr >= proj_ypos2 and yctr < proj_ypos2 + 16 then
             CLKPROJECTILE2 <= '1';
             if projectile_color2 /= "111" then
               pixel_to_vga <= colors(conv_integer(projectile_color2));
