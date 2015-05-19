@@ -249,7 +249,7 @@ architecture rtl of CPU is
     signal proj_real_ypos2 : sfixed(9 downto -4) := to_sfixed(240, 9, -4);
 
 begin
-    mem <= ram(24);
+    --mem <= ram(24);
 
     flag_newframe <= NEW_FRAME;
 
@@ -497,6 +497,7 @@ begin
                         proj_deltay1 <= resize(to_sfixed(proj_diry1,0,-9),2,-9);
                         proj_real_xpos1 <= xpos_real1;
                         proj_real_ypos1 <= ypos_real1;
+                        mem <= (joystick1(25 downto 24) & joystick1(39 downto 32));
                     end if;
                    proj_active1 <= '1';
                 end if;
