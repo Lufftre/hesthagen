@@ -3,7 +3,6 @@ library IEEE;
     use IEEE.std_logic_arith.all;
     use IEEE.std_logic_unsigned.all;
 
---horseballs    
 
 entity GPU is
     port (
@@ -18,7 +17,9 @@ entity GPU is
     );
 end entity;
 
+
 architecture rtl of GPU is
+
 
   -- ----------------------------------------
   -- # Components
@@ -44,7 +45,6 @@ architecture rtl of GPU is
    );
    end component;
 
-
   component projectile
   Port (
         CLKPROJECTILE: in std_logic;
@@ -57,11 +57,9 @@ architecture rtl of GPU is
    end component;
 
 
-
   -- ----------------------------------------
   -- # Signals
   -- ----------------------------------------
-
   signal xctr,yctr : std_logic_vector(9 downto 0) := "0000000000";
   signal xpos1, ypos1 : std_logic_vector (9 downto 0);
   signal xpos2, ypos2 : std_logic_vector (9 downto 0);
@@ -92,6 +90,7 @@ architecture rtl of GPU is
     "011" & "001" & "00", -- MOCHA 110
     "100" & "111" & "11" -- ICE    111
     );
+
 
   -- ----------------------------------------
   -- # GPU Architecture
@@ -155,8 +154,10 @@ begin
     xposProj2 <= posProj2 (19 downto 10);
     yposProj2 <= posProj2 (9 downto 0);
 
-    
 
+  -- ----------------------------------------
+  -- # Yolo comment
+  -- ----------------------------------------
     -- 25 MHz
     process(CLK) begin
          if rising_edge(CLK) then
@@ -211,9 +212,9 @@ begin
           end if;
         end if;
       end process;
-    
     Hsync <= hs;
     Vsync <= vs;
+
 
   process(CLK) begin
     if rising_edge(CLK) then
@@ -243,7 +244,6 @@ begin
       end if;
     end if;
   end process;
-
-    vga <= pixel_to_vga; 
+  vga <= pixel_to_vga; 
 
 end architecture;
