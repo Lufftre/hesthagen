@@ -214,6 +214,7 @@ architecture rtl of CPU is
     signal delta_y : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal ypos_real : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
     signal jstk_y : std_logic_vector(9 downto 0);
+
     
 begin
     mem <= ram(24);
