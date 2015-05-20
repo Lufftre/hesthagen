@@ -508,7 +508,7 @@ begin
                     proj_real_ypos1 <= resize(proj_real_ypos1 - proj_deltay1,9,-4);
                     proj_ypos1 <= to_integer(proj_real_ypos1);
 
-                    if to_integer(proj_real_xpos1) < 0 or to_integer(proj_real_xpos1) > 600 or 
+                    if to_integer(proj_real_xpos1) < 0 or to_integer(proj_real_xpos1) > 500 or 
                        to_integer(proj_real_ypos1) < 0 or to_integer(proj_real_ypos1) > 479 then
                         proj_active1 <= '0';
                     else 
@@ -539,7 +539,7 @@ begin
                     proj_real_ypos2 <= resize(proj_real_ypos2 - proj_deltay2,9,-4);
                     proj_ypos2 <= to_integer(proj_real_ypos2);
 
-                    if to_integer(proj_real_xpos2) < 0 or to_integer(proj_real_xpos2) > 600 or 
+                    if to_integer(proj_real_xpos2) < 0 or to_integer(proj_real_xpos2) > 550 or 
                        to_integer(proj_real_ypos2) < 0 or to_integer(proj_real_ypos2) > 479 then
                         proj_active2 <= '0';
                     else 
