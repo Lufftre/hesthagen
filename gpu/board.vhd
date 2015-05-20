@@ -265,8 +265,8 @@ begin
 
       process(CLK) begin
         if rising_edge(CLK) then
-            x <= conv_std_logic_vector((xctr));
-            y <= conv_std_logic_vector((yctr));
+            x <= std_logic_vector(to_unsigned(xctr,10));
+            y <= std_logic_vector(to_unsigned(yctr,10));
             rad <= y (9 downto 4);
             tile_index <= std_logic_vector(unsigned(rad)*32) + x(9 downto 4);
 
