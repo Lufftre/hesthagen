@@ -549,7 +549,8 @@ begin
             end if;
 
             if ALU_OP = "1100" then
-                if xpos_int1 > proj_xpos2 - 16 and xpos_int1 < proj_xpos2 + 6 and ypos_int1 > proj_ypos2 -16 and ypos_int1 < proj_ypos2 + 6 then 
+                if to_integer(xpos_real1) > to_integer(proj_real_xpos2) - 16 and to_integer(xpos_real1) < to_integer(proj_real_xpos2) + 6 and 
+                   to_integer(ypos_real1) > to_integer(proj_real_ypos2) - 16 and to_integer(ypos_real1) < to_integer(proj_real_ypos2) + 6 then 
                     -- Remove proj
                     proj_real_xpos2 <= to_sfixed(-1, 9, -4);
                     proj_real_ypos2 <= to_sfixed(-1, 9, -4);
@@ -557,7 +558,8 @@ begin
                     xpos_real1 <= to_sfixed(320, 9, -4);
                     ypos_real1 <= to_sfixed(240, 9, -4);
                 end if;
-                if xpos_int2 > proj_xpos1 - 16 and xpos_int2 < proj_xpos1 + 6 and ypos_int2 > proj_ypos1 -16 and ypos_int2 < proj_ypos1 + 6 then 
+                if to_integer(xpos_real2) > to_integer(proj_real_xpos1) - 16 and to_integer(xpos_real2) < to_integer(proj_real_xpos1) + 6 and 
+                   to_integer(ypos_real2) > to_integer(proj_real_ypos1) - 16 and to_integer(ypos_real2) < to_integer(proj_real_ypos1) + 6 then 
                     -- Remove proj
                     proj_real_xpos1 <= to_sfixed(-1, 9, -4);
                     proj_real_ypos1 <= to_sfixed(-1, 9, -4);
