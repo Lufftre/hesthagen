@@ -564,8 +564,8 @@ begin
                     proj_real_xpos1 <= to_sfixed(-1, 9, -4);
                     proj_real_ypos1 <= to_sfixed(-1, 9, -4);
                     -- player hit
-                    vel_x2 <= resize(proj_deltax1*8,4,-9);
-                    vel_y2 <= resize(proj_deltay1*8,4,-9);
+                    vel_x2 <= proj_deltax1;
+                    vel_y2 <= proj_deltay1;
                 end if;                
             end if;
 
