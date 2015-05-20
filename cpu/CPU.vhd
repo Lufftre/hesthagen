@@ -61,8 +61,8 @@ architecture rtl of CPU is
     X"C000",--  0x01 LOAD VEL-X gr0
     X"D000", -- 0x02 ADD gr0 JSTK-X
     X"E000", -- 0x03 STORE gr0 VELX
-    X"700C",--  0x04 ADD gr0 POSX1
-    X"0000", -- 0x05 STORE gr0 POSX1
+    X"F000",--  0x04 ADD gr0 POSX1
+    X"700C", -- 0x05 STORE gr0 POSX1
     X"0000",--  0x01 LOAD VEL-Y gr0
     X"0000", -- 0x02 ADD gr0 JSTK-Y
     X"0000", -- 0x03 STORE gr0 VELX
