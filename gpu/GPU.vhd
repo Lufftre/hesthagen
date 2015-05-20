@@ -36,8 +36,8 @@ architecture rtl of GPU is
   Port (
         CLK: in std_logic;
         RST: in std_logic;
-        xctr : in std_logic_vector(9 downto 0);
-        yctr : in std_logic_vector(9 downto 0);
+        xctr : in integer range 0 to 1023;
+        yctr : in integer range 0 to 1023;
         pixel_color : out std_logic_vector(2 downto 0);
         current_map : in std_logic_vector(1 downto 0)
    );
@@ -63,7 +63,8 @@ architecture rtl of GPU is
   -- ----------------------------------------
   -- # Signals
   -- ----------------------------------------
-  signal xctr,yctr : std_logic_vector(9 downto 0) := "0000000000";
+  signal xctr : integer range 0 to 1023 := 0;
+  signal yctr : integer range 0 to 1023 := 0;
             
   signal pixel : std_logic_vector(1 downto 0) := "00";
   signal tile_color : std_logic_vector(2 downto 0);
@@ -151,10 +152,10 @@ begin
     process(CLK) begin
         if rising_edge(CLK) then
           if RST='1' then
-             xctr <= "0000000000";
+             xctr <= 0;
           elsif pixel=3 then
            if xctr=799 then
-             xctr <= "0000000000";
+             xctr <= 0;
            else
              xctr <= xctr + 1;
            end if;
@@ -172,10 +173,10 @@ begin
       process(CLK) begin
         if rising_edge(CLK) then
           if RST='1' then
-            yctr <= "0000000000";
+            yctr <= 0;
           elsif xctr=799 and pixel=0 then
            if yctr=520 then
-             yctr <= "0000000000";
+             yctr <= 0;
            else
              yctr <= yctr + 1;
            end if;
@@ -210,7 +211,7 @@ begin
 
       if pixel=3 then
         if xctr > 639 or yctr > 479 then
-          pixel_to_vga <= "00000000";
+          pixel_to_vga <= X"00";
         else
           pixel_to_vga <= colors(conv_integer(tile_color));
 

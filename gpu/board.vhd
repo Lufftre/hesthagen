@@ -7,7 +7,8 @@ entity board is
     port (
         CLK: in std_logic;
         RST: in std_logic;
-        xctr,yctr : in std_logic_vector(9 downto 0);
+        xctr : in integer range 0 to 1023;
+        yctr : in integer range 0 to 1023;
         pixel_color : out std_logic_vector(2 downto 0);
         current_map : in std_logic_vector(1 downto 0)
     );
@@ -244,7 +245,7 @@ begin
             board_tile <= current_board(conv_integer(tile_index));
             pixel_color_index <= pixel_color_array(
                                                   conv_integer(board_tile),
-                                                  conv_integer(std_logic_vector((unsigned(yctr) mod 16)*16) + std_logic_vector((unsigned(xctr) mod 16)))
+                                                  ((yctr mod 16)*16) + (xctr mod 16)
                                                   );
             pixel_color <= pixel_color_index;
         end if;
