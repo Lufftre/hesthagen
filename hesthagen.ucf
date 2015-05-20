@@ -16,7 +16,7 @@ Net "RST" LOC = C9 | IOSTANDARD = LVCMOS33; #Bank = 0, pin name = IO_L33P, Sch n
 #######################################################################
 # BUTTONS
 #######################################################################
-Net "btnu" LOC = A8 | IOSTANDARD = LVCMOS33; #Bank = 0, pin name = IO_L33N, Sch name = BTNU
+#Net "BUTTON_UP" LOC = A8 | IOSTANDARD = LVCMOS33; #Bank = 0, pin name = IO_L33N, Sch name = BTNU
 #Net "BUTTON_LEFT" LOC = C4 | IOSTANDARD = LVCMOS33; #Bank = 0, pin name = IO_L1N_VREF, Sch name = BTNL
 #Net "BUTTON_DOWN" LOC = C9 | IOSTANDARD = LVCMOS33; #Bank = 0, pin name = IO_L34N_GCLK18, Sch name = BTND
 #Net "BUTTON_RIGHT" LOC = D9 | IOSTANDARD = LVCMOS33; # Bank = 0, pin name = IO_L34P_GCLK19, Sch name = BTNR
