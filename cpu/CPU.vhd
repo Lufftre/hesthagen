@@ -253,8 +253,8 @@ architecture rtl of CPU is
     signal hit_counter1 : integer range 0 to 15 := 0;
     signal hit_counter2 : integer range 0 to 15 := 0;
 
-    signal hp1 : integer range 0 to 511;
-    signal hp2 : integer range 0 to 511;
+    signal hp1 : integer range 0 to 511 := 511;
+    signal hp2 : integer range 0 to 511 := 511;
 
 
 begin
@@ -591,12 +591,20 @@ begin
 
             if ALU_OP = "1101" then
                 if horse_tile1 = "010" then --lava
-                    xpos_real1 <= to_sfixed(240, 9, -4);
-                    ypos_real1 <= to_sfixed(240, 9, -4);
+                    hp1 <= hp1 - 1;
+                    if hp1 = 0 then
+                        xpos_real1 <= to_sfixed(240, 9, -4);
+                        ypos_real1 <= to_sfixed(240, 9, -4);
+                        hp1 <= 511;
+                    end if;
                 end if;
                 if horse_tile2 = "010" then --lava
-                    xpos_real2 <= to_sfixed(240, 9, -4);
-                    ypos_real2 <= to_sfixed(240, 9, -4);
+                    hp2 <= hp2 - 1;
+                    if hp2 = 0 then
+                        xpos_real2 <= to_sfixed(240, 9, -4);
+                        ypos_real2 <= to_sfixed(240, 9, -4);
+                        hp2 <= 511;
+                    end if;
                 end if;                
             end if;
 
