@@ -8,7 +8,6 @@ entity GPU is
     port (
         CLK: in std_logic;
         RST: in std_logic;
-        posP1, posP2, posProj1, posProj2 : in std_logic_vector (19 downto 0);
         Hsync,Vsync : out  STD_LOGIC;
         vga : out  STD_LOGIC_VECTOR (7 downto 0); 
         NEW_FRAME : out std_logic;
