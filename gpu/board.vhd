@@ -18,7 +18,7 @@ architecture rtl of board is
 
   
  signal rad : integer range 0 to 31; 
- signal tile_index : integer range 0 to 2047;
+ signal tile_index : std_logic_vector(11 downto 0);
  signal board_tile : std_logic_vector(1 downto 0);
  signal pixel_color_index : std_logic_vector(2 downto 0);
  signal x : std_logic_vector(9 downto 0);
