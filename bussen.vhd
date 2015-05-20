@@ -74,7 +74,8 @@ architecture rtl of bussen is
 	    proj_xpos2 : in integer range 0 to 639;
 	    proj_ypos2 : in integer range 0 to 479;
         horse_tile1 : out std_logic_vector(2 downto 0);
-        horse_tile2 : out std_logic_vector(2 downto 0)	    
+        horse_tile2 : out std_logic_vector(2 downto 0);
+        current_map : in std_logic_vector(1 downto 0)  
 	    );
 	end component;
 
@@ -96,7 +97,8 @@ architecture rtl of bussen is
 	    proj_xpos2 : out integer range 0 to 639;
 	    proj_ypos2 : out integer range 0 to 479;
         horse_tile1 : in std_logic_vector(2 downto 0);
-        horse_tile2 : in std_logic_vector(2 downto 0)    
+        horse_tile2 : in std_logic_vector(2 downto 0);
+        current_map : out std_logic_vector(1 downto 0)
 	
 );
 	end component;
@@ -143,6 +145,8 @@ architecture rtl of bussen is
    signal horse_tile1 : std_logic_vector(2 downto 0);
    signal horse_tile2 : std_logic_vector(2 downto 0);
 
+   signal current_map : std_logic_vector(1 downto 0);
+
     
 begin
 
@@ -173,7 +177,8 @@ gpu1 : GPU port map(
 	proj_xpos2=>proj_xpos2,
 	proj_ypos2=>proj_ypos2,
 	horse_tile1=>horse_tile1,
-	horse_tile2=>horse_tile2
+	horse_tile2=>horse_tile2,
+	current_map=>current_map	
 );
 	
   JSTK1 : PmodJSTK port map(
@@ -227,7 +232,8 @@ gpu1 : GPU port map(
 	proj_xpos2=>proj_xpos2,
 	proj_ypos2=>proj_ypos2,
 	horse_tile1=>horse_tile1,
-	horse_tile2=>horse_tile2	
+	horse_tile2=>horse_tile2,
+	current_map=>current_map	
     ); 
 
 end architecture;

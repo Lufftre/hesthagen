@@ -25,7 +25,8 @@ entity CPU is
     proj_xpos2 : out integer range 0 to 639;
     proj_ypos2 : out integer range 0 to 479;
     horse_tile1 : in std_logic_vector(2 downto 0);
-    horse_tile2 : in std_logic_vector(2 downto 0)
+    horse_tile2 : in std_logic_vector(2 downto 0);
+    current_map : out std_logic_vector(1 downto 0)
     );
 end entity;
 architecture rtl of CPU is
@@ -59,38 +60,38 @@ architecture rtl of CPU is
 
     signal ram : ram_type := (
     -- Programkod
-    X"B00C", -- 0x00 B??
-    X"C000",--  0x01 LOAD VEL-X gr0
-    X"D000", -- 0x02 ADD gr0 JSTK-X
-    X"E000", -- 0x03 STORE gr0 VELX
-    X"F000",--  0x04 ADD gr0 POSX1
-    X"700C", -- 0x05 STORE gr0 POSX1
-    X"0000",--  0x01 LOAD VEL-Y gr0
-    X"0000", -- 0x02 ADD gr0 JSTK-Y
-    X"0000", -- 0x03 STORE gr0 VELX
-    X"0000",--  0x04 ADD gr0 POSX1
-    X"0000", -- 0x05 STORE gr0 POSX1
-    X"0000",--  0x0B JMP 0
-    X"0000", -- 0x0C 
-    X"0000", -- 0x0D 
-    X"0000", -- 0x0E 
-    X"0000", -- 0x0F 
-    X"0000",--  0x10 posx Player1
-    X"0000", -- 0x11 posy
-    X"0000", -- 0x12 velx
-    X"0000",--  0x13 vely
-    X"0000", -- 0x14 deltax
-    X"0000",  --0x15 deltay
-    X"0000",--  0x16 posx Player2
-    X"0000", -- 0x17 posy
-    X"0000", -- 0x18 velx
-    X"0000",--  0x19 vely
-    X"0000", -- 0x1A deltax
-    X"0000",  --0x1B deltay
-    X"0000", -- 0x1C 
-    X"0000", -- 0x1D 
-    X"0000", -- 0x1E JSTK X
-    X"0000" --  0x1F JSTK Y
+    X"B00C", -- STAY UNTIL NEW FRAME
+    X"C000", -- MOVE PLAYERS
+    X"D000", -- MOVE PROJECTILES
+    X"E000", -- HANDLE COLLISION
+    X"F000", -- BURN HORSES
+    X"700C", -- JUMP TO START
+    X"0000", -- 
+    X"0000", -- 
+    X"0000", -- 
+    X"0000", -- 
+    X"0000", -- 
+    X"0000", -- 
+    X"0000", -- 
+    X"0000", -- 
+    X"0000", -- 
+    X"0000", -- 
+    X"0000", -- 
+    X"0000", -- 
+    X"0000", -- 
+    X"0000", -- 
+    X"0000", -- 
+    X"0000", -- 
+    X"0000", -- 
+    X"0000", -- 
+    X"0000", -- 
+    X"0000", -- 
+    X"0000", -- 
+    X"0000", -- 
+    X"0000", -- 
+    X"0000", -- 
+    X"0000", -- 
+    X"0000"  -- 
     );
 
 
@@ -256,12 +257,14 @@ architecture rtl of CPU is
     signal hp1 : integer range 0 to 63 := 63;
     signal hp2 : integer range 0 to 63 := 63;
 
+    signal map_counter : std_logic_vector(5 downto 0) := "000000";
+    signal cur_map : std_logic_vector(1 downto 0) := "00";
 
 begin
     --mem <= ram(24);
 
     flag_newframe <= NEW_FRAME;
-
+    current_map <= cur_map;
 
     --process(CLK) begin
     --    if rising_edge(CLK) then
@@ -605,7 +608,12 @@ begin
                         ypos_real2 <= to_sfixed(240, 9, -4);
                         hp2 <= 63;
                     end if;
-                end if;                
+                end if;
+
+                if map_counter = "111111" then      
+                    cur_map <= cur_map + 1;
+                end if;   
+                map_counter <= map_counter + 1;
             end if;
 
         end if;

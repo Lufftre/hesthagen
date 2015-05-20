@@ -21,7 +21,8 @@ entity GPU is
         proj_xpos2 : in integer range 0 to 639;
         proj_ypos2 : in integer range 0 to 479;
         horse_tile1 : out std_logic_vector(2 downto 0);
-        horse_tile2 : out std_logic_vector(2 downto 0)
+        horse_tile2 : out std_logic_vector(2 downto 0);
+        current_map : in std_logic_vector(1 downto 0)
     );
 end entity;
 
