@@ -268,7 +268,7 @@ begin
             x <= std_logic_vector(to_unsigned(xctr,10));
             y <= std_logic_vector(to_unsigned(yctr,10));
             rad <= y (9 downto 4);
-            tile_index <= std_logic_vector(unsigned(rad)*32) + x(9 downto 4);
+            tile_index <= std_logic_vector((yctr*2) + (xctr/16));
 
  
             board_tile <= current_board(conv_integer(tile_index));
