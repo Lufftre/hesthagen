@@ -560,8 +560,8 @@ begin
                     proj_real_xpos2 <= to_sfixed(-1, 9, -4);
                     proj_real_ypos2 <= to_sfixed(-1, 9, -4);
                     -- player1 hit
-                    xboost1 <= proj_deltax1;
-                    yboost1 <= proj_deltay1;
+                    xboost1 <= proj_deltax2;
+                    yboost1 <= proj_deltay2;
                 end if;
                 if to_integer(xpos_real2) > to_integer(proj_real_xpos1) - 16 and to_integer(xpos_real2) < to_integer(proj_real_xpos1) + 16 and 
                    to_integer(ypos_real2) > to_integer(proj_real_ypos1) - 16 and to_integer(ypos_real2) < to_integer(proj_real_ypos1) + 16 then 
