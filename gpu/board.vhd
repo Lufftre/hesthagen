@@ -18,7 +18,7 @@ architecture rtl of board is
 
   
  signal rad : std_logic_vector(5 downto 0); 
- signal tile_index :integer range 0 to 1023; --32*32
+ signal tile_index : integer range 0 to 1023; --32*32
  signal board_tile : std_logic_vector(1 downto 0);
  signal pixel_color_index : std_logic_vector(2 downto 0);
  
@@ -238,7 +238,7 @@ begin
       process(CLK) begin
         if rising_edge(CLK) then
 
-            tile_index <=(yctr*2) + (xctr/16);
+            tile_index <=(yctr/16)*32 + (xctr/16);
 
             board_tile <= current_board(tile_index);
             pixel_color_index <= pixel_color_array(
