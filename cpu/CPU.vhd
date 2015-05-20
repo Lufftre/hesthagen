@@ -588,8 +588,8 @@ begin
             end if;
 
             if ALU_OP = "1101" then
-                if to_integer(xpos_real1) > 96 - 16 and to_integer(xpos_real1) < 336 + 16 and 
-                   to_integer(ypos_real1) > 80 - 16 and to_integer(ypos_real1) < 336 + 16 then 
+                if to_integer(xpos_real1) > 96 and to_integer(xpos_real1) < 336 + 16 and 
+                   to_integer(ypos_real1) > 80 and to_integer(ypos_real1) < 336 then 
                     --
                 else
                     xpos_real1 <= to_sfixed(240, 9, -4);
