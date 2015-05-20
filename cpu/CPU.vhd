@@ -60,8 +60,8 @@ architecture rtl of CPU is
     X"B00C", -- 0x00 B??
     X"C000",--  0x01 LOAD VEL-X gr0
     X"D000", -- 0x02 ADD gr0 JSTK-X
-    X"700C", -- 0x03 STORE gr0 VELX
-    X"0000",--  0x04 ADD gr0 POSX1
+    X"E000", -- 0x03 STORE gr0 VELX
+    X"700C",--  0x04 ADD gr0 POSX1
     X"0000", -- 0x05 STORE gr0 POSX1
     X"0000",--  0x01 LOAD VEL-Y gr0
     X"0000", -- 0x02 ADD gr0 JSTK-Y
@@ -130,8 +130,8 @@ architecture rtl of CPU is
     "0000" & "000" & "000" & "0" & "1" & "00" & "0011" & "0000000", --0x1F PC++, mpc = 0
 --    ALU     TB      FB      S     P    LC      SEQ       myADR      
     "1001" & "000" & "000" & "0" & "1" & "00" & "0011" & "0000000", --0x07 Grx => AR, mpc++,        (SUPER ADD)
-    "1011" & "000" & "000" & "0" & "1" & "00" & "0011" & "0000000", --0x07 Grx => AR, mpc++,        (SUPER PROJ)
-    "0000" & "100" & "110" & "0" & "1" & "00" & "0011" & "0000000", --0x09 AR => GRx, PC++, mpc = 0
+    "1011" & "000" & "000" & "0" & "1" & "00" & "0011" & "0000000", --0x07 Grx => AR, mpc++,        (SUPER PEWPEW)
+    "1100" & "000" & "000" & "0" & "1" & "00" & "0011" & "0000000", --0x07 Grx => AR, mpc++,        (SUPER HIT)
     "0000" & "010" & "011" & "0" & "0" & "00" & "0011" & "0000000", --0x23 
     "0001" & "110" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x24 
     "1110" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x25 
@@ -164,7 +164,7 @@ architecture rtl of CPU is
     X"1E", -- B??    0x0B
     X"20", -- SADD   0x0C
     X"21", -- proj   0x0D
-    X"00",
+    X"22", -- colli  0x0E
     X"00"
     );
     constant k2 : k2_type := (
@@ -549,8 +549,8 @@ begin
             end if;
 
             if ALU_OP = "1100" then
-                if to_integer(xpos_real1) > to_integer(proj_real_xpos2) - 16 and to_integer(xpos_real1) < to_integer(proj_real_xpos2) + 6 and 
-                   to_integer(ypos_real1) > to_integer(proj_real_ypos2) - 16 and to_integer(ypos_real1) < to_integer(proj_real_ypos2) + 6 then 
+                if to_integer(xpos_real1) > to_integer(proj_real_xpos2) - 16 and to_integer(xpos_real1) < to_integer(proj_real_xpos2) + 16 and 
+                   to_integer(ypos_real1) > to_integer(proj_real_ypos2) - 16 and to_integer(ypos_real1) < to_integer(proj_real_ypos2) + 16 then 
                     -- Remove proj
                     proj_real_xpos2 <= to_sfixed(-1, 9, -4);
                     proj_real_ypos2 <= to_sfixed(-1, 9, -4);
@@ -558,8 +558,8 @@ begin
                     xpos_real1 <= to_sfixed(320, 9, -4);
                     ypos_real1 <= to_sfixed(240, 9, -4);
                 end if;
-                if to_integer(xpos_real2) > to_integer(proj_real_xpos1) - 16 and to_integer(xpos_real2) < to_integer(proj_real_xpos1) + 6 and 
-                   to_integer(ypos_real2) > to_integer(proj_real_ypos1) - 16 and to_integer(ypos_real2) < to_integer(proj_real_ypos1) + 6 then 
+                if to_integer(xpos_real2) > to_integer(proj_real_xpos1) - 16 and to_integer(xpos_real2) < to_integer(proj_real_xpos1) + 16 and 
+                   to_integer(ypos_real2) > to_integer(proj_real_ypos1) - 16 and to_integer(ypos_real2) < to_integer(proj_real_ypos1) + 16 then 
                     -- Remove proj
                     proj_real_xpos1 <= to_sfixed(-1, 9, -4);
                     proj_real_ypos1 <= to_sfixed(-1, 9, -4);
