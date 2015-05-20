@@ -589,16 +589,6 @@ begin
                 end if;  
             end if;
 
-            if ALU_OP = "1101" then
-                if horse_tile1 = "010" then --lava
-                    xpos_real1 = to_sfixed(240, 9, -4);
-                    ypos_real1 = to_sfixed(240, 9, -4);
-                end if;
-                if horse_tile2 = "010" then --lava
-                    xpos_real2 = to_sfixed(240, 9, -4);
-                    ypos_real2 = to_sfixed(240, 9, -4);
-                end if;                
-            end if;
 
 
         end if;
