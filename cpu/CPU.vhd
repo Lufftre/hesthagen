@@ -443,8 +443,10 @@ begin
             -- ----------------------------------------
             if ALU_OP = "1001" then
                 -- # Player 1
+                vel_x1 <= resize(vel_x1 / 2,4,-9); -- # FRICTION
+                vel_y1 <= resize(vel_y1 / 2,4,-9); -- # FRICTION
                 if (joystick1(25 downto 24) & joystick1(39 downto 32)) > 450 and (joystick1(25 downto 24) & joystick1(39 downto 32)) < 560 then
-                    vel_x1 <= resize(vel_x1 / 4,4,-9); -- # FRICTION
+                    --
                 else
                     jstk_x1 <= (joystick1(25 downto 24) & joystick1(39 downto 32)) xor "1000000000";
                     delta_x1 <= resize(to_sfixed(jstk_x1,0,-9),2,-9);
@@ -454,7 +456,7 @@ begin
                 xpos_int1 <= to_integer(xpos_real1);
 
                 if (joystick1(9 downto 8) & joystick1(23 downto 16)) > 450 and (joystick1(9 downto 8) & joystick1(23 downto 16)) < 560 then
-                    vel_y1 <= resize(vel_y1 / 4,4,-9); -- # FRICTION
+                    --
                 else
                     jstk_y1 <= (joystick1(9 downto 8) & joystick1(23 downto 16)) xor "1000000000";
                     delta_y1 <= resize(to_sfixed(jstk_y1,0,-9),2,-9);
