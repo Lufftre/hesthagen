@@ -116,7 +116,8 @@ begin
      RST=>RST,
      xctr=>xctr,
      yctr=>yctr,
-     pixel_color=>tile_color
+     pixel_color=>tile_color,
+     current_map=>current_map
     );
 
     h1 : hest port map(
