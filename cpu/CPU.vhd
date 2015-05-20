@@ -555,8 +555,8 @@ begin
                     proj_real_xpos2 <= to_sfixed(-1, 9, -4);
                     proj_real_ypos2 <= to_sfixed(-1, 9, -4);
                     -- player hit
-                    vel_x1 <= proj_deltax2;
-                    vel_y1 <= proj_deltay2;
+                    vel_x1 <= resize(proj_deltax2*8,4,-9);
+                    vel_y1 <= resize(proj_deltay2*8,4,-9);
                 end if;
                 if to_integer(xpos_real2) > to_integer(proj_real_xpos1) - 16 and to_integer(xpos_real2) < to_integer(proj_real_xpos1) + 16 and 
                    to_integer(ypos_real2) > to_integer(proj_real_ypos1) - 16 and to_integer(ypos_real2) < to_integer(proj_real_ypos1) + 16 then 
@@ -564,8 +564,8 @@ begin
                     proj_real_xpos1 <= to_sfixed(-1, 9, -4);
                     proj_real_ypos1 <= to_sfixed(-1, 9, -4);
                     -- player hit
-                    vel_x2 <= proj_deltax1;
-                    vel_y2 <= proj_deltay1;
+                    vel_x2 <= resize(proj_deltax1*8,4,-9);
+                    vel_y2 <= resize(proj_deltay1*8,4,-9);
                 end if;                
             end if;
 
