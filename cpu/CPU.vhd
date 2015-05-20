@@ -60,12 +60,12 @@ architecture rtl of CPU is
 
     signal ram : ram_type := (
     -- Programkod
-    X"B00C", -- STAY UNTIL NEW FRAME
-    X"C000", -- MOVE PLAYERS
-    X"D000", -- MOVE PROJECTILES
-    X"E000", -- HANDLE COLLISION
-    X"F000", -- BURN HORSES
-    X"700C", -- JUMP TO START
+    X"900C", -- STAY UNTIL NEW FRAME
+    X"A000", -- MOVE PLAYERS
+    X"B000", -- MOVE PROJECTILES
+    X"C000", -- HANDLE COLLISION
+    X"D000", -- BURN HORSES
+    X"600C", -- JUMP TO START
     X"0000", -- 
     X"0000", -- 
     X"0000", -- 
