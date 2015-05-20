@@ -122,52 +122,26 @@ begin
     h1 : hest port map(
      CLKHORSE=>CLKHORSE1,
      RST=>RST,
-     xctr=>xctr,
-     yctr=>yctr,
-     xpos=>xpos1,
-     ypos=>ypos1,
      pixel_color=>hest_color1
     );
 
     h2 : hest port map(
      CLKHORSE=>CLKHORSE2,
      RST=>RST,
-     xctr=>xctr,
-     yctr=>yctr,
-     xpos=>xpos2,
-     ypos=>ypos2,
      pixel_color=>hest_color2
     );
 
     p1 : projectile port map(
      CLKPROJECTILE=>CLKPROJECTILE1,
      RST=>RST,
-     xctr=>xctr,
-     yctr=>yctr,
-     xpos=>xpos1,
-     ypos=>ypos1,
      pixel_color=>projectile_color1
     );
 
     p2 : projectile port map(
      CLKPROJECTILE=>CLKPROJECTILE2,
      RST=>RST,
-     xctr=>xctr,
-     yctr=>yctr,
-     xpos=>xpos2,
-     ypos=>ypos2,
      pixel_color=>projectile_color2
     );
-
-    xpos1 <= posP1 (19 downto 10);
-    ypos1 <= posP1 (9 downto 0);
-    xpos2 <= posP2 (19 downto 10);
-    ypos2 <= posP2 (9 downto 0);
-    xposProj1 <= posProj1 (19 downto 10);
-    yposProj1 <= posProj1 (9 downto 0);
-    xposProj2 <= posProj2 (19 downto 10);
-    yposProj2 <= posProj2 (9 downto 0);
-
 
   -- ----------------------------------------
   -- # Yolo comment
