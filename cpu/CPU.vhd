@@ -250,6 +250,7 @@ architecture rtl of CPU is
 
     signal xboost1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal yboost1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
+    signal hit_counter1 : integer range 0 to 63 := 0;
 
 begin
     --mem <= ram(24);
@@ -558,10 +559,7 @@ begin
                     proj_real_xpos2 <= to_sfixed(-1, 9, -4);
                     proj_real_ypos2 <= to_sfixed(-1, 9, -4);
                     -- player1 hit
-                    vel_x1 <= proj_deltax2;
-                    vel_y1 <= proj_deltay2;
-                    xboost1 <= proj_deltax2;
-                    yboost1 <= proj_deltay2;
+                    hit_counter1 <= 63;
                 end if;
                 if to_integer(xpos_real2) > to_integer(proj_real_xpos1) - 16 and to_integer(xpos_real2) < to_integer(proj_real_xpos1) + 16 and 
                    to_integer(ypos_real2) > to_integer(proj_real_ypos1) - 16 and to_integer(ypos_real2) < to_integer(proj_real_ypos1) + 16 then 
@@ -571,7 +569,11 @@ begin
                     -- player2 hit
                     vel_x2 <= proj_deltax1;
                     vel_y2 <= proj_deltay1;
-                end if;                
+                end if;             
+
+                if hit_counter1 > 0 then
+                    vel_x1 <= proj_deltax2;
+                    vel_y1 <= proj_deltay2;  
             end if;
 
 
