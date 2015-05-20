@@ -19,7 +19,9 @@ entity GPU is
         proj_xpos1 : in integer range 0 to 639;
         proj_ypos1 : in integer range 0 to 479;
         proj_xpos2 : in integer range 0 to 639;
-        proj_ypos2 : in integer range 0 to 479
+        proj_ypos2 : in integer range 0 to 479;
+        horse_tile1 : out std_logic_vector(2 downto 0);
+        horse_tile2 : out std_logic_vector(2 downto 0)
     );
 end entity;
 
@@ -271,6 +273,13 @@ begin
             if projectile_color2 /= "111" then
               pixel_to_vga <= colors(conv_integer(projectile_color2));
             end if;
+          end if;
+
+          if xctr = xpos_int1 + 8 and yctr = ypos_int1 + 8 then
+            horse_tile1 <= tile_color;
+          end if;
+          if xctr = xpos_int2 + 8 and yctr = ypos_int2 + 8 then
+            horse_tile2 <= tile_color;
           end if;
             
             

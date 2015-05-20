@@ -23,7 +23,9 @@ entity CPU is
     proj_xpos1 : out integer range 0 to 639;
     proj_ypos1 : out integer range 0 to 479;
     proj_xpos2 : out integer range 0 to 639;
-    proj_ypos2 : out integer range 0 to 479
+    proj_ypos2 : out integer range 0 to 479;
+    horse_tile1 : in std_logic_vector(2 downto 0);
+    horse_tile2 : in std_logic_vector(2 downto 0)
     );
 end entity;
 architecture rtl of CPU is
@@ -588,14 +590,14 @@ begin
             end if;
 
             if ALU_OP = "1101" then
-                if to_integer(xpos_real1) > 96 and to_integer(xpos_real1) < 336 + 16 and 
-                   to_integer(ypos_real1) > 80 and to_integer(ypos_real1) < 336 then 
-                    --
-                else
-                    xpos_real1 <= to_sfixed(240, 9, -4);
-                    ypos_real1 <= to_sfixed(240, 9, -4);
+                if horse_tile1 = "010" then --lava
+                    xpos_real1 = to_sfixed(240, 9, -4);
+                    ypos_real1 = to_sfixed(240, 9, -4);
                 end if;
-
+                if horse_tile2 = "010" then --lava
+                    xpos_real2 = to_sfixed(240, 9, -4);
+                    ypos_real2 = to_sfixed(240, 9, -4);
+                end if;                
             end if;
 
 

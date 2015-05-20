@@ -72,27 +72,31 @@ architecture rtl of bussen is
 	    proj_xpos1 : in integer range 0 to 639;
 	    proj_ypos1 : in integer range 0 to 479;
 	    proj_xpos2 : in integer range 0 to 639;
-	    proj_ypos2 : in integer range 0 to 479
+	    proj_ypos2 : in integer range 0 to 479;
+        horse_tile1 : out std_logic_vector(2 downto 0);
+        horse_tile2 : out std_logic_vector(2 downto 0)	    
 	    );
 	end component;
 
 	component CPU 
     	Port (
         CLK : in  STD_LOGIC;
-	NEW_FRAME : in std_logic;
-	RST : in  STD_LOGIC;
-	btnu : in std_logic;
-	joystick1, joystick2 : in  STD_LOGIC_VECTOR (39 downto 0);
-	mem : out std_logic_vector(15 downto 0);
-	outPos1, outPos2 : out std_logic_vector (19 downto 0);
-    xpos_int1 : out integer range 0 to 639;
-    ypos_int1 : out integer range 0 to 479;
-    xpos_int2 : out integer range 0 to 639;
-    ypos_int2 : out integer range 0 to 479;
-    proj_xpos1 : out integer range 0 to 639;
-    proj_ypos1 : out integer range 0 to 479;
-    proj_xpos2 : out integer range 0 to 639;
-    proj_ypos2 : out integer range 0 to 479
+		NEW_FRAME : in std_logic;
+		RST : in  STD_LOGIC;
+		btnu : in std_logic;
+		joystick1, joystick2 : in  STD_LOGIC_VECTOR (39 downto 0);
+		mem : out std_logic_vector(15 downto 0);
+		outPos1, outPos2 : out std_logic_vector (19 downto 0);
+	    xpos_int1 : out integer range 0 to 639;
+	    ypos_int1 : out integer range 0 to 479;
+	    xpos_int2 : out integer range 0 to 639;
+	    ypos_int2 : out integer range 0 to 479;
+	    proj_xpos1 : out integer range 0 to 639;
+	    proj_ypos1 : out integer range 0 to 479;
+	    proj_xpos2 : out integer range 0 to 639;
+	    proj_ypos2 : out integer range 0 to 479;
+        horse_tile1 : in std_logic_vector(2 downto 0);
+        horse_tile2 : in std_logic_vector(2 downto 0)    
 	
 );
 	end component;
@@ -136,8 +140,8 @@ architecture rtl of bussen is
    signal proj_xpos2 : integer range 0 to 639;
    signal proj_ypos2 : integer range 0 to 479;
 
-   signal testx : integer range 0 to 639 := 200;
-   signal testy : integer range 0 to 479 := 200;
+   signal horse_tile1 : std_logic_vector(2 downto 0);
+   signal horse_tile2 : std_logic_vector(2 downto 0);
 
     
 begin
@@ -167,7 +171,9 @@ gpu1 : GPU port map(
 	proj_xpos1=>proj_xpos1,
 	proj_ypos1=>proj_ypos1,
 	proj_xpos2=>proj_xpos2,
-	proj_ypos2=>proj_ypos2
+	proj_ypos2=>proj_ypos2,
+	horse_tile1=>horse_tile1,
+	horse_tile2=>horse_tile2
 );
 	
   JSTK1 : PmodJSTK port map(
@@ -219,7 +225,9 @@ gpu1 : GPU port map(
 	proj_xpos1=>proj_xpos1,
 	proj_ypos1=>proj_ypos1,
 	proj_xpos2=>proj_xpos2,
-	proj_ypos2=>proj_ypos2
+	proj_ypos2=>proj_ypos2,
+	horse_tile1=>horse_tile1,
+	horse_tile2=>horse_tile2	
     ); 
 
 end architecture;
