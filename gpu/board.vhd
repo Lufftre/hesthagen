@@ -17,7 +17,7 @@ end entity;
 architecture rtl of board is 
 
   
- signal rad : std_logic_vector(5 downto 0); 
+ signal rad : integer range 0 to 31; 
  signal tile_index : std_logic_vector(11 downto 0); --32*32
  signal board_tile : std_logic_vector(1 downto 0);
  signal pixel_color_index : std_logic_vector(2 downto 0);
@@ -267,8 +267,8 @@ begin
         if rising_edge(CLK) then
             x <= std_logic_vector(to_unsigned(xctr,10));
             y <= std_logic_vector(to_unsigned(yctr,10));
-            rad <= y (9 downto 4);
-            tile_index <= std_logic_vector(to_unsigned((yctr*2) + (xctr/16),12));
+            rad <= yctr/16;
+            tile_index <= std_logic_vector(to_unsigned(rad*32 + (xctr/16)),tile_index'length);
 
  
             board_tile <= current_board(conv_integer(tile_index));
