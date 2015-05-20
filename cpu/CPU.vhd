@@ -443,8 +443,8 @@ begin
             -- ----------------------------------------
             if ALU_OP = "1001" then
                 -- # Player 1
-                vel_x1 <= resize(vel_x1 / 2,4,-9); -- # FRICTION
-                vel_y1 <= resize(vel_y1 / 2,4,-9); -- # FRICTION
+                vel_x1 <= resize(vel_x1 / 4,4,-9); -- # FRICTION
+                vel_y1 <= resize(vel_y1 / 4,4,-9); -- # FRICTION
                 if (joystick1(25 downto 24) & joystick1(39 downto 32)) > 450 and (joystick1(25 downto 24) & joystick1(39 downto 32)) < 560 then
                     --
                 else
