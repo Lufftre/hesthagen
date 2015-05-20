@@ -6,25 +6,18 @@ library IEEE;
 entity bussen is
     port (
         CLK: in std_logic;
-
         RST: in std_logic;
-
-	btnu : in std_logic;
-
-       	MISO_1 : in  STD_LOGIC;								-- 
+        MISO_1 : in  STD_LOGIC;								-- 
         SS_1 : out  STD_LOGIC;								-- Slave 
         MOSI_1 : out  STD_LOGIC;							-- Master Out Slave In, 
         SCLK_1 : out  STD_LOGIC;
-       	MISO_2 : in  STD_LOGIC;								-- 
+        MISO_2 : in  STD_LOGIC;								-- 
         SS_2 : out  STD_LOGIC;								-- Slave 
         MOSI_2 : out  STD_LOGIC;							-- Master Out Slave In, 
         SCLK_2 : out  STD_LOGIC;
-
-	Hsync,Vsync : out  STD_LOGIC;
+        Hsync,Vsync : out  STD_LOGIC;
         vga: out  STD_LOGIC_VECTOR (7 downto 0); -- ?? 
-							-- Serial Clock, Pin 4, 
-	AN : out  STD_LOGIC_VECTOR (3 downto 0);  -- Anodes for Seven Segment Display
-           
+        AN : out  STD_LOGIC_VECTOR (3 downto 0);  -- Anodes for Seven Segment Display 
         SEG : out  STD_LOGIC_VECTOR (6 downto 0) -- Cathodes for Seven Segment Display
     );
 end entity;
@@ -36,85 +29,83 @@ architecture rtl of bussen is
     -- # COMPONENTS
     -- ----------------------------------------
 
-	component ClkDiv_5Hz
-	 Port ( CLK : in  STD_LOGIC;
-	  RST : in  STD_LOGIC;
-	  CLKOUT : inout STD_LOGIC
-	);
-	end component;	
+    component ClkDiv_5Hz
+        Port (
+            CLK : in  STD_LOGIC;
+            RST : in  STD_LOGIC;
+            CLKOUT : inout STD_LOGIC
+        );
+    end component;	
 
-	component PmodJSTK
-	  Port ( 
-	  CLK : in  STD_LOGIC;
-	  RST : in  STD_LOGIC;
-	  sndRec : in  STD_LOGIC;
-	  DIN : in  STD_LOGIC_VECTOR (7 downto 0);
-	  MISO : in  STD_LOGIC;
-	  SS : out  STD_LOGIC;
-	  SCLK : out  STD_LOGIC;
-	  MOSI : out  STD_LOGIC;
-	  DOUT : inout  STD_LOGIC_VECTOR (39 downto 0)
-	);
-	end component;
+    component PmodJSTK
+        Port ( 
+            CLK : in  STD_LOGIC;
+            RST : in  STD_LOGIC;
+            sndRec : in  STD_LOGIC;
+            DIN : in  STD_LOGIC_VECTOR (7 downto 0);
+            MISO : in  STD_LOGIC;
+            SS : out  STD_LOGIC;
+            SCLK : out  STD_LOGIC;
+            MOSI : out  STD_LOGIC;
+            DOUT : inout  STD_LOGIC_VECTOR (39 downto 0)
+        );
+    end component;
 
 	component GPU
     	port (
-		CLK: in std_logic;
-		RST: in std_logic;
-		posP1, posP2, posProj1, posProj2 : in std_logic_vector (19 downto 0);
-		Hsync,Vsync : out  STD_LOGIC;
-		vga : out  STD_LOGIC_VECTOR (7 downto 0);
-		NEW_FRAME : out std_logic;
-	    xpos_int1 : in integer range 0 to 639;
-	    ypos_int1 : in integer range 0 to 479;
-	    xpos_int2 : in integer range 0 to 639;
-	    ypos_int2 : in integer range 0 to 479;
-	    proj_xpos1 : in integer range 0 to 639;
-	    proj_ypos1 : in integer range 0 to 479;
-	    proj_xpos2 : in integer range 0 to 639;
-	    proj_ypos2 : in integer range 0 to 479;
-        horse_tile1 : out std_logic_vector(2 downto 0);
-        horse_tile2 : out std_logic_vector(2 downto 0);
-        current_map : in std_logic_vector(1 downto 0)  
+            CLK: in std_logic;
+            RST: in std_logic;
+            Hsync,Vsync : out  STD_LOGIC;
+            vga : out  STD_LOGIC_VECTOR (7 downto 0);
+            NEW_FRAME : out std_logic;
+            xpos_int1 : in integer range 0 to 639;
+            ypos_int1 : in integer range 0 to 479;
+            xpos_int2 : in integer range 0 to 639;
+            ypos_int2 : in integer range 0 to 479;
+            proj_xpos1 : in integer range 0 to 639;
+            proj_ypos1 : in integer range 0 to 479;
+            proj_xpos2 : in integer range 0 to 639;
+            proj_ypos2 : in integer range 0 to 479;
+            horse_tile1 : out std_logic_vector(2 downto 0);
+            horse_tile2 : out std_logic_vector(2 downto 0);
+            current_map : in std_logic_vector(1 downto 0)  
 	    );
 	end component;
 
 	component CPU 
     	Port (
-        CLK : in  STD_LOGIC;
-		NEW_FRAME : in std_logic;
-		RST : in  STD_LOGIC;
-		btnu : in std_logic;
-		joystick1, joystick2 : in  STD_LOGIC_VECTOR (39 downto 0);
-		mem : out std_logic_vector(15 downto 0);
-		outPos1, outPos2 : out std_logic_vector (19 downto 0);
-	    xpos_int1 : out integer range 0 to 639;
-	    ypos_int1 : out integer range 0 to 479;
-	    xpos_int2 : out integer range 0 to 639;
-	    ypos_int2 : out integer range 0 to 479;
-	    proj_xpos1 : out integer range 0 to 639;
-	    proj_ypos1 : out integer range 0 to 479;
-	    proj_xpos2 : out integer range 0 to 639;
-	    proj_ypos2 : out integer range 0 to 479;
-        horse_tile1 : in std_logic_vector(2 downto 0);
-        horse_tile2 : in std_logic_vector(2 downto 0);
-        current_map : out std_logic_vector(1 downto 0)
-	
-);
+            CLK : in  STD_LOGIC;
+    		RST : in  STD_LOGIC;
+            NEW_FRAME : in std_logic;
+    		joystick1, joystick2 : in  STD_LOGIC_VECTOR (39 downto 0);
+    		mem : out std_logic_vector(15 downto 0);
+    	    xpos_int1 : out integer range 0 to 639;
+    	    ypos_int1 : out integer range 0 to 479;
+    	    xpos_int2 : out integer range 0 to 639;
+    	    ypos_int2 : out integer range 0 to 479;
+    	    proj_xpos1 : out integer range 0 to 639;
+    	    proj_ypos1 : out integer range 0 to 479;
+    	    proj_xpos2 : out integer range 0 to 639;
+    	    proj_ypos2 : out integer range 0 to 479;
+            horse_tile1 : in std_logic_vector(2 downto 0);
+            horse_tile2 : in std_logic_vector(2 downto 0);
+            current_map : out std_logic_vector(1 downto 0)	
+        );
 	end component;
 
-	component ssdCtrl
+    component ssdCtrl
+        Port (
+            CLK : in  STD_LOGIC;
+            RST : in  STD_LOGIC;
+            DIN : in  STD_LOGIC_VECTOR (9 downto 0);
+            AN : out  STD_LOGIC_VECTOR (3 downto 0);
+            SEG : out  STD_LOGIC_VECTOR (6 downto 0)
+        );
+    end component;
 
-    	Port ( CLK : in  STD_LOGIC;
-           RST : in  STD_LOGIC;
-           DIN : in  STD_LOGIC_VECTOR (9 downto 0);
-           AN : out  STD_LOGIC_VECTOR (3 downto 0);
-           SEG : out  STD_LOGIC_VECTOR (6 downto 0));
-	end component;
     -- ----------------------------------------
     -- # SIGNALS
     -- ----------------------------------------
-
    signal m : std_logic_vector(15 downto 0) := X"0000";
 
 
@@ -126,9 +117,6 @@ architecture rtl of bussen is
 	-- Signal to send/receive data to/from PmodJSTK
    signal sndRec : STD_LOGIC;
 
-   signal pos_P1 : std_logic_vector (19 downto 0);
-   signal pos_P2 : std_logic_vector (19 downto 0);
-   signal posProj1, posProj2 : std_logic_vector (19 downto 0);
 
    signal frame_pulse : std_logic;
 
@@ -146,8 +134,7 @@ architecture rtl of bussen is
    signal horse_tile2 : std_logic_vector(2 downto 0);
 
    signal current_map : std_logic_vector(1 downto 0);
-
-    
+  
 begin
 
 
@@ -160,10 +147,6 @@ genSndRec : ClkDiv_5Hz port map(
 gpu1 : GPU port map(
 	CLK=>CLK,
 	RST=>RST,
-	posP1=>pos_P1,
-	posP2=>pos_P2,
-	posProj1=>posProj1,
-	posProj2=>posProj2,
 	Hsync=>Hsync,
 	Vsync=>Vsync,
 	vga=>vga,
@@ -217,12 +200,9 @@ gpu1 : GPU port map(
     CLK=>CLK,
     RST=>RST,
 	NEW_FRAME=>frame_pulse,
-	btnu=>btnu,
 	joystick1=>joystick1,
 	joystick2=>joystick2,
 	mem=>m,
-	outPos1=>pos_P1,
-	outPos2=>pos_P2,
 	xpos_int1=>xpos_int1,
 	ypos_int1=>ypos_int1,
 	xpos_int2=>xpos_int2,

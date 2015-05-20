@@ -8,14 +8,11 @@ library ieee_proposed;
 entity CPU is
     Port ( 
     CLK : in  STD_LOGIC;
-    NEW_FRAME : in std_logic;
     RST : in  STD_LOGIC;
-    btnu : in std_logic;
+    NEW_FRAME : in std_logic;
     joystick1 : in  STD_LOGIC_VECTOR (39 downto 0);
     joystick2 : in  STD_LOGIC_VECTOR (39 downto 0);
     mem : out std_logic_vector(15 downto 0);
-    outPos1 : out std_logic_vector(19 downto 0);
-    outPos2 : out std_logic_vector (19 downto 0);
     xpos_int1 : out integer range 0 to 639;
     ypos_int1 : out integer range 0 to 479;
     xpos_int2 : out integer range 0 to 639;
@@ -193,107 +190,74 @@ architecture rtl of CPU is
     signal SEQ : std_logic_vector(3 downto 0);
     signal myADR : std_logic_vector(6 downto 0) := "0000000";
 
-    alias xpos : std_logic_vector (9 downto 0) is GR1_REG(9 downto 0);
-    alias ypos : std_logic_vector (9 downto 0) is GR2_REG(9 downto 0);
-    signal b1 : std_logic;
-    --signal b2 : std_logic := joystick1(2);
-
-    signal x : std_logic_vector (9 downto 0);
-    signal y : std_logic_vector (9 downto 0);
-
-    signal xpos1 : std_logic_vector (9 downto 0) := "00" & X"F0";
-    signal ypos1 : std_logic_vector (9 downto 0) := "00" & X"F0";
-    signal xpos2 : std_logic_vector (9 downto 0) := "00" & X"F0";
-    signal ypos2 : std_logic_vector (9 downto 0) := "00" & X"F0";
 
 
-    signal ind : std_logic_vector (3 downto 0);
+    -- PLAYER MOVE SIGNALS
 
-    signal lastvalue : std_logic := '0';
-
-    signal isNeg : std_logic := '0';
-
-
+    -- PLAYER 1
+    --x
     signal vel_x1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal delta_x1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal xpos_real1 : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
     signal jstk_x1 : std_logic_vector(9 downto 0);
-
+    --y
     signal vel_y1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal delta_y1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal ypos_real1 : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
     signal jstk_y1 : std_logic_vector(9 downto 0);
-
+    --PLAYER 2
+    --x
     signal vel_x2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal delta_x2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal xpos_real2 : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
     signal jstk_x2 : std_logic_vector(9 downto 0);
-
+    --y
     signal vel_y2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal delta_y2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal ypos_real2 : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
     signal jstk_y2 : std_logic_vector(9 downto 0);
 
-    signal proj_dirx1 : std_logic_vector(9 downto 0);
-    signal proj_diry1 : std_logic_vector(9 downto 0);
-    signal proj_deltax1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
-    signal proj_deltay1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
+
+    -- PROJECTILE SIGNALS
+
+    --PROJ 1
     signal proj_active1 : std_logic := '0';
+    --x
+    signal proj_dirx1 : std_logic_vector(9 downto 0);
+    signal proj_deltax1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal proj_real_xpos1 : sfixed(9 downto -4) := to_sfixed(120, 9, -4);
+
+    --y
+    signal proj_diry1 : std_logic_vector(9 downto 0);
+    signal proj_deltay1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal proj_real_ypos1 : sfixed(9 downto -4) := to_sfixed(120, 9, -4);
 
-    signal proj_dirx2 : std_logic_vector(9 downto 0);
-    signal proj_diry2 : std_logic_vector(9 downto 0);
-    signal proj_deltax2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
-    signal proj_deltay2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
-    signal zero_vel : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
+    
+    --PROJ 2
     signal proj_active2 : std_logic := '0';
+    --x
+    signal proj_dirx2 : std_logic_vector(9 downto 0);
+    signal proj_deltax2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal proj_real_xpos2 : sfixed(9 downto -4) := to_sfixed(240, 9, -4);
-    signal proj_real_ypos2 : sfixed(9 downto -4) := to_sfixed(240, 9, -4);
+    --y
+    signal proj_diry2 : std_logic_vector(9 downto 0);
+    signal proj_deltay2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
+    signal proj_real_ypos2 : sfixed(9 downto -4) := to_sfixed(240, 9, -4);    
 
-    signal hit_counter1 : integer range 0 to 15 := 0;
-    signal hit_counter2 : integer range 0 to 15 := 0;
 
-    signal hp1 : integer range 0 to 63 := 63;
-    signal hp2 : integer range 0 to 63 := 63;
 
-    signal map_counter : std_logic_vector(7 downto 0) := X"00";
-    signal cur_map : std_logic_vector(1 downto 0) := "00";
+    signal hit_counter1 : integer range 0 to 15 := 0; -- Knockback duration player 1
+    signal hit_counter2 : integer range 0 to 15 := 0; -- Knockback duration player 2
+
+    signal hp1 : integer range 0 to 63 := 63; -- Healthpoints player 1
+    signal hp2 : integer range 0 to 63 := 63; -- Healthpoints player 2
+
+    signal map_counter : std_logic_vector(7 downto 0) := X"00"; --Timer for map cycle
+    signal cur_map : std_logic_vector(1 downto 0) := "00"; -- Current map
 
 begin
-    --mem <= ram(24);
-
     flag_newframe <= NEW_FRAME;
     current_map <= cur_map;
-
-    --process(CLK) begin
-    --    if rising_edge(CLK) then
-    --        if flag_newframe = '1' then
-    --            if (joystick1(25 downto 24) & joystick1(39 downto 32)) > 450 and (joystick1(25 downto 24) & joystick1(39 downto 32)) < 560 then
-    --                vel_x <= resize(vel_x / 2,2,-9);
-    --            else
-    --                jstk_x <= (joystick1(25 downto 24) & joystick1(39 downto 32)) xor "1000000000";
-    --                delta_x <= resize(to_sfixed(jstk_x,0,-9),2,-9);
-    --                vel_x <= resize(vel_x + delta_x,2,-9);
-    --            end if;
-    --            xpos_real <= resize(xpos_real + vel_x,9,-4);
-    --            xpos_int <= to_integer(xpos_real);
-
-    --            if (joystick1(9 downto 8) & joystick1(23 downto 16)) > 450 and (joystick1(9 downto 8) & joystick1(23 downto 16)) < 560 then
-    --                vel_y <= resize(vel_y / 2,2,-9);
-    --            else
-    --                jstk_y <= (joystick1(9 downto 8) & joystick1(23 downto 16)) xor "1000000000";
-    --                delta_y <= resize(to_sfixed(jstk_y,0,-9),2,-9);
-    --                vel_y <= resize(vel_y + delta_y,2,-9);
-    --            end if;
-    --            ypos_real <= resize(ypos_real - vel_y,9,-4);
-    --            ypos_int <= to_integer(ypos_real);
-    --        end if;
-    --    end if;
-    --end process;
-
-
-
     -- ----------------------------------------
     -- # ASR Register
     -- ----------------------------------------
@@ -315,10 +279,6 @@ begin
                 ram(conv_integer(ASR_REG(8 downto 0))) <= buss(15 downto 0);
             else 
                 ram <= ram;
-            end if;
-            if flag_newframe = '1' then
-                ram(30) <= "0000000000000" & joystick1(25) & joystick1(24) & joystick1(39);
-                ram(31) <= "0000000000000" & joystick1(9) & joystick1(8) & joystick1(23);
             end if;
         end if;
     end process;
@@ -441,7 +401,6 @@ begin
                  when "0000" => null;
                  when "0010" => AR_REG(15 downto 0) <= AR_REG(15 downto 0) and buss(15 downto 0);
                  when "1000" => AR_REG(15 downto 0) <= AR_REG(15 downto 0) + buss(15 downto 0);
-
                  when "0101" => AR_REG(15 downto 0) <= AR_REG(15 downto 0) - buss(15 downto 0);
                  when "0001" => AR_REG(15 downto 0) <= buss(15 downto 0);
                  when "0011" => AR_REG(15 downto 0) <= X"0000";
