@@ -251,6 +251,10 @@ architecture rtl of CPU is
     signal hit_counter1 : integer range 0 to 15 := 0;
     signal hit_counter2 : integer range 0 to 15 := 0;
 
+    signal hp1 : integer range 0 to 511;
+    signal hp2 : integer range 0 to 511;
+
+
 begin
     --mem <= ram(24);
 
@@ -581,6 +585,17 @@ begin
                     vel_y2 <= proj_deltay1;
                     hit_counter2 <= hit_counter2 - 1;
                 end if;  
+            end if;
+
+            if ALU_OP = "1101" then
+                if to_integer(xpos_real1) > 96 - 16 and to_integer(xpos_real1) < 160 + 16 and 
+                   to_integer(ypos_real1) > 80 - 16 and to_integer(ypos_real1) < 160 + 16 then 
+                    --
+                else
+                    xpos_real1 <= to_sfixed(240, 9, -4);
+                    ypos_real1 <= to_sfixed(240, 9, -4);
+                end if;
+
             end if;
 
 
