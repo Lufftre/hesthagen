@@ -265,29 +265,30 @@ begin
 
       process(CLK) begin
         if rising_edge(CLK) then
-            --x <= std_logic_vector(to_unsigned(xctr,10));
-            --y <= std_logic_vector(to_unsigned(yctr,10));
-            --rad <= yctr/16;
-            --tile_index <= yctr*2 + xctr/16;
+            x <= std_logic_vector(to_unsigned(xctr,10));
+            y <= std_logic_vector(to_unsigned(yctr,10));
+            rad <= yctr/16;
+            tile_index <= yctr*2 + xctr/16;
 
  
-            --board_tile <= current_board(conv_integer(tile_index));
-            --pixel_color_index <= pixel_color_array(
-            --                                      conv_integer(board_tile),
-            --                                      conv_integer(std_logic_vector((unsigned(y) mod 16)*16) + std_logic_vector((unsigned(x) mod 16)))
-            --                                      );
-            ----pixel_color <= colors(conv_integer(pixel_color_index));
-            --pixel_color <= pixel_color_index;
-
-
-            tile_index <= yctr*2 + xctr/16;
-            board_tile <= current_board(tile_index);
+            board_tile <= current_board(conv_integer(tile_index));
             pixel_color_index <= pixel_color_array(
                                                   conv_integer(board_tile),
-                                                  (yctr mod 16)*16 + (xctr mod 16)
+                                                  conv_integer(std_logic_vector((unsigned(y) mod 16)*16) + std_logic_vector((unsigned(x) mod 16)))
                                                   );
             --pixel_color <= colors(conv_integer(pixel_color_index));
             pixel_color <= pixel_color_index;
+
+
+            
+            --tile_index <= yctr*2 + xctr/16;
+            --board_tile <= current_board(tile_index);
+            --pixel_color_index <= pixel_color_array(
+            --                                      conv_integer(board_tile),
+            --                                      (yctr mod 16)*16 + (xctr mod 16)
+            --                                      );
+            ----pixel_color <= colors(conv_integer(pixel_color_index));
+            --pixel_color <= pixel_color_index;
 
         end if;
       end process;
