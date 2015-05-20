@@ -511,10 +511,10 @@ begin
                         proj_active1 <= '1';
                     end if;
 
-                if joystick1(2) = '1' then
-                    proj_real_xpos1 <= to_sfixed(-1, 9, -4);
-                    proj_real_ypos1 <= to_sfixed(-1, 9, -4);
-                end if;
+                    if joystick1(2) = '1' then
+                        proj_real_xpos1 <= to_sfixed(-1, 9, -4);
+                        proj_real_ypos1 <= to_sfixed(-1, 9, -4);
+                    end if;
                 end if;
 
 
@@ -555,8 +555,8 @@ begin
                     proj_real_xpos2 <= to_sfixed(-1, 9, -4);
                     proj_real_ypos2 <= to_sfixed(-1, 9, -4);
                     -- player hit
-                    xpos_real1 <= to_sfixed(320, 9, -4);
-                    ypos_real1 <= to_sfixed(240, 9, -4);
+                    vel_x1 <= proj_deltax2;
+                    vel_y1 <= proj_deltay2;
                 end if;
                 if to_integer(xpos_real2) > to_integer(proj_real_xpos1) - 16 and to_integer(xpos_real2) < to_integer(proj_real_xpos1) + 16 and 
                    to_integer(ypos_real2) > to_integer(proj_real_ypos1) - 16 and to_integer(ypos_real2) < to_integer(proj_real_ypos1) + 16 then 
@@ -564,8 +564,8 @@ begin
                     proj_real_xpos1 <= to_sfixed(-1, 9, -4);
                     proj_real_ypos1 <= to_sfixed(-1, 9, -4);
                     -- player hit
-                    xpos_real2 <= to_sfixed(320, 9, -4);
-                    ypos_real2 <= to_sfixed(240, 9, -4);
+                    vel_x2 <= proj_deltax1;
+                    vel_y2 <= proj_deltay1;
                 end if;                
             end if;
 
