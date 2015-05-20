@@ -610,7 +610,7 @@ begin
                     end if;
                 end if;
 
-                if map_counter = "111111" then      
+                if map_counter = X"FF" then      
                     cur_map <= cur_map + 1;
                 end if;   
                 map_counter <= map_counter + 1;
