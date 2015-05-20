@@ -573,7 +573,8 @@ begin
 
                 if hit_counter1 > 0 then
                     vel_x1 <= proj_deltax2;
-                    vel_y1 <= proj_deltay2;  
+                    vel_y1 <= proj_deltay2;
+                end if;  
             end if;
 
 
