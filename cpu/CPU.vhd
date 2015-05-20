@@ -248,8 +248,8 @@ architecture rtl of CPU is
     signal proj_real_xpos2 : sfixed(9 downto -4) := to_sfixed(240, 9, -4);
     signal proj_real_ypos2 : sfixed(9 downto -4) := to_sfixed(240, 9, -4);
 
-    signal hit_counter1 : integer range 0 to 63 := 0;
-    signal hit_counter2 : integer range 0 to 63 := 0;
+    signal hit_counter1 : integer range 0 to 15 := 0;
+    signal hit_counter2 : integer range 0 to 15 := 0;
 
 begin
     --mem <= ram(24);
@@ -508,7 +508,8 @@ begin
                     proj_real_ypos1 <= resize(proj_real_ypos1 - proj_deltay1,9,-4);
                     proj_ypos1 <= to_integer(proj_real_ypos1);
 
-                    if to_integer(proj_real_xpos1) < 0 or to_integer(proj_real_xpos1) > 620 or to_integer(proj_real_ypos1) < 0 or to_integer(proj_real_ypos1) > 479 then
+                    if to_integer(proj_real_xpos1) < 0 or to_integer(proj_real_xpos1) > 600 or 
+                       to_integer(proj_real_ypos1) < 0 or to_integer(proj_real_ypos1) > 479 then
                         proj_active1 <= '0';
                     else 
                         proj_active1 <= '1';
@@ -538,7 +539,8 @@ begin
                     proj_real_ypos2 <= resize(proj_real_ypos2 - proj_deltay2,9,-4);
                     proj_ypos2 <= to_integer(proj_real_ypos2);
 
-                    if to_integer(proj_real_xpos2) < 0 or to_integer(proj_real_xpos2) > 620 or to_integer(proj_real_ypos2) < 0 or to_integer(proj_real_ypos2) > 479 then
+                    if to_integer(proj_real_xpos2) < 0 or to_integer(proj_real_xpos2) > 600 or 
+                       to_integer(proj_real_ypos2) < 0 or to_integer(proj_real_ypos2) > 479 then
                         proj_active2 <= '0';
                     else 
                         proj_active2 <= '1';
@@ -558,7 +560,7 @@ begin
                     proj_real_xpos2 <= to_sfixed(-1, 9, -4);
                     proj_real_ypos2 <= to_sfixed(-1, 9, -4);
                     -- player1 hit
-                    hit_counter1 <= 63;
+                    hit_counter1 <= 15;
                 end if;
                 if to_integer(xpos_real2) > to_integer(proj_real_xpos1) - 16 and to_integer(xpos_real2) < to_integer(proj_real_xpos1) + 16 and 
                    to_integer(ypos_real2) > to_integer(proj_real_ypos1) - 16 and to_integer(ypos_real2) < to_integer(proj_real_ypos1) + 16 then 
@@ -566,7 +568,7 @@ begin
                     proj_real_xpos1 <= to_sfixed(-1, 9, -4);
                     proj_real_ypos1 <= to_sfixed(-1, 9, -4);
                     -- player2 hit
-                    hit_counter2 <= 63;
+                    hit_counter2 <= 15;
                 end if;             
 
                 if hit_counter1 > 0 then
