@@ -39,7 +39,8 @@ architecture rtl of GPU is
         RST: in std_logic;
         xctr : in std_logic_vector(9 downto 0);
         yctr : in std_logic_vector(9 downto 0);
-        pixel_color : out std_logic_vector(2 downto 0)
+        pixel_color : out std_logic_vector(2 downto 0);
+        current_map : in std_logic_vector(1 downto 0)
    );
    end component;
 
