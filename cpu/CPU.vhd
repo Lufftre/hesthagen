@@ -211,12 +211,12 @@ architecture rtl of CPU is
     signal isNeg : std_logic := '0';
 
 
-    signal vel_x1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
+    signal vel_x1 : sfixed(2 downto -9) := to_sfixed(0, 4, -9);
     signal delta_x1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal xpos_real1 : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
     signal jstk_x1 : std_logic_vector(9 downto 0);
 
-    signal vel_y1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
+    signal vel_y1 : sfixed(2 downto -9) := to_sfixed(0, 4, -9);
     signal delta_y1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal ypos_real1 : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
     signal jstk_y1 : std_logic_vector(9 downto 0);
@@ -444,21 +444,21 @@ begin
             if ALU_OP = "1001" then
                 -- # Player 1
                 if (joystick1(25 downto 24) & joystick1(39 downto 32)) > 450 and (joystick1(25 downto 24) & joystick1(39 downto 32)) < 560 then
-                    vel_x1 <= resize(vel_x1 / 2,2,-9);
+                    vel_x1 <= resize(vel_x1 / 2,4,-9); -- # FRICTION
                 else
                     jstk_x1 <= (joystick1(25 downto 24) & joystick1(39 downto 32)) xor "1000000000";
                     delta_x1 <= resize(to_sfixed(jstk_x1,0,-9),2,-9);
-                    vel_x1 <= resize(vel_x1 + delta_x1,2,-9);
+                    vel_x1 <= resize(vel_x1 + delta_x1,4,-9);
                 end if;
                 xpos_real1 <= resize(xpos_real1 + vel_x1,9,-4);
                 xpos_int1 <= to_integer(xpos_real1);
 
                 if (joystick1(9 downto 8) & joystick1(23 downto 16)) > 450 and (joystick1(9 downto 8) & joystick1(23 downto 16)) < 560 then
-                    vel_y1 <= resize(vel_y1 / 2,2,-9);
+                    vel_y1 <= resize(vel_y1 / 2,4,-9); -- # FRICTION
                 else
                     jstk_y1 <= (joystick1(9 downto 8) & joystick1(23 downto 16)) xor "1000000000";
                     delta_y1 <= resize(to_sfixed(jstk_y1,0,-9),2,-9);
-                    vel_y1 <= resize(vel_y1 + delta_y1,2,-9);
+                    vel_y1 <= resize(vel_y1 + delta_y1,4,-9);
                 end if;
                 ypos_real1 <= resize(ypos_real1 - vel_y1,9,-4);
                 ypos_int1 <= to_integer(ypos_real1);
