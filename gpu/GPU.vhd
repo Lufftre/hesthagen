@@ -64,10 +64,6 @@ architecture rtl of GPU is
   -- # Signals
   -- ----------------------------------------
   signal xctr,yctr : std_logic_vector(9 downto 0) := "0000000000";
-  signal xpos1, ypos1 : std_logic_vector (9 downto 0);
-  signal xpos2, ypos2 : std_logic_vector (9 downto 0);
-  signal xposProj1, yposProj1 : std_logic_vector (9 downto 0);
-  signal xposProj2, yposProj2 : std_logic_vector (9 downto 0);
             
   signal pixel : std_logic_vector(1 downto 0) := "00";
   signal tile_color : std_logic_vector(2 downto 0);
