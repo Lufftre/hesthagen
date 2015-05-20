@@ -211,12 +211,12 @@ architecture rtl of CPU is
     signal isNeg : std_logic := '0';
 
 
-    signal vel_x1 : sfixed(4 downto -9) := to_sfixed(0, 4, -9);
+    signal vel_x1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal delta_x1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal xpos_real1 : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
     signal jstk_x1 : std_logic_vector(9 downto 0);
 
-    signal vel_y1 : sfixed(4 downto -9) := to_sfixed(0, 4, -9);
+    signal vel_y1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal delta_y1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal ypos_real1 : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
     signal jstk_y1 : std_logic_vector(9 downto 0);
@@ -247,6 +247,9 @@ architecture rtl of CPU is
     signal proj_active2 : std_logic := '0';
     signal proj_real_xpos2 : sfixed(9 downto -4) := to_sfixed(240, 9, -4);
     signal proj_real_ypos2 : sfixed(9 downto -4) := to_sfixed(240, 9, -4);
+
+    signal xboost1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
+    signal yboost1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
 
 begin
     --mem <= ram(24);
@@ -443,24 +446,24 @@ begin
             -- ----------------------------------------
             if ALU_OP = "1001" then
                 -- # Player 1
-                vel_x1 <= resize(vel_x1 - 0.1,4,-9); -- # FRICTION
-                vel_y1 <= resize(vel_y1 - 0.1,4,-9); -- # FRICTION
+                xboost1 <= resize(xboost1 / 2,2,-9);
+                yboost1 <= resize(yboost1 / 2,2,-9);
                 if (joystick1(25 downto 24) & joystick1(39 downto 32)) > 450 and (joystick1(25 downto 24) & joystick1(39 downto 32)) < 560 then
-                    --
+                    vel_x1 <= resize(vel_x1 / 2,2,-9); -- # FRICTION
                 else
                     jstk_x1 <= (joystick1(25 downto 24) & joystick1(39 downto 32)) xor "1000000000";
                     delta_x1 <= resize(to_sfixed(jstk_x1,0,-9),2,-9);
-                    vel_x1 <= resize(vel_x1 + delta_x1,4,-9);
+                    vel_x1 <= resize((vel_x1 + delta_x1) + xboost1,2,-9);
                 end if;
                 xpos_real1 <= resize(xpos_real1 + vel_x1,9,-4);
                 xpos_int1 <= to_integer(xpos_real1);
 
                 if (joystick1(9 downto 8) & joystick1(23 downto 16)) > 450 and (joystick1(9 downto 8) & joystick1(23 downto 16)) < 560 then
-                    --
+                    vel_y1 <= resize(vel_y1 / 2,2,-9); -- # FRICTION
                 else
                     jstk_y1 <= (joystick1(9 downto 8) & joystick1(23 downto 16)) xor "1000000000";
                     delta_y1 <= resize(to_sfixed(jstk_y1,0,-9),2,-9);
-                    vel_y1 <= resize(vel_y1 + delta_y1,4,-9);
+                    vel_y1 <= resize((vel_y1 + delta_y1) + yboost1,2,-9);
                 end if;
                 ypos_real1 <= resize(ypos_real1 - vel_y1,9,-4);
                 ypos_int1 <= to_integer(ypos_real1);
@@ -556,16 +559,16 @@ begin
                     -- Remove proj
                     proj_real_xpos2 <= to_sfixed(-1, 9, -4);
                     proj_real_ypos2 <= to_sfixed(-1, 9, -4);
-                    -- player hit
-                    vel_x1 <= resize(proj_deltax2*8,4,-9);
-                    vel_y1 <= resize(proj_deltay2*8,4,-9);
+                    -- player1 hit
+                    xboost1 <= proj_deltax1;
+                    yboost1 <= proj_deltay1;
                 end if;
                 if to_integer(xpos_real2) > to_integer(proj_real_xpos1) - 16 and to_integer(xpos_real2) < to_integer(proj_real_xpos1) + 16 and 
                    to_integer(ypos_real2) > to_integer(proj_real_ypos1) - 16 and to_integer(ypos_real2) < to_integer(proj_real_ypos1) + 16 then 
                     -- Remove proj
                     proj_real_xpos1 <= to_sfixed(-1, 9, -4);
                     proj_real_ypos1 <= to_sfixed(-1, 9, -4);
-                    -- player hit
+                    -- player2 hit
                     vel_x2 <= proj_deltax1;
                     vel_y2 <= proj_deltay1;
                 end if;                
