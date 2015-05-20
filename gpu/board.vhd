@@ -238,7 +238,7 @@ begin
       process(CLK) begin
         if rising_edge(CLK) then
 
-            tile_index <=(yctr*2) + xctr;
+            tile_index <=(yctr*2) + xctr/16;
 
             board_tile <= current_board(tile_index);
             pixel_color_index <= pixel_color_array(
