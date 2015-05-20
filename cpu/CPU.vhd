@@ -211,12 +211,12 @@ architecture rtl of CPU is
     signal isNeg : std_logic := '0';
 
 
-    signal vel_x1 : sfixed(2 downto -9) := to_sfixed(0, 4, -9);
+    signal vel_x1 : sfixed(4 downto -9) := to_sfixed(0, 4, -9);
     signal delta_x1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal xpos_real1 : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
     signal jstk_x1 : std_logic_vector(9 downto 0);
 
-    signal vel_y1 : sfixed(2 downto -9) := to_sfixed(0, 4, -9);
+    signal vel_y1 : sfixed(4 downto -9) := to_sfixed(0, 4, -9);
     signal delta_y1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal ypos_real1 : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
     signal jstk_y1 : std_logic_vector(9 downto 0);
