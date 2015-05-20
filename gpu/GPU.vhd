@@ -47,9 +47,6 @@ architecture rtl of GPU is
   Port (
         CLKHORSE: in std_logic;
         RST: in std_logic;
-        xctr : in std_logic_vector(9 downto 0);
-        yctr : in std_logic_vector(9 downto 0);
-        xpos,ypos : in std_logic_vector(9 downto 0);
         pixel_color : out std_logic_vector(2 downto 0)
    );
    end component;
@@ -58,9 +55,6 @@ architecture rtl of GPU is
   Port (
         CLKPROJECTILE: in std_logic;
         RST: in std_logic;
-        xctr : in std_logic_vector(9 downto 0);
-        yctr : in std_logic_vector(9 downto 0);
-        xpos,ypos : in std_logic_vector(9 downto 0);
         pixel_color : out std_logic_vector(2 downto 0)
    );
    end component;

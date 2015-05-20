@@ -7,15 +7,12 @@ entity hest is
     port (
         CLKHORSE: in std_logic;
         RST: in std_logic;
-        xctr,yctr : in std_logic_vector(9 downto 0);
-        xpos,ypos : in std_logic_vector(9 downto 0);
         pixel_color : out std_logic_vector(2 downto 0)
     );
 end entity;
 
 architecture rtl of hest is 
   signal pixel_counter : integer range 0 to 255 := 1;
-  signal rad : std_logic_vector(5 downto 0);
   type hest_type is array (0 to 255) of std_logic_vector(2 downto 0);
   signal hest : hest_type := (
 
