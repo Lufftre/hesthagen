@@ -446,8 +446,6 @@ begin
             -- ----------------------------------------
             if ALU_OP = "1001" then
                 -- # Player 1
-                xboost1 <= resize(xboost1 / 2,2,-9);
-                yboost1 <= resize(yboost1 / 2,2,-9);
                 if (joystick1(25 downto 24) & joystick1(39 downto 32)) > 450 and (joystick1(25 downto 24) & joystick1(39 downto 32)) < 560 then
                     vel_x1 <= resize(vel_x1 / 2,2,-9); -- # FRICTION
                 else
@@ -560,6 +558,8 @@ begin
                     proj_real_xpos2 <= to_sfixed(-1, 9, -4);
                     proj_real_ypos2 <= to_sfixed(-1, 9, -4);
                     -- player1 hit
+                    vel_x1 <= proj_deltax2;
+                    vel_y1 <= proj_deltay2;
                     xboost1 <= proj_deltax2;
                     yboost1 <= proj_deltay2;
                 end if;
