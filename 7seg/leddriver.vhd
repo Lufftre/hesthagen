@@ -24,6 +24,7 @@ architecture rtl of leddriver is
 	signal v : STD_LOGIC_VECTOR (3 downto 0);
 begin
 
+
    dp <= '1';
 	
    with counter_r(17 downto 16) select
