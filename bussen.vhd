@@ -7,6 +7,7 @@ entity bussen is
     port (
         CLK: in std_logic;
         RST: in std_logic;
+        BUTTON_UP: in std_logic;
         MISO_1 : in  STD_LOGIC;								-- 
         SS_1 : out  STD_LOGIC;								-- Slave 
         MOSI_1 : out  STD_LOGIC;							-- Master Out Slave In, 
@@ -198,7 +199,7 @@ gpu1 : GPU port map(
 
 	cpu1: CPU port map(
     CLK=>CLK,
-    RST=>RST,
+    RST=>BUTTON_UP,
 	NEW_FRAME=>frame_pulse,
 	joystick1=>joystick1,
 	joystick2=>joystick2,

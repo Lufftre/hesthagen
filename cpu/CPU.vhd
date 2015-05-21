@@ -98,7 +98,7 @@ architecture rtl of CPU is
     X"0019", --2F RESETMAP ADRESS
     X"0025", --30 nMAPS ADRESS
     X"0027", --31 RESET ADRESS1
-    X"0000", --32 RESET ADRESS2
+    X"002B", --32 RESET ADRESS2
     X"0000", --33
     X"0000", --34
     X"0000", --35
