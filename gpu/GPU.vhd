@@ -47,7 +47,9 @@ architecture rtl of GPU is
   Port (
         CLKHORSE: in std_logic;
         RST: in std_logic;
-        yctr : in integer range 0 to 1023;
+        xpos_int : in integer range 0 to 639;
+        ypos_int : in integer range 0 to 479;
+        xctr,yctr : in integer range 0 to 1023;
         pixel_color : out std_logic_vector(2 downto 0)
    );
    end component;
@@ -113,16 +115,22 @@ begin
     );
 
     h1 : hest port map(
-     CLKHORSE=>CLKHORSE1,
+     CLKHORSE=>CLK,
      RST=>reset_sprites,
+     xctr=>yctr,
      yctr=>yctr,
+     xpos_int=>xpos_int1,
+     ypos_int=>ypos_int1,
      pixel_color=>hest_color1
     );
 
     h2 : hest port map(
-     CLKHORSE=>CLKHORSE2,
+     CLKHORSE=>CLK,
      RST=>reset_sprites,
+     xctr=>yctr,
      yctr=>yctr,
+     xpos_int=>xpos_int2,
+     ypos_int=>ypos_int2,
      pixel_color=>hest_color2
     );
 
