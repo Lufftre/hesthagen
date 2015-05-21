@@ -41,15 +41,15 @@ architecture rtl of CPU is
     signal z_flag : STD_LOGIC := '0';
     
     -- PM/RAM och MyM
-    type ram_type is array (0 to 49) of std_logic_vector(15 downto 0);
+    type ram_type is array (0 to 67) of std_logic_vector(15 downto 0);
     type mram_type is array (0 to 45) of std_logic_vector(24 downto 0);
     
 
 
     signal ram : ram_type := (
     -- Programkod
-    X"301C", --00 ADD PLAYER 1 HP
-    X"341C", --01 ADD PLAYER 2 HP
+    X"101C", --00 LOAD PLAYER 1 HP
+    X"141C", --01 LOAD PLAYER 2 HP
     X"181B", --02 LOAD MAP_VALUE
     X"1C25", --03 LOAD nMAPS
     X"9020", --04 STAY UNTIL NEW FRAME
@@ -86,18 +86,36 @@ architecture rtl of CPU is
     X"0015", --23 NEW MAP ADRESS
     X"0012", --24 MAP COUNTER ADRESS
     X"0003", --25 nMAPS = 4
-    X"1C28", --26 LOAD ENDSCREEN1      GAMEOVER 1
-    X"0000", --27
-    X"0005", --28 ENDSCREEN1 ADRESS
-    X"0101", --29 ENDSCREEN1
-    X"1C2C", --2A LOAD ENDSCREEN2      GAMEOVER 2
-    X"0000", --2B 
-    X"0006", --2C ENDSCREEN2 ADRESS
-    X"0110", --2D ENDSCREEN2
-    X"0019", --2E RESETMAP ADRESS
-    X"0025", --2F nMAPS ADRESS
-    X"0000", --30 
-    X"0000"  --31
+    X"1C29", --26 LOAD ENDSCREEN1      GAMEOVER 1
+    X"7031", --27 WAIT FOR RESET
+    X"6043", --28 JMP 0
+    X"0005", --29 ENDSCREEN1 ADRESS
+    X"1C2D", --2A LOAD ENDSCREEN2      GAMEOVER 2
+    X"7032", --2B WAIT FOR RESET
+    X"6043", --2C JMP 0
+    X"0006", --2D ENDSCREEN2 ADRESS
+    X"0000", --2E 
+    X"0019", --2F RESETMAP ADRESS
+    X"0025", --30 nMAPS ADRESS
+    X"0027", --31 RESET ADRESS1
+    X"0000", --32 RESET ADRESS2
+    X"0000", --33
+    X"0000", --34
+    X"0000", --35
+    X"0000", --36
+    X"0000", --37
+    X"0000", --38
+    X"0000", --39
+    X"0000", --3A
+    X"0000", --3B
+    X"0000", --3C
+    X"0000", --3D
+    X"0000", --3E
+    X"0000", --3F
+    X"0000", --40
+    X"0000", --41
+    X"0000", --42
+    X"0000"  --43 NOLLA
     );
 
 
@@ -121,9 +139,9 @@ architecture rtl of CPU is
     "0000" & "100" & "010" & "0" & "1" & "00" & "0011" & "0000000", --0x0F AR => PM, PC++, mpc = 0
 --    ALU     TB      FB      S     P     LC     SEQ       myADR      
     "0000" & "010" & "011" & "0" & "0" & "00" & "0011" & "0000000", --0x10 PM => PC, mpc = 0                        (JMP)
-    "0001" & "110" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x11 Grx => AR, mpc++,                        (XOR 0x0800)
-    "1111" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x12 (NOT AR(10) ) => AR, mpc++
-    "0000" & "100" & "110" & "0" & "1" & "00" & "0011" & "0000000", --0x13 AR => GRx, PC++, mpc = 0
+    "0000" & "001" & "111" & "0" & "0" & "00" & "1011" & "0010000", --0x11 IF flagga = 1 then mpc++ else mpc =>myADR(RESET)
+    "0100" & "000" & "000" & "0" & "1" & "00" & "0011" & "0000000", --0x12 ALU RESET MAGIC, PC++, mpc = 0
+    "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x13 
     "0001" & "110" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x14 GRx => AR, mpc++                         (AND)
     "0010" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x15 ALU magic, mp++
     "0000" & "100" & "110" & "0" & "1" & "00" & "0011" & "0000000", --0x16 AR => GRx, PC++, mpc = 0
@@ -165,7 +183,7 @@ architecture rtl of CPU is
     X"0A", -- SUB    0x04
     X"0D", -- LSR    0x05
     X"10", -- JMP    0x06
-    X"11", -- XOR    0x07
+    X"11", -- RST    0x07
     X"14", -- AND    0x08
     X"18", -- B??    0x09
     X"1A", -- MOVE   0x0A
@@ -408,6 +426,13 @@ begin
                     MPC <= '0' & myADR;
                 end if;
             end if;
+            if SEQ = "1011" then
+                if RST = '1' then
+                    MPC <= MPC + 1;
+                else
+                    MPC <= '0' & myADR;
+                end if;
+            end if;
             
         end if;
     end process;
@@ -433,6 +458,22 @@ begin
                             end if;
                  when others => null;
             end case;
+
+            if ALU_OP = "0100" then
+                xpos_real1 <= to_sfixed(240, 9, -4);
+                ypos_real1 <= to_sfixed(240, 9, -4);
+                xpos_real2 <= to_sfixed(240, 9, -4);
+                ypos_real2 <= to_sfixed(240, 9, -4);
+            end if;
+
+
+                --if map_counter = X"FF" then      
+                --    cur_map <= cur_map + 1;
+                --end if;   
+                --map_counter <= map_counter + 1;
+
+
+            end if;
 
             -- ----------------------------------------
             -- # PLAYER MOVER
