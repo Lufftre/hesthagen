@@ -252,12 +252,12 @@ architecture rtl of CPU is
     signal proj_dirx1 : std_logic_vector(9 downto 0);
     signal proj_deltax1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal proj_real_xpos1 : sfixed(9 downto -4) := to_sfixed(120, 9, -4);
-    signal projectile_xpos1 : integer range 0 to 1023 := 32
+    signal projectile_xpos1 : integer range 0 to 1023 := 32;
     --y
     signal proj_diry1 : std_logic_vector(9 downto 0);
     signal proj_deltay1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal proj_real_ypos1 : sfixed(9 downto -4) := to_sfixed(120, 9, -4);
-    signal projectile_ypos1 : integer range 0 to 1023 := 32
+    signal projectile_ypos1 : integer range 0 to 1023 := 32;
     
     --PROJ 2
     signal proj_active2 : std_logic := '0';
@@ -265,12 +265,12 @@ architecture rtl of CPU is
     signal proj_dirx2 : std_logic_vector(9 downto 0);
     signal proj_deltax2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal proj_real_xpos2 : sfixed(9 downto -4) := to_sfixed(240, 9, -4);
-    signal projectile_xpos2 : integer range 0 to 1023 := 32
+    signal projectile_xpos2 : integer range 0 to 1023 := 32;
     --y
     signal proj_diry2 : std_logic_vector(9 downto 0);
     signal proj_deltay2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal proj_real_ypos2 : sfixed(9 downto -4) := to_sfixed(240, 9, -4);
-    signal projectile_ypos2 : integer range 0 to 1023 := 32  
+    signal projectile_ypos2 : integer range 0 to 1023 := 32;
 
 
 
