@@ -50,7 +50,7 @@ architecture rtl of CPU is
     -- Programkod
     X"301C", --00 ADD PLAYER 1 HP
     X"341C", --01 ADD PLAYER 2 HP
-    X"381B", --02 ADD MAP_COUNTER MAP_VALUE
+    X"181B", --02 LOAD MAP_VALUE
     X"1C25", --03 LOAD nMAPS
     X"9020", --04 STAY UNTIL NEW FRAME
     X"A000", --05 MOVE PLAYERS
@@ -71,11 +71,11 @@ architecture rtl of CPU is
     X"6020", --14 JMP START
     X"4C22", --15 SUB MAP 1            NEW MAP 
     X"F02E", --16 BNE RESET MAP
-    X"181B", --17 ADD MAP_COUNTER MAP_VALUE
+    X"181B", --17 LOAD MAP_VALUE
     X"6020", --18 JMP START
     X"1C22", --19 LOAD nMAPS       RESET MAP
     X"6020", --1A JMP START
-    X"0FFF", --1B MAP_VALUE = FFF
+    X"00FF", --1B MAP_VALUE = FFF
     X"00FF", --1C START HP = FF
     X"000D", --1D PLAYER2 ADDRESS
     X"0026", --1E GAMEOVER1 ADDRESS
