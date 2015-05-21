@@ -74,8 +74,8 @@ architecture rtl of CPU is
     X"0000", --18 
     X"0000", --19 
     X"0000", --1A 
-    X"0000", --1B PLAYER2 HOPP ADDRESS
-    X"0000", --1C GAME OVER ADDRESS
+    X"000B", --1B PLAYER2 HOPP ADDRESS
+    X"0013", --1C GAME OVER ADDRESS
     X"0000", --1D START ADDRESS
     X"0000", --1E BURNING HORSE?
     X"0001"  --1F ETTA
