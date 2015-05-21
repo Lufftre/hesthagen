@@ -224,7 +224,7 @@ begin
           if xctr >= xpos_int2 and xctr < xpos_int2 + 16 and yctr >= ypos_int2 and yctr < ypos_int2 + 16 then
             CLKHORSE2 <= '1';
             if hest_color2 /= "111" then
-              pixel_to_vga <= colors(conv_integer(hest_color2));
+              pixel_to_vga <= colors(conv_integer(hest_color2+1));
             end if;
           end if;
 
