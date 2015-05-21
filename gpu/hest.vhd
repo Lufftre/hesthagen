@@ -29,7 +29,7 @@ begin
 
       process(CLKHORSE) begin
         if rising_edge(CLKHORSE) then
-            if yctr > 479 then
+            if yctr > 479 - 16 then
               pixel_counter <= 0;
             end if;
             pixel_color <= hest(pixel_counter);
