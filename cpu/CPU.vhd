@@ -29,14 +29,14 @@ end entity;
 architecture rtl of CPU is
     -- Register
     signal ASR_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000";
-    signal PC_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000";
-    signal AR_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000";
-    signal HR_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000";
-    signal IR_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000";
+    signal PC_REG  : STD_LOGIC_VECTOR(15 downto 0) := X"0000";
+    signal AR_REG  : STD_LOGIC_VECTOR(15 downto 0) := X"0000";
+    signal HR_REG  : STD_LOGIC_VECTOR(15 downto 0) := X"0000";
+    signal IR_REG  : STD_LOGIC_VECTOR(15 downto 0) := X"0000";
     signal GR0_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000"; -- Player1 HÄLSA
     signal GR1_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000"; -- PLayer1 LIV
     signal GR2_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000"; -- PLayer2 HÄLÖSA
-    signal GR3_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000";--  plAYER2 LIVe
+    signal GR3_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000"; -- plAYER2 LIVe
     signal flag_newframe : STD_LOGIC := '0';
     signal z_flag : STD_LOGIC := '0';
     
@@ -47,36 +47,36 @@ architecture rtl of CPU is
 
     signal ram : ram_type := (
     -- Programkod
-    X"901D", --00 STAY UNTIL NEW FRAME
-    X"A000", --01 MOVE PLAYERS
-    X"B000", --02 MOVE PROJECTILES
-    X"C000", --03 HANDLE COLLISION
-    X"D01E", --04 GET BURNING HORSE
-    X"E01E", --05 BTST 1E
-    X"F01B", --06 BNE HOPPA PLAYER 2 
-    X"401F", --07 SUB PLAYER_1_HÄLSA - 1
-    X"F01B", --08 BNE PLAYER_2  
-    X"441F", --09 SUB PLAYER_1_LIV
-    X"F01C", --0A BNE GAMEOVER    
-    X"501E", --0B LSR 1E       PLAYER 2 HOPP
-    X"E01E", --0C BTST 1E
-    X"F01D", --0D BNE START
-    X"481F", --0E SUB PLAYER_2_HÄLSA
-    X"F01D", --0F BNE START
-    X"4C1F", --10 SUB PLAYER_2_LIV
-    X"F01C", --11 BNE GAMEOVER
-    X"601D", --12 JMP TO START
-    X"0000", --13 GAMEOVER
+    X"301A", --00 ADD PLAYER 1 HP
+    X"381A", --01 ADD PLAYER 2 HP
+    X"901D", --02 STAY UNTIL NEW FRAME
+    X"A000", --03 MOVE PLAYERS
+    X"B000", --04 MOVE PROJECTILES
+    X"C000", --05 HANDLE COLLISION
+    X"D01E", --06 GET BURNING HORSE
+    X"E01E", --07 BTST 1E
+    X"F01B", --08 BNE HOPPA PLAYER 2 
+    X"401F", --09 SUB PLAYER_1_HÄLSA - 1
+    X"F01B", --0A BNE PLAYER_2  
+    X"601C", --0B JMP gAMEOVER
+    X"501E", --0C LSR 1E       PLAYER 2 HOPP
+    X"E01E", --0D BTST 1E
+    X"F01D", --0E BNE START
+    X"481F", --0F SUB PLAYER_2_HÄLSA
+    X"F01D", --10 BNE START
+    X"0000", --11 GAMEOVER
+    X"0000", --12 GAMEOVER
+    X"0000", --13     
     X"0000", --14
     X"0000", --15
     X"0000", --16
     X"0000", --17
     X"0000", --18 
     X"0000", --19 
-    X"0000", --1A 
-    X"000B", --1B PLAYER2 HOPP ADDRESS
-    X"0013", --1C GAME OVER ADDRESS
-    X"0000", --1D START ADDRESS
+    X"000F", --1A START HP
+    X"000C", --1B PLAYER2 HOPP ADDRESS
+    X"0011", --1C GAME OVER ADDRESS
+    X"0002", --1D START ADDRESS
     X"0000", --1E BURNING HORSE?
     X"0001"  --1F ETTA
     );
