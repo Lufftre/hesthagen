@@ -79,7 +79,7 @@ architecture rtl of CPU is
     X"00FF", --1C START HP = FF
     X"000D", --1D PLAYER2 ADDRESS
     X"0026", --1E GAMEOVER1 ADDRESS
-    X"0029", --1F GAMEOVER2 ADDRESS
+    X"002A", --1F GAMEOVER2 ADDRESS
     X"0004", --20 START ADDRESS
     X"0000", --21 BURNING HORSE?
     X"0001", --22 ETTA
@@ -263,7 +263,7 @@ architecture rtl of CPU is
 begin
     flag_newframe <= NEW_FRAME;
     --current_map <= cur_map;
-    mem <= GR3_REG;
+    mem <= GR2_REG;
     current_map <= GR3_REG(2 downto 0);
 
     -- ----------------------------------------
