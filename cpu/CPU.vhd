@@ -33,51 +33,52 @@ architecture rtl of CPU is
     signal AR_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000";
     signal HR_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000";
     signal IR_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000";
-    signal GR0_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000"; 
-    signal GR1_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000"; 
-    signal GR2_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000"; 
-    signal GR3_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000";
+    signal GR0_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000"; -- Player1 HÄLSA
+    signal GR1_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000"; -- PLayer1 LIV
+    signal GR2_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000"; -- PLayer2 HÄLÖSA
+    signal GR3_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000";--  plAYER2 LIVe
     signal flag_newframe : STD_LOGIC := '0';
     signal z_flag : STD_LOGIC := '0';
     
     -- PM/RAM och MyM
     type ram_type is array (0 to 31) of std_logic_vector(15 downto 0);
     type mram_type is array (0 to 45) of std_logic_vector(24 downto 0);
-
+    
+    0000 0100 0000 0000
     signal ram : ram_type := (
     -- Programkod
-    X"900C", --00 STAY UNTIL NEW FRAME
+    X"901D", --00 STAY UNTIL NEW FRAME
     X"A000", --01 MOVE PLAYERS
     X"B000", --02 MOVE PROJECTILES
     X"C000", --03 HANDLE COLLISION
-    X"D013", --04 GET BURNING HORSE
-    X"E013", --05 BTST 13
-    X"F00B", --06 BNE SAFE_1   HOPPA PLAYER 2 
-    X"4000", --07 SUB PLAYER_1_HÄLSA - 1
-    X"0000", --08 BNE PLAYER_2  
-    X"D00F", --09 SUB PLAYER_1_LIV
-    X"0000", --0A BNE GAMEOVER    
-    X"0000", --0B LSR 13       PLAYER 2 HOPP
-    X"0000", --0C BTST 13
-    X"0000", --0D BNE START
-    X"0000", --0E SUB PLAYER_2_HÄLSA
-    X"0000", --0F BNE PLAYER_2
-    X"0000", --10 SUB PLAYER_2_LIV
-    X"0000", --11 BNE GAMEOVER
-    X"0000", --12 JMP TO START
-    X"0000", --13 
+    X"D01E", --04 GET BURNING HORSE
+    X"E01E", --05 BTST 1E
+    X"F01B", --06 BNE HOPPA PLAYER 2 
+    X"401F", --07 SUB PLAYER_1_HÄLSA - 1
+    X"F01B", --08 BNE PLAYER_2  
+    X"441F", --09 SUB PLAYER_1_LIV
+    X"F01C", --0A BNE GAMEOVER    
+    X"501E", --0B LSR 1E       PLAYER 2 HOPP
+    X"E01E", --0C BTST 1E
+    X"F01D", --0D BNE START
+    X"481F", --0E SUB PLAYER_2_HÄLSA
+    X"F01D", --0F BNE START
+    X"4C1F", --10 SUB PLAYER_2_LIV
+    X"F01C", --11 BNE GAMEOVER
+    X"601D", --12 JMP TO START
+    X"0000", --13 GAMEOVER
     X"0000", --14
     X"0000", --15
     X"0000", --16
     X"0000", --17
     X"0000", --18 
     X"0000", --19 
-    X"0000", -- 
-    X"0000", -- 
-    X"0000", -- 
-    X"0000", -- 
-    X"0000", -- 
-    X"0000"  -- 
+    X"0000", --1A 
+    X"0000", --1B PLAYER2 HOPP ADDRESS
+    X"0000", --1C GAME OVER ADDRESS
+    X"0000", --1D START ADDRESS
+    X"0000", --1E BURNING HORSE?
+    X"0001"  --1F ETTA
     );
 
 
@@ -96,9 +97,9 @@ architecture rtl of CPU is
     "0001" & "110" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x0A Grx => AR, mpc++,                        (SUB)
     "0101" & "010" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x0B (AR - PM) => AR, mpc++
     "0000" & "100" & "110" & "0" & "1" & "00" & "0011" & "0000000", --0x0C AR => GRx, PC++, mpc = 0
-    "0001" & "110" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x0D Grx => AR, mpc++,                        (LSR)
-    "1110" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x0E (AR LSR 1) => AR, mpc++
-    "0000" & "100" & "110" & "0" & "1" & "00" & "0011" & "0000000", --0x0F AR => GRx, PC++, mpc = 0
+    "0001" & "010" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x0D PM => AR, mpc++,                        (LSR)
+    "1110" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x0E (AR LSR 1) => AR , mpc++
+    "0000" & "100" & "010" & "0" & "1" & "00" & "0011" & "0000000", --0x0F AR => PM, PC++, mpc = 0
 --    ALU     TB      FB      S     P     LC     SEQ       myADR      
     "0000" & "010" & "011" & "0" & "0" & "00" & "0011" & "0000000", --0x10 PM => PC, mpc = 0                        (JMP)
     "0001" & "110" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x11 Grx => AR, mpc++,                        (XOR 0x0800)
