@@ -95,12 +95,6 @@ architecture rtl of CPU is
     X"0019"  --2C RESETMAP ADRESS
     );
 
-SUB MAP 1
-BNE RESET MAP
-ADD MAP_COUNTER MAP_VALUE
-JMP START
-ADD MAP nMaps --RESET MAP
-JMP START
 
     --signal ram : ram_type := (
     ---- Programkod
