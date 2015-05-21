@@ -50,7 +50,7 @@ architecture rtl of CPU is
     -- Programkod
     X"301A", --00 ADD PLAYER 1 HP
     X"381A", --01 ADD PLAYER 2 HP
-    X"3817", --02 ADD MAP_COUNTER MAP_VALUE
+    X"3818", --02 ADD MAP_COUNTER MAP_VALUE
     X"901E", --03 STAY UNTIL NEW FRAME
     X"A000", --04 MOVE PLAYERS
     X"B000", --05 MOVE PROJECTILES
@@ -73,8 +73,8 @@ architecture rtl of CPU is
     X"601E", --16 JMP START
     X"0000", --17 GAMEOVER
     X"00FF", --18 MAP VALUE
-    X"0000", --19 MAP
-    X"0000", --1A MAP COUNTER
+    X"0000", --19 
+    X"0000", --20
     X"00FF", --1B START HP
     X"000C", --1C PLAYER2 HOPP ADDRESS
     X"0017", --1D GAME OVER ADDRESS
