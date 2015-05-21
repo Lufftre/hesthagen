@@ -45,42 +45,6 @@ architecture rtl of CPU is
     type mram_type is array (0 to 45) of std_logic_vector(24 downto 0);
     
 
-    --signal ram : ram_type := (
-    ---- Programkod
-    --X"301A", --00 ADD PLAYER 1 HP
-    --X"381A", --01 ADD PLAYER 2 HP
-    --X"901D", --02 STAY UNTIL NEW FRAME
-    --X"A000", --03 MOVE PLAYERS
-    --X"B000", --04 MOVE PROJECTILES
-    --X"C000", --05 HANDLE COLLISION
-    --X"D01E", --06 GET BURNING HORSE
-    --X"E01E", --07 BTST 1E
-    --X"F01B", --08 BNE HOPPA PLAYER 2 
-    --X"401F", --09 SUB PLAYER_1_HÄLSA - 1
-    --X"F01B", --0A BNE PLAYER_2  
-    --X"601C", --0B JMP gAMEOVER
-    --X"501E", --0C LSR 1E       PLAYER 2 HOPP
-    --X"E01E", --0D BTST 1E
-    --X"F01D", --0E BNE START
-    --X"481F", --0F SUB PLAYER_2_HÄLSA
-    --X"F01D", --10 BNE START
-    --X"0000", --11 GAMEOVER
-    --X"0000", --12 GAMEOVER
-    --X"0000", --13     
-    --X"0000", --14
-    --X"0000", --15
-    --X"0000", --16
-    --X"0000", --17
-    --X"0000", --18 
-    --X"0000", --19 
-    --X"000F", --1A START HP
-    --X"000C", --1B PLAYER2 HOPP ADDRESS
-    --X"0011", --1C GAME OVER ADDRESS
-    --X"0002", --1D START ADDRESS
-    --X"0000", --1E BURNING HORSE?
-    --X"0001"  --1F ETTA
-    --);
-
     signal ram : ram_type := (
     -- Programkod
     X"301A", --00 ADD PLAYER 1 HP
@@ -91,9 +55,9 @@ architecture rtl of CPU is
     X"C000", --05 HANDLE COLLISION
     X"D01E", --06 GET BURNING HORSE
     X"E01E", --07 BTST 1E
-    X"F01D", --08 BNE HOPPA PLAYER 2 
+    X"F01B", --08 BNE HOPPA PLAYER 2 
     X"401F", --09 SUB PLAYER_1_HÄLSA - 1
-    X"601D", --07 JMP START
+    X"F01B", --0A BNE PLAYER_2  
     X"601C", --0B JMP gAMEOVER
     X"501E", --0C LSR 1E       PLAYER 2 HOPP
     X"E01E", --0D BTST 1E
@@ -116,6 +80,42 @@ architecture rtl of CPU is
     X"0000", --1E BURNING HORSE?
     X"0001"  --1F ETTA
     );
+
+    --signal ram : ram_type := (
+    ---- Programkod
+    --X"301A", --00 ADD PLAYER 1 HP
+    --X"381A", --01 ADD PLAYER 2 HP
+    --X"901D", --02 STAY UNTIL NEW FRAME
+    --X"A000", --03 MOVE PLAYERS
+    --X"B000", --04 MOVE PROJECTILES
+    --X"C000", --05 HANDLE COLLISION
+    --X"D01E", --06 GET BURNING HORSE
+    --X"E01E", --07 BTST 1E
+    --X"F01D", --08 BNE HOPPA PLAYER 2 
+    --X"401F", --09 SUB PLAYER_1_HÄLSA - 1
+    --X"601D", --07 JMP START
+    --X"601C", --0B JMP gAMEOVER
+    --X"501E", --0C LSR 1E       PLAYER 2 HOPP
+    --X"E01E", --0D BTST 1E
+    --X"F01D", --0E BNE START
+    --X"481F", --0F SUB PLAYER_2_HÄLSA
+    --X"F01D", --10 BNE START
+    --X"0000", --11 GAMEOVER
+    --X"0000", --12 GAMEOVER
+    --X"0000", --13     
+    --X"0000", --14
+    --X"0000", --15
+    --X"0000", --16
+    --X"0000", --17
+    --X"0000", --18 
+    --X"0000", --19 
+    --X"000F", --1A START HP
+    --X"000C", --1B PLAYER2 HOPP ADDRESS
+    --X"0011", --1C GAME OVER ADDRESS
+    --X"0002", --1D START ADDRESS
+    --X"0000", --1E BURNING HORSE?
+    --X"0001"  --1F ETTA
+    --);
 
 
     constant mram : mram_type := (
