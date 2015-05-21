@@ -41,7 +41,7 @@ architecture rtl of CPU is
     signal z_flag : STD_LOGIC := '0';
     
     -- PM/RAM och MyM
-    type ram_type is array (0 to 46) of std_logic_vector(15 downto 0);
+    type ram_type is array (0 to 49) of std_logic_vector(15 downto 0);
     type mram_type is array (0 to 45) of std_logic_vector(24 downto 0);
     
 
