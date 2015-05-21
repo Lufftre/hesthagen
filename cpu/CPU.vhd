@@ -34,51 +34,55 @@ architecture rtl of CPU is
     signal HR_REG  : STD_LOGIC_VECTOR(15 downto 0) := X"0000";
     signal IR_REG  : STD_LOGIC_VECTOR(15 downto 0) := X"0000";
     signal GR0_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000"; -- Player1 HÄLSA
-    signal GR1_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000"; -- PLayer1 LIV
-    signal GR2_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000"; -- PLayer2 HÄLÖSA
-    signal GR3_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000"; -- plAYER2 LIVe
+    signal GR1_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000"; -- PLayer2 HÄLSA 
+    signal GR2_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000"; -- MAP COUNTER
+    signal GR3_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000"; -- MAP
     signal flag_newframe : STD_LOGIC := '0';
     signal z_flag : STD_LOGIC := '0';
     
     -- PM/RAM och MyM
-    type ram_type is array (0 to 31) of std_logic_vector(15 downto 0);
+    type ram_type is array (0 to 32) of std_logic_vector(15 downto 0);
     type mram_type is array (0 to 45) of std_logic_vector(24 downto 0);
     
+
 
     signal ram : ram_type := (
     -- Programkod
     X"301A", --00 ADD PLAYER 1 HP
     X"381A", --01 ADD PLAYER 2 HP
-    X"901D", --02 STAY UNTIL NEW FRAME
-    X"A000", --03 MOVE PLAYERS
-    X"B000", --04 MOVE PROJECTILES
-    X"C000", --05 HANDLE COLLISION
-    X"D01E", --06 GET BURNING HORSE
-    X"E01E", --07 BTST 1E
-    X"F01B", --08 BNE HOPPA PLAYER 2 
-    X"401F", --09 SUB PLAYER_1_HÄLSA - 1
-    X"F01C", --0A BNE GAMEOVER  
-    X"501E", --0B LSR 1E       PLAYER 2 HOPP
-    X"E01E", --0C BTST 1E
-    X"F01D", --0D BNE START
-    X"481F", --0E SUB PLAYER_2_HÄLSA
-    X"F01C", --0F BNE GAMEOVER
-    X"601D", --10 JMP START
-    X"0000", --11 GAMEOVER
-    X"0000", --12 GAMEOVER
-    X"0000", --13     
-    X"0000", --14
-    X"0000", --15
-    X"0000", --16
-    X"0000", --17
-    X"0000", --18 
-    X"0000", --19 
-    X"000F", --1A START HP
-    X"000B", --1B PLAYER2 HOPP ADDRESS
-    X"0011", --1C GAME OVER ADDRESS
-    X"0002", --1D START ADDRESS
-    X"0000", --1E BURNING HORSE?
-    X"0001"  --1F ETTA
+    X"3817", --02 ADD MAP_COUNTER MAP_VALUE
+    X"901E", --03 STAY UNTIL NEW FRAME
+    X"A000", --04 MOVE PLAYERS
+    X"B000", --05 MOVE PROJECTILES
+    X"C000", --06 HANDLE COLLISION
+    X"D01F", --07 GET BURNING HORSE
+    X"E01F", --08 BTST 1F
+    X"F01C", --09 BNE HOPPA PLAYER 2 
+    X"4020", --0A SUB PLAYER_1_HÄLSA - 1
+    X"F01D", --0B BNE GAMEOVER  
+    X"501F", --0C LSR 1F                PLAYER 2 HOPP
+    X"E01F", --0D BTST 1F
+    X"F01E", --0E BNE START
+    X"4420", --0F SUB PLAYER_2_HÄLSA
+    X"F01D", --10 BNE GAMEOVER
+    X"4820", --11 SUB MAP_COUNTER
+    X"F021", --12 BNE NEW MAP
+    X"601E", --13 JMP START
+    X"3C20", --14 ADD MAP 20            NEW MAP 
+    X"3818", --15 ADD MAP_COUNTER MAP_VALUE
+    X"601E", --16 JMP START
+    X"0000", --17 GAMEOVER
+    X"00FF", --18 MAP VALUE
+    X"0000", --19 MAP
+    X"0000", --1A MAP COUNTER
+    X"00FF", --1B START HP
+    X"000C", --1C PLAYER2 HOPP ADDRESS
+    X"0017", --1D GAME OVER ADDRESS
+    X"0003", --1E START ADDRESS
+    X"0000", --1F BURNING HORSE?
+    X"0001", --20 ETTA
+    X"0000", --21 NEW MAP ADRESS
+    X"0000"
     );
 
     --signal ram : ram_type := (
@@ -284,6 +288,7 @@ begin
     flag_newframe <= NEW_FRAME;
     current_map <= cur_map;
     mem <= ram(30);
+    current_map <= GR3_REG(1 downto 0);
     -- ----------------------------------------
     -- # ASR Register
     -- ----------------------------------------
@@ -592,29 +597,6 @@ begin
             end if;
 
             if ALU_OP = "1101" then
-                --if horse_tile1 = "010" then --lava
-                --    hp1 <= hp1 - 1;
-                --    if hp1 = 0 then
-                --        player1_died_flag <= '1';
-                --        xpos_real1 <= to_sfixed(240, 9, -4);
-                --        ypos_real1 <= to_sfixed(240, 9, -4);
-                --        hp1 <= 63;
-                --    end if;
-                --end if;
-                --if horse_tile2 = "010" then --lava
-                --    hp2 <= hp2 - 1;
-                --    if hp2 = 0 then
-                --        xpos_real2 <= to_sfixed(240, 9, -4);
-                --        ypos_real2 <= to_sfixed(240, 9, -4);
-                --        hp2 <= 63;
-                --    end if;
-                --end if;
-
-                --if map_counter = X"FF" then      
-                --    cur_map <= cur_map + 1;
-                --end if;   
-                --map_counter <= map_counter + 1;
-
                 AR_REG(15 downto 0) <= X"0000"; 
                 if horse_tile1 = "010" then --lava
                     AR_REG(0) <= '1';
@@ -624,7 +606,10 @@ begin
                 end if;
 
 
-
+                --if map_counter = X"FF" then      
+                --    cur_map <= cur_map + 1;
+                --end if;   
+                --map_counter <= map_counter + 1;
 
 
             end if;
