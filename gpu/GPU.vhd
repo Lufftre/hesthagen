@@ -47,6 +47,7 @@ architecture rtl of GPU is
   Port (
         CLKHORSE: in std_logic;
         RST: in std_logic;
+        yctr : in integer range 0 to 1023;
         pixel_color : out std_logic_vector(2 downto 0)
    );
    end component;
@@ -55,6 +56,7 @@ architecture rtl of GPU is
   Port (
         CLKPROJECTILE: in std_logic;
         RST: in std_logic;
+        yctr : in integer range 0 to 1023;
         pixel_color : out std_logic_vector(2 downto 0)
    );
    end component;
@@ -113,24 +115,28 @@ begin
     h1 : hest port map(
      CLKHORSE=>CLKHORSE1,
      RST=>reset_sprites,
+     yctr=>yctr,
      pixel_color=>hest_color1
     );
 
     h2 : hest port map(
      CLKHORSE=>CLKHORSE2,
      RST=>reset_sprites,
+     yctr=>yctr,
      pixel_color=>hest_color2
     );
 
     p1 : projectile port map(
      CLKPROJECTILE=>CLKPROJECTILE1,
      RST=>reset_sprites,
+     yctr=>yctr,
      pixel_color=>projectile_color1
     );
 
     p2 : projectile port map(
      CLKPROJECTILE=>CLKPROJECTILE2,
      RST=>reset_sprites,
+     yctr=>yctr,
      pixel_color=>projectile_color2
     );
 
