@@ -82,7 +82,7 @@ architecture rtl of GPU is
   signal hest_color2 : std_logic_vector(2 downto 0);
   signal projectile_color1 : std_logic_vector(2 downto 0);
   signal projectile_color2 : std_logic_vector(2 downto 0);
-
+  signal reset_sprites : std_logic;
   type colors_type is array (0 to 7) of std_logic_vector(7 downto 0);
   signal colors : colors_type := (
     "000" & "000" & "00", -- BLACK 000
@@ -112,25 +112,25 @@ begin
 
     h1 : hest port map(
      CLKHORSE=>CLKHORSE1,
-     RST=>RST,
+     RST=>reset_sprites,
      pixel_color=>hest_color1
     );
 
     h2 : hest port map(
      CLKHORSE=>CLKHORSE2,
-     RST=>RST,
+     RST=>reset_sprites,
      pixel_color=>hest_color2
     );
 
     p1 : projectile port map(
      CLKPROJECTILE=>CLKPROJECTILE1,
-     RST=>RST,
+     RST=>reset_sprites,
      pixel_color=>projectile_color1
     );
 
     p2 : projectile port map(
      CLKPROJECTILE=>CLKPROJECTILE2,
-     RST=>RST,
+     RST=>reset_sprites,
      pixel_color=>projectile_color2
     );
 
@@ -215,12 +215,16 @@ begin
         else
           pixel_to_vga <= colors(conv_integer(tile_color));
 
+
+          -- Player 1
           if xctr >= xpos_int1 and xctr < xpos_int1 + 16 and yctr >= ypos_int1 and yctr < ypos_int1 + 16 then
             CLKHORSE1 <= '1';
             if hest_color1 /= "111" then
               pixel_to_vga <= colors(conv_integer(hest_color1));
             end if;
           end if;
+
+          -- Player 1
           if xctr >= xpos_int2 and xctr < xpos_int2 + 16 and yctr >= ypos_int2 and yctr < ypos_int2 + 16 then
             CLKHORSE2 <= '1';
             if hest_color2 /= "111" then
@@ -228,6 +232,8 @@ begin
             end if;
           end if;
 
+
+          -- Projectile 1
           if xctr >= proj_xpos1 and xctr < proj_xpos1 + 16 and yctr >= proj_ypos1 and yctr < proj_ypos1 + 16 then
             CLKPROJECTILE1 <= '1';
             if projectile_color1 /= "111" then
@@ -235,6 +241,8 @@ begin
             end if;
           end if;
 
+
+          -- Projectile 2
           if xctr >= proj_xpos2 and xctr < proj_xpos2 + 16 and yctr >= proj_ypos2 and yctr < proj_ypos2 + 16 then
             CLKPROJECTILE2 <= '1';
             if projectile_color2 /= "111" then
@@ -242,6 +250,8 @@ begin
             end if;
           end if;
 
+
+          -- Horse center pixel
           if xctr = xpos_int1 + 8 and yctr = ypos_int1 + 8 then
             horse_tile1 <= tile_color;
           end if;

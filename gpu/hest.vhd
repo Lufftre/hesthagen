@@ -12,7 +12,7 @@ entity hest is
 end entity;
 
 architecture rtl of hest is 
-  signal pixel_counter : integer range 0 to 255 := 1;
+  signal pixel_counter : integer range 0 to 255 := 0;
   type hest_type is array (0 to 255) of std_logic_vector(2 downto 0);
   signal hest : hest_type := (
 
