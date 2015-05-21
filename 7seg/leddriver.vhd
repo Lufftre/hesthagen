@@ -37,22 +37,22 @@ begin
      if rising_edge(CLK) then 
        counter_r <= counter_r + 1;
        case v is
-         when "0000" => SEG <= "0000001";
-         when "0001" => SEG <= "1001111";
-         when "0010" => SEG <= "0010010";
-         when "0011" => SEG <= "0000110";
-         when "0100" => SEG <= "1001100";
-         when "0101" => SEG <= "0100100";
-         when "0110" => SEG <= "0100000";
-         when "0111" => SEG <= "0001111";
-         when "1000" => SEG <= "0000000";
-         when "1001" => SEG <= "0000100";
-         when "1010" => SEG <= "0001000";
-         when "1011" => SEG <= "1100000";
-         when "1100" => SEG <= "0110001";
-         when "1101" => SEG <= "1000010";
-         when "1110" => SEG <= "0110000";
-         when others => SEG <= "0111000";
+         when X"0" => SEG <= "1000000";
+         when X"1" => SEG <= "1111001";
+         when X"2" => SEG <= "0100100";
+         when X"3" => SEG <= "0110000";
+         when X"4" => SEG <= "0011001";
+         when X"5" => SEG <= "0010010";
+         when X"6" => SEG <= "0000010";
+         when X"7" => SEG <= "1111000";
+         when X"8" => SEG <= "0000000";
+         when X"9" => SEG <= "0010000";
+         when X"A" => SEG <= "0000100";
+         when X"B" => SEG <= "0000011";
+         when X"C" => SEG <= "1000110";
+         when X"D" => SEG <= "0100001";
+         when X"E" => SEG <= "0000110";
+         when others => SEG <= "0001110";
        end case;
       
        case counter_r(17 downto 16) is
