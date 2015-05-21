@@ -72,7 +72,7 @@ architecture rtl of CPU is
     X"3818", --15 ADD MAP_COUNTER MAP_VALUE
     X"601E", --16 JMP START
     X"0000", --17 GAMEOVER
-    X"00FF", --18 MAP VALUE
+    X"0FFF", --18 MAP VALUE
     X"0000", --19 
     X"0000", --1A
     X"00FF", --1B START HP
@@ -287,7 +287,7 @@ architecture rtl of CPU is
 begin
     flag_newframe <= NEW_FRAME;
     --current_map <= cur_map;
-    mem <= ram(30);
+    mem <= GR2_REG;
     current_map <= GR3_REG(1 downto 0);
 
     -- ----------------------------------------
