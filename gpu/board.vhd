@@ -156,12 +156,12 @@ signal current_board : board_type;
 begin 
     with current_map select
         current_board <=
-            board0 when "000",
-            board1 when "001",
-            board2 when "010",
-            board3 when "011",
-            board4 when "100",
-            board5 when "101",
+            board0 when "001",
+            board1 when "010",
+            board2 when "011",
+            board3 when "100",
+            board4 when "101",
+            board5 when "110",
         (others => "00") when others;  
       -- ----------------------------------------
       --  # Fetching pixelcolor
