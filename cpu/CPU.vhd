@@ -493,7 +493,7 @@ begin
                     delta_y1 <= resize(to_sfixed(jstk_y1,0,-9),2,-9);
                     vel_y1 <= resize((vel_y1 + delta_y1),2,-9);
                 end if;
-                if to_integer(resize(ypos_real1 + vel_y1,9,-4)) > 0 and to_integer(resize(ypos_real1 + vel_y1,9,-4)) < 460 then
+                if to_integer(resize(ypos_real1 - vel_y1,9,-4)) > 0 and to_integer(resize(ypos_real1 - vel_y1,9,-4)) < 460 then
                     ypos_real1 <= resize(ypos_real1 - vel_y1,9,-4);
                     ypos_int1 <= to_integer(ypos_real1);
                 end if;
@@ -521,7 +521,7 @@ begin
                     delta_y2 <= resize(to_sfixed(jstk_y2,0,-9),2,-9);
                     vel_y2 <= resize(vel_y2 + delta_y2,2,-9);
                 end if;
-                if to_integer(resize(ypos_real2 + vel_y2,9,-4)) > 0 and to_integer(resize(ypos_real2 + vel_y2,9,-4)) < 460 then
+                if to_integer(resize(ypos_real2 - vel_y2,9,-4)) > 0 and to_integer(resize(ypos_real2 - vel_y2,9,-4)) < 460 then
                     ypos_real2 <= resize(ypos_real2 - vel_y2,9,-4);
                     ypos_int2 <= to_integer(ypos_real2);
                 end if;
