@@ -38,6 +38,7 @@ architecture rtl of CPU is
     signal GR2_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000"; 
     signal GR3_REG : STD_LOGIC_VECTOR(15 downto 0) := X"0000";
     signal flag_newframe : STD_LOGIC := '0';
+    signal z_flag : STD_LOGIC := '0';
     
     -- PM/RAM och MyM
     type ram_type is array (0 to 31) of std_logic_vector(15 downto 0);
@@ -45,32 +46,32 @@ architecture rtl of CPU is
 
     signal ram : ram_type := (
     -- Programkod
-    X"900C", -- STAY UNTIL NEW FRAME
-    X"A000", -- MOVE PLAYERS
-    X"B000", -- MOVE PROJECTILES
-    X"C000", -- HANDLE COLLISION
-    X"D000", -- BURN HORSES
-    X"600C", -- JUMP TO START
-    X"0000", -- 
-    X"0000", -- 
-    X"0000", -- 
-    X"0000", -- 
-    X"0000", -- 
-    X"0000", -- 
-    X"0000", -- 
-    X"0000", -- 
-    X"0000", -- 
-    X"0000", -- 
-    X"0000", -- 
-    X"0000", -- 
-    X"0000", -- 
-    X"0000", -- 
-    X"0000", -- 
-    X"0000", -- 
-    X"0000", -- 
-    X"0000", -- 
-    X"0000", -- 
-    X"0000", -- 
+    X"900C", --00 STAY UNTIL NEW FRAME
+    X"A000", --01 MOVE PLAYERS
+    X"B000", --02 MOVE PROJECTILES
+    X"C000", --03 HANDLE COLLISION
+    X"D013", --04 GET BURNING HORSE
+    X"E013", --05 BTST 13
+    X"F00B", --06 BNE SAFE_1   HOPPA PLAYER 2 
+    X"4000", --07 SUB PLAYER_1_HÄLSA - 1
+    X"0000", --08 BNE PLAYER_2  
+    X"D00F", --09 SUB PLAYER_1_LIV
+    X"0000", --0A BNE GAMEOVER    
+    X"0000", --0B LSR 13       PLAYER 2 HOPP
+    X"0000", --0C BTST 13
+    X"0000", --0D BNE START
+    X"0000", --0E SUB PLAYER_2_HÄLSA
+    X"0000", --0F BNE PLAYER_2
+    X"0000", --10 SUB PLAYER_2_LIV
+    X"0000", --11 BNE GAMEOVER
+    X"0000", --12 JMP TO START
+    X"0000", --13 
+    X"0000", --14
+    X"0000", --15
+    X"0000", --16
+    X"0000", --17
+    X"0000", --18 
+    X"0000", --19 
     X"0000", -- 
     X"0000", -- 
     X"0000", -- 
@@ -78,7 +79,6 @@ architecture rtl of CPU is
     X"0000", -- 
     X"0000"  -- 
     );
-
 
 
     constant mram : mram_type := (
@@ -117,10 +117,10 @@ architecture rtl of CPU is
     "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x1E
     "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000",  --0x1F
 --    ALU     TB      FB      S     P    LC      SEQ       myADR      
-    "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x20
-    "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x21
-    "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x22
-    "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x23
+    "1101" & "100" & "010" & "0" & "1" & "00" & "0011" & "0000000", --0x20 AR => PM, PC++, mpc = 0                  (Flag on burning horse) 
+    "1111" & "010" & "000" & "0" & "1" & "00" & "0011" & "0000000", --0x21 BTST PM, PC++, mpc = 0                   (BTST)
+    "0000" & "001" & "111" & "0" & "0" & "00" & "1001" & "0010000", --0x22 IF z = 1 then mpc++ else mpc=>myADR      (BNE)
+    "0000" & "000" & "000" & "0" & "1" & "00" & "0011" & "0000000", --0x23 PC++, mpc = 0
     "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x24 
     "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x25 
     "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x26 
@@ -151,9 +151,9 @@ architecture rtl of CPU is
     X"1A", -- MOVE   0x0A
     X"1B", -- PEW    0x0B
     X"1C", -- HIT    0x0C
-    X"1D", -- LAVA   0x0D
-    X"00", --        0x0E
-    X"00"  --        0x0F
+    X"20", -- GBH    0x0D  (GET BURNING HORSE) 
+    X"21", -- BTST   0x0E
+    X"22"  -- BNE    0x0F
     );
     constant k2 : k2_type := (
     X"03",
@@ -378,6 +378,14 @@ begin
                     MPC <= '0' & myADR;
                 end if;
             end if;
+            if SEQ = "1001" then
+                if z_flag = '1' then
+                    MPC <= MPC + 1;
+                else
+                    MPC <= '0' & myADR;
+                end if;
+            end if;
+            
         end if;
     end process;
     -- ----------------------------------------
@@ -389,11 +397,17 @@ begin
                  when "0000" => null;
                  when "0010" => AR_REG(15 downto 0) <= AR_REG(15 downto 0) and buss(15 downto 0);
                  when "1000" => AR_REG(15 downto 0) <= AR_REG(15 downto 0) + buss(15 downto 0);
-                 when "0101" => AR_REG(15 downto 0) <= AR_REG(15 downto 0) - buss(15 downto 0);
                  when "0001" => AR_REG(15 downto 0) <= buss(15 downto 0);
                  when "0011" => AR_REG(15 downto 0) <= X"0000";
-                 when "1110" => AR_REG(15 downto 0) <= "00" & AR_REG(15 downto 2);
-                 when "1111" => AR_REG(15 downto 0) <=  AR_REG(15 downto 0) xor X"0800";
+                 when "1110" => AR_REG(15 downto 0) <= "0" & AR_REG(15 downto 1);
+                 when "1111" => if buss(0) = '1' then z_flag <= '1'; else z_flag <= '0'; end if;
+                 when "0101" =>
+                            AR_REG(15 downto 0) <= AR_REG(15 downto 0) - buss(15 downto 0);
+                            if AR_REG = 0 then
+                                z_flag <= '0';
+                            else
+                                z_flag <= '1';
+                            end if;
                  when others => null;
             end case;
 
@@ -540,27 +554,40 @@ begin
             end if;
 
             if ALU_OP = "1101" then
+                --if horse_tile1 = "010" then --lava
+                --    hp1 <= hp1 - 1;
+                --    if hp1 = 0 then
+                --        player1_died_flag <= '1';
+                --        xpos_real1 <= to_sfixed(240, 9, -4);
+                --        ypos_real1 <= to_sfixed(240, 9, -4);
+                --        hp1 <= 63;
+                --    end if;
+                --end if;
+                --if horse_tile2 = "010" then --lava
+                --    hp2 <= hp2 - 1;
+                --    if hp2 = 0 then
+                --        xpos_real2 <= to_sfixed(240, 9, -4);
+                --        ypos_real2 <= to_sfixed(240, 9, -4);
+                --        hp2 <= 63;
+                --    end if;
+                --end if;
+
+                --if map_counter = X"FF" then      
+                --    cur_map <= cur_map + 1;
+                --end if;   
+                --map_counter <= map_counter + 1;
+
                 if horse_tile1 = "010" then --lava
-                    hp1 <= hp1 - 1;
-                    if hp1 = 0 then
-                        xpos_real1 <= to_sfixed(240, 9, -4);
-                        ypos_real1 <= to_sfixed(240, 9, -4);
-                        hp1 <= 63;
-                    end if;
+                    AR_REG <= B"0000_0000_0000_00" & "01";
                 end if;
                 if horse_tile2 = "010" then --lava
-                    hp2 <= hp2 - 1;
-                    if hp2 = 0 then
-                        xpos_real2 <= to_sfixed(240, 9, -4);
-                        ypos_real2 <= to_sfixed(240, 9, -4);
-                        hp2 <= 63;
-                    end if;
+                    AR_REG <= AR_REG or B"0000_0000_0000_00" & "10";
                 end if;
 
-                if map_counter = X"FF" then      
-                    cur_map <= cur_map + 1;
-                end if;   
-                map_counter <= map_counter + 1;
+
+
+
+
             end if;
 
         end if;
