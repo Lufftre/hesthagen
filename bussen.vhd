@@ -108,7 +108,7 @@ architecture rtl of bussen is
         Port ( 
             CLK : in  STD_LOGIC;
             dp : out  STD_LOGIC;
-            SEG : out STD_LOGIC_VECTOR (5 downto 0);
+            SEG : out STD_LOGIC_VECTOR (6 downto 0);
             AN : out  STD_LOGIC_VECTOR (3 downto 0);
             ledvalue : in  STD_LOGIC_VECTOR (15 downto 0)
        );
