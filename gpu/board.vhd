@@ -162,7 +162,7 @@ begin
             board3 when "011",
             board4 when "100",
             board5 when "101",
-        (others => "000") when others;  
+        (others => "00") when others;  
       -- ----------------------------------------
       --  # Fetching pixelcolor
       -- ----------------------------------------
