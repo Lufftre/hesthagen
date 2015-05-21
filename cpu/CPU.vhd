@@ -90,10 +90,10 @@ architecture rtl of CPU is
     X"B000", --04 MOVE PROJECTILES
     X"C000", --05 HANDLE COLLISION
     X"D01E", --06 GET BURNING HORSE
-    X"601D", --07 JMP START
-    X"F01B", --08 BNE HOPPA PLAYER 2 
+    X"E01E", --07 BTST 1E
+    X"F01D", --08 BNE HOPPA PLAYER 2 
     X"401F", --09 SUB PLAYER_1_HÄLSA - 1
-    X"F01B", --0A BNE PLAYER_2  
+    X"601D", --07 JMP START
     X"601C", --0B JMP gAMEOVER
     X"501E", --0C LSR 1E       PLAYER 2 HOPP
     X"E01E", --0D BTST 1E
@@ -283,7 +283,7 @@ architecture rtl of CPU is
 begin
     flag_newframe <= NEW_FRAME;
     current_map <= cur_map;
-    mem <= GR0_REG;
+    mem <= ram(30);
     -- ----------------------------------------
     -- # ASR Register
     -- ----------------------------------------
