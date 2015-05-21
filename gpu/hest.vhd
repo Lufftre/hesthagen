@@ -7,9 +7,7 @@ entity hest is
     port (
         CLKHORSE: in std_logic;
         RST: in std_logic;
-        xpos_int : in integer range 0 to 639;
-        ypos_int : in integer range 0 to 479;
-        xctr,yctr : in integer range 0 to 1023;
+        yctr : in integer range 0 to 1023;
         pixel_color : out std_logic_vector(2 downto 0)
     );
 end entity;
@@ -31,15 +29,11 @@ begin
 
       process(CLKHORSE) begin
         if rising_edge(CLKHORSE) then
-          if xctr = xpos_int and yctr = ypos_int then
-            pixel_counter <= 0;
-          end if;
-          if xctr >= xpos_int and xctr < xpos_int + 16 and yctr >= ypos_int and yctr < ypos_int + 16 then
+            if yctr > 479 - 32 then
+              pixel_counter <= 0;
+            end if;
             pixel_color <= hest(pixel_counter);
             pixel_counter <= pixel_counter + 1;
-          else
-            pixel_color <= "111";
-          end if;
         end if;
       end process;
 

@@ -470,7 +470,9 @@ begin
             -- # PLAYER MOVER
             -- ----------------------------------------
             if ALU_OP = "1001" then
+
                 -- # Player 1
+                --X
                 if (joystick1(25 downto 24) & joystick1(39 downto 32)) > 450 and (joystick1(25 downto 24) & joystick1(39 downto 32)) < 560 then
                     vel_x1 <= resize(vel_x1 / 2,2,-9); -- # FRICTION
                 else
@@ -483,6 +485,7 @@ begin
                     xpos_int1 <= to_integer(xpos_real1);
                 end if;
 
+                --Y
                 if (joystick1(9 downto 8) & joystick1(23 downto 16)) > 450 and (joystick1(9 downto 8) & joystick1(23 downto 16)) < 560 then
                     vel_y1 <= resize(vel_y1 / 2,2,-9); -- # FRICTION
                 else
@@ -490,11 +493,14 @@ begin
                     delta_y1 <= resize(to_sfixed(jstk_y1,0,-9),2,-9);
                     vel_y1 <= resize((vel_y1 + delta_y1),2,-9);
                 end if;
-                if to_integer(resize(ypos_real1 + vel_x1,9,-4)) > 0 and to_integer(resize(ypos_real1 + vel_x1,9,-4)) < 460 then
+                if to_integer(resize(ypos_real1 + vel_y1,9,-4)) > 0 and to_integer(resize(ypos_real1 + vel_y1,9,-4)) < 460 then
                     ypos_real1 <= resize(ypos_real1 - vel_y1,9,-4);
                     ypos_int1 <= to_integer(ypos_real1);
                 end if;
+
+
                 -- # Player 2
+                --X
                 if (joystick2(25 downto 24) & joystick2(39 downto 32)) > 450 and (joystick2(25 downto 24) & joystick2(39 downto 32)) < 560 then
                     vel_x2 <= resize(vel_x2 / 2,2,-9);
                 else
@@ -502,9 +508,12 @@ begin
                     delta_x2 <= resize(to_sfixed(jstk_x2,0,-9),2,-9);
                     vel_x2 <= resize(vel_x2 + delta_x2,2,-9);
                 end if;
-                xpos_real2 <= resize(xpos_real2 + vel_x2,9,-4);
-                xpos_int2 <= to_integer(xpos_real2);
+                if to_integer(resize(xpos_real2 + vel_x2,9,-4)) > 0 and to_integer(resize(xpos_real2 + vel_x2,9,-4)) < 500 then
+                    xpos_real2 <= resize(xpos_real2 + vel_x2,9,-4);
+                    xpos_int2 <= to_integer(xpos_real2);
+                end if;
 
+                --Y
                 if (joystick2(9 downto 8) & joystick2(23 downto 16)) > 450 and (joystick2(9 downto 8) & joystick2(23 downto 16)) < 560 then
                     vel_y2 <= resize(vel_y2 / 2,2,-9);
                 else
@@ -512,8 +521,10 @@ begin
                     delta_y2 <= resize(to_sfixed(jstk_y2,0,-9),2,-9);
                     vel_y2 <= resize(vel_y2 + delta_y2,2,-9);
                 end if;
-                ypos_real2 <= resize(ypos_real2 - vel_y2,9,-4);
-                ypos_int2 <= to_integer(ypos_real2);
+                if to_integer(resize(ypos_real2 + vel_y2,9,-4)) > 0 and to_integer(resize(ypos_real2 + vel_y2,9,-4)) < 460 then
+                    ypos_real2 <= resize(ypos_real2 - vel_y2,9,-4);
+                    ypos_int2 <= to_integer(ypos_real2);
+                end if;
             end if;
 
             -- ----------------------------------------

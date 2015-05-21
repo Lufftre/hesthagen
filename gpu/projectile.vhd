@@ -25,7 +25,7 @@ begin
       -- ----------------------------------------
       process(CLKPROJECTILE) begin
         if rising_edge(CLKPROJECTILE) then
-            if yctr > 479 - 16 then
+            if yctr > 479 - 32 then
               pixel_counter <= 0;
             end if;
             pixel_color <= projectile(pixel_counter);
