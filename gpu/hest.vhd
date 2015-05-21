@@ -38,7 +38,7 @@ begin
             pixel_color <= hest(pixel_counter);
             pixel_counter <= pixel_counter + 1;
           else
-            pixelcolor <= "111";
+            pixel_color <= "111";
           end if;
         end if;
       end process;
