@@ -23,7 +23,7 @@ entity CPU is
     proj_ypos2 : out integer range 0 to 479;
     horse_tile1 : in std_logic_vector(2 downto 0);
     horse_tile2 : in std_logic_vector(2 downto 0);
-    current_map : out std_logic_vector(1 downto 0)
+    current_map : out std_logic_vector(2 downto 0)
     );
 end entity;
 architecture rtl of CPU is
@@ -41,49 +41,66 @@ architecture rtl of CPU is
     signal z_flag : STD_LOGIC := '0';
     
     -- PM/RAM och MyM
-    type ram_type is array (0 to 34) of std_logic_vector(15 downto 0);
+    type ram_type is array (0 to 44) of std_logic_vector(15 downto 0);
     type mram_type is array (0 to 45) of std_logic_vector(24 downto 0);
     
 
 
     signal ram : ram_type := (
     -- Programkod
-    X"301B", --00 ADD PLAYER 1 HP
-    X"341B", --01 ADD PLAYER 2 HP
-    X"3818", --02 ADD MAP_COUNTER MAP_VALUE
-    X"901E", --03 STAY UNTIL NEW FRAME
-    X"A000", --04 MOVE PLAYERS
-    X"B000", --05 MOVE PROJECTILES
-    X"C000", --06 HANDLE COLLISION
-    X"D01F", --07 GET BURNING HORSE
-    X"E01F", --08 BTST 1F
-    X"F01C", --09 BNE HOPPA PLAYER 2 
-    X"4020", --0A SUB PLAYER_1_HÄLSA - 1
-    X"F01D", --0B BNE GAMEOVER  
-    X"501F", --0C LSR 1F                PLAYER 2 HOPP
-    X"E01F", --0D BTST 1F
-    X"F022", --0E BNE MAPCOUNTER
-    X"4420", --0F SUB PLAYER_2_HÄLSA
-    X"F01D", --10 BNE GAMEOVER
-    X"4820", --11 SUB MAP_COUNTER       MAP COUNTER
-    X"F021", --12 BNE NEW MAP
-    X"601E", --13 JMP START
-    X"3C20", --14 ADD MAP 1            NEW MAP 
-    X"3818", --15 ADD MAP_COUNTER MAP_VALUE
-    X"601E", --16 JMP START
-    X"0000", --17 GAMEOVER
-    X"0FFF", --18 MAP VALUE
-    X"0000", --19 
-    X"0000", --1A
-    X"00FF", --1B START HP
-    X"000C", --1C PLAYER2 HOPP ADDRESS
-    X"0017", --1D GAME OVER ADDRESS
-    X"0003", --1E START ADDRESS
-    X"0000", --1F BURNING HORSE?
-    X"0001", --20 ETTA
-    X"0014", --21 NEW MAP ADRESS
-    X"0011"  --22 MAP COUNTER ADRESS
+    X"301C", --00 ADD PLAYER 1 HP
+    X"341C", --01 ADD PLAYER 2 HP
+    X"381B", --02 ADD MAP_COUNTER MAP_VALUE
+    X"3C25", --03 ADD MAP nMAPS
+    X"9020", --04 STAY UNTIL NEW FRAME
+    X"A000", --05 MOVE PLAYERS
+    X"B000", --06 MOVE PROJECTILES
+    X"C000", --07 HANDLE COLLISION
+    X"D021", --08 GET BURNING HORSE
+    X"E021", --09 BTST 1F
+    X"F01D", --0A BNE HOPPA PLAYER 2 
+    X"4022", --0B SUB PLAYER_1_HÄLSA - 1
+    X"F01E", --0C BNE GAMEOVER1  
+    X"5021", --0D LSR 1F                PLAYER 2 HOPP
+    X"E021", --0E BTST 1F
+    X"F024", --0F BNE MAPCOUNTER
+    X"4422", --10 SUB PLAYER_2_HÄLSA - 1
+    X"F01F", --11 BNE GAMEOVER2
+    X"4822", --12 SUB MAP_COUNTER -1     MAP COUNTER
+    X"F023", --13 BNE NEW MAP
+    X"6020", --14 JMP START
+    X"4C22", --15 SUB MAP 1            NEW MAP 
+    X"F02C", --16 BNE RESET MAP
+    X"381B", --17 ADD MAP_COUNTER MAP_VALUE
+    X"6020", --18 JMP START
+    X"3C25", --19 ADD MAP nMAPS        RESET MAP
+    X"6020", --1A JMP START
+    X"0FFF", --1B MAP_VALUE = FFF
+    X"00FF", --1C START HP = FF
+    X"000D", --1D PLAYER2 ADDRESS
+    X"0026", --1E GAMEOVER1 ADDRESS
+    X"0029", --1F GAMEOVER2 ADDRESS
+    X"0004", --20 START ADDRESS
+    X"0000", --21 BURNING HORSE?
+    X"0001", --22 ETTA
+    X"0015", --23 NEW MAP ADRESS
+    X"0012", --24 MAP COUNTER ADRESS
+    X"0100", --25 nMAPS = 4
+    X"1C27", --26 LOAD ENDSCREEN1      GAMEOVER 1
+    X"0028", --27 ENDSCREEN1 ADRESS
+    X"0100", --28 ENDSCREEN1
+    X"1C2A", --29 LOAD ENDSCREEN2      GAMEOVER 2
+    X"002B", --2A ENDSCREEN2 ADRESS
+    X"0101", --2B ENDSCREEN2
+    X"0019"  --2C RESETMAP ADRESS
     );
+
+SUB MAP 1
+BNE RESET MAP
+ADD MAP_COUNTER MAP_VALUE
+JMP START
+ADD MAP nMaps --RESET MAP
+JMP START
 
     --signal ram : ram_type := (
     ---- Programkod
@@ -288,7 +305,7 @@ begin
     flag_newframe <= NEW_FRAME;
     --current_map <= cur_map;
     mem <= GR2_REG;
-    current_map <= GR3_REG(1 downto 0);
+    current_map <= GR3_REG(2 downto 0);
 
     -- ----------------------------------------
     -- # ASR Register

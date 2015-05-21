@@ -68,7 +68,7 @@ architecture rtl of bussen is
             proj_ypos2 : in integer range 0 to 479;
             horse_tile1 : out std_logic_vector(2 downto 0);
             horse_tile2 : out std_logic_vector(2 downto 0);
-            current_map : in std_logic_vector(1 downto 0)  
+            current_map : in std_logic_vector(2 downto 0)  
 	    );
 	end component;
 
@@ -89,7 +89,7 @@ architecture rtl of bussen is
     	    proj_ypos2 : out integer range 0 to 479;
             horse_tile1 : in std_logic_vector(2 downto 0);
             horse_tile2 : in std_logic_vector(2 downto 0);
-            current_map : out std_logic_vector(1 downto 0)	
+            current_map : out std_logic_vector(2 downto 0)	
         );
 	end component;
 
