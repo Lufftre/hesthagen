@@ -70,7 +70,7 @@ architecture rtl of CPU is
     X"F023", --13 BNE NEW MAP
     X"6020", --14 JMP START
     X"4C22", --15 SUB MAP 1            NEW MAP 
-    X"F02C", --16 BNE RESET MAP
+    X"F02E", --16 BNE RESET MAP
     X"381B", --17 ADD MAP_COUNTER MAP_VALUE
     X"6020", --18 JMP START
     X"3C25", --19 ADD MAP nMAPS        RESET MAP
@@ -86,51 +86,16 @@ architecture rtl of CPU is
     X"0015", --23 NEW MAP ADRESS
     X"0012", --24 MAP COUNTER ADRESS
     X"0100", --25 nMAPS = 4
-    X"1C27", --26 LOAD ENDSCREEN1      GAMEOVER 1
-    X"0028", --27 ENDSCREEN1 ADRESS
-    X"0100", --28 ENDSCREEN1
-    X"1C2A", --29 LOAD ENDSCREEN2      GAMEOVER 2
-    X"002B", --2A ENDSCREEN2 ADRESS
-    X"0101", --2B ENDSCREEN2
-    X"0019"  --2C RESETMAP ADRESS
+    X"1C28", --26 LOAD ENDSCREEN1      GAMEOVER 1
+    X"0000", --27
+    X"0029", --28 ENDSCREEN1 ADRESS
+    X"0100", --29 ENDSCREEN1
+    X"1C2B", --2A LOAD ENDSCREEN2      GAMEOVER 2
+    X"0000", --2B 
+    X"002D", --2C ENDSCREEN2 ADRESS
+    X"0101", --2D ENDSCREEN2
+    X"0019"  --2E RESETMAP ADRESS
     );
-
-
-    --signal ram : ram_type := (
-    ---- Programkod
-    --X"301A", --00 ADD PLAYER 1 HP
-    --X"381A", --01 ADD PLAYER 2 HP
-    --X"901D", --02 STAY UNTIL NEW FRAME
-    --X"A000", --03 MOVE PLAYERS
-    --X"B000", --04 MOVE PROJECTILES
-    --X"C000", --05 HANDLE COLLISION
-    --X"D01E", --06 GET BURNING HORSE
-    --X"E01E", --07 BTST 1E
-    --X"F01D", --08 BNE HOPPA PLAYER 2 
-    --X"401F", --09 SUB PLAYER_1_HÄLSA - 1
-    --X"601D", --07 JMP START
-    --X"601C", --0B JMP gAMEOVER
-    --X"501E", --0C LSR 1E       PLAYER 2 HOPP
-    --X"E01E", --0D BTST 1E
-    --X"F01D", --0E BNE START
-    --X"481F", --0F SUB PLAYER_2_HÄLSA
-    --X"F01D", --10 BNE START
-    --X"0000", --11 GAMEOVER
-    --X"0000", --12 GAMEOVER
-    --X"0000", --13     
-    --X"0000", --14
-    --X"0000", --15
-    --X"0000", --16
-    --X"0000", --17
-    --X"0000", --18 
-    --X"0000", --19 
-    --X"000F", --1A START HP
-    --X"000C", --1B PLAYER2 HOPP ADDRESS
-    --X"0011", --1C GAME OVER ADDRESS
-    --X"0002", --1D START ADDRESS
-    --X"0000", --1E BURNING HORSE?
-    --X"0001"  --1F ETTA
-    --);
 
 
     constant mram : mram_type := (
