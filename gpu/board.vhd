@@ -156,7 +156,7 @@ signal current_board : board_type;
 begin 
     with current_map select
         current_board <=
-            board0 when "00",
+            board0 when "000",
             board1 when "001",
             board2 when "010",
             board3 when "011",
