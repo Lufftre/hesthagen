@@ -227,23 +227,23 @@ architecture rtl of CPU is
     --x
     signal vel_x1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal delta_x1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
-    signal xpos_real1 : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
+    signal xpos_real1 : sfixed(9 downto -4) := to_sfixed(240, 9, -4);
     signal jstk_x1 : std_logic_vector(9 downto 0);
     --y
     signal vel_y1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal delta_y1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
-    signal ypos_real1 : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
+    signal ypos_real1 : sfixed(9 downto -4) := to_sfixed(240, 9, -4);
     signal jstk_y1 : std_logic_vector(9 downto 0);
     --PLAYER 2
     --x
     signal vel_x2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal delta_x2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
-    signal xpos_real2 : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
+    signal xpos_real2 : sfixed(9 downto -4) := to_sfixed(240, 9, -4);
     signal jstk_x2 : std_logic_vector(9 downto 0);
     --y
     signal vel_y2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal delta_y2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
-    signal ypos_real2 : sfixed(9 downto -4) := to_sfixed(320, 9, -4);
+    signal ypos_real2 : sfixed(9 downto -4) := to_sfixed(240, 9, -4);
     signal jstk_y2 : std_logic_vector(9 downto 0);
 
 
