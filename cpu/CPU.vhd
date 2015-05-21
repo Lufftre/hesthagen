@@ -252,12 +252,12 @@ architecture rtl of CPU is
     signal proj_dirx1 : std_logic_vector(9 downto 0);
     signal proj_deltax1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal proj_real_xpos1 : sfixed(9 downto -4) := to_sfixed(120, 9, -4);
-
+    signal projectile_xpos1 : integer range 0 to 1023 := 32
     --y
     signal proj_diry1 : std_logic_vector(9 downto 0);
     signal proj_deltay1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal proj_real_ypos1 : sfixed(9 downto -4) := to_sfixed(120, 9, -4);
-
+    signal projectile_ypos1 : integer range 0 to 1023 := 32
     
     --PROJ 2
     signal proj_active2 : std_logic := '0';
@@ -265,10 +265,12 @@ architecture rtl of CPU is
     signal proj_dirx2 : std_logic_vector(9 downto 0);
     signal proj_deltax2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
     signal proj_real_xpos2 : sfixed(9 downto -4) := to_sfixed(240, 9, -4);
+    signal projectile_xpos2 : integer range 0 to 1023 := 32
     --y
     signal proj_diry2 : std_logic_vector(9 downto 0);
     signal proj_deltay2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
-    signal proj_real_ypos2 : sfixed(9 downto -4) := to_sfixed(240, 9, -4);    
+    signal proj_real_ypos2 : sfixed(9 downto -4) := to_sfixed(240, 9, -4);
+    signal projectile_ypos2 : integer range 0 to 1023 := 32  
 
 
 
@@ -283,9 +285,12 @@ architecture rtl of CPU is
 
 begin
     flag_newframe <= NEW_FRAME;
-    --current_map <= cur_map;
     mem <= GR0_REG(7 downto 4) & GR1_REG(7 downto 4) & GR2_REG(7 downto 0);
     current_map <= GR3_REG(2 downto 0);
+    proj_xpos1 <= projectile_xpos1;
+    proj_ypos1 <= projectile_ypos1;
+    proj_xpos2 <= projectile_xpos2;
+    proj_ypos2 <= projectile_ypos2;
 
     -- ----------------------------------------
     -- # ASR Register
@@ -544,9 +549,9 @@ begin
 
                 if proj_active1 = '1' then
                     proj_real_xpos1 <= resize(proj_real_xpos1 + proj_deltax1,9,-4);
-                    proj_xpos1 <= to_integer(proj_real_xpos1);
+                    projectile_xpos1 <= to_integer(proj_real_xpos1);
                     proj_real_ypos1 <= resize(proj_real_ypos1 - proj_deltay1,9,-4);
-                    proj_ypos1 <= to_integer(proj_real_ypos1);
+                    projectile_ypos1 <= to_integer(proj_real_ypos1);
 
                     if to_integer(proj_real_xpos1) < 16 or to_integer(proj_real_xpos1) > 500 or 
                        to_integer(proj_real_ypos1) < 16 or to_integer(proj_real_ypos1) > 460 then
@@ -577,9 +582,9 @@ begin
 
                 if proj_active2 = '1' then
                     proj_real_xpos2 <= resize(proj_real_xpos2 + proj_deltax2,9,-4);
-                    proj_xpos2 <= to_integer(proj_real_xpos2);
+                    projectile_xpos2 <= to_integer(proj_real_xpos2);
                     proj_real_ypos2 <= resize(proj_real_ypos2 - proj_deltay2,9,-4);
-                    proj_ypos2 <= to_integer(proj_real_ypos2);
+                    projectile_ypos2 <= to_integer(proj_real_ypos2);
 
                     if to_integer(proj_real_xpos2) < 16 or to_integer(proj_real_xpos2) > 500 or 
                        to_integer(proj_real_ypos2) < 16 or to_integer(proj_real_ypos2) > 460 then
