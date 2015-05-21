@@ -615,11 +615,12 @@ begin
                 --end if;   
                 --map_counter <= map_counter + 1;
 
+                AR_REG(15 downto 0) <= X"0000"; 
                 if horse_tile1 = "010" then --lava
-                    AR_REG <= B"0000_0000_0000_00" & "01";
+                    AR_REG(0) <= '1';
                 end if;
                 if horse_tile2 = "010" then --lava
-                    AR_REG <= AR_REG or B"0000_0000_0000_00" & "10";
+                    AR_REG(1) <= '1'
                 end if;
 
 
