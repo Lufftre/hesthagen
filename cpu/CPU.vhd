@@ -44,7 +44,7 @@ architecture rtl of CPU is
     type ram_type is array (0 to 31) of std_logic_vector(15 downto 0);
     type mram_type is array (0 to 45) of std_logic_vector(24 downto 0);
     
-    0000 0100 0000 0000
+
     signal ram : ram_type := (
     -- Programkod
     X"901D", --00 STAY UNTIL NEW FRAME
