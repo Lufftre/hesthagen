@@ -466,15 +466,6 @@ begin
                 ypos_real2 <= to_sfixed(240, 9, -4);
             end if;
 
-
-                --if map_counter = X"FF" then      
-                --    cur_map <= cur_map + 1;
-                --end if;   
-                --map_counter <= map_counter + 1;
-
-
-            end if;
-
             -- ----------------------------------------
             -- # PLAYER MOVER
             -- ----------------------------------------
@@ -625,14 +616,6 @@ begin
                 if horse_tile2 = "010" then --lava
                     AR_REG(1) <= '1';
                 end if;
-
-
-                --if map_counter = X"FF" then      
-                --    cur_map <= cur_map + 1;
-                --end if;   
-                --map_counter <= map_counter + 1;
-
-
             end if;
 
         end if;
