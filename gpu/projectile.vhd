@@ -16,7 +16,7 @@ architecture rtl of projectile is
 
   signal frame_counter : std_logic_vector(1 downto 0) := "00";
   subtype tmp is std_logic_vector(2 downto 0);
-  type frame_array is array(0 to 1, 0 to 255) of tmp;
+  type frame_array is array(0 to 3, 0 to 255) of tmp;
   signal projectile : frame_array := (
 
 
