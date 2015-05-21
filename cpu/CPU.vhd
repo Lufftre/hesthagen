@@ -284,7 +284,7 @@ architecture rtl of CPU is
 begin
     flag_newframe <= NEW_FRAME;
     --current_map <= cur_map;
-    mem <= GR3_REG;
+    mem <= GR0_REG(7 downto 4) & GR1_REG(7 downto 4) & GR2_REG(7 downto 0);
     current_map <= GR3_REG(2 downto 0);
 
     -- ----------------------------------------

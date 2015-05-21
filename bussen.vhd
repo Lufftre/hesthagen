@@ -104,6 +104,16 @@ architecture rtl of bussen is
         );
     end component;
 
+    component leddriver
+        Port ( 
+            CLK : in  STD_LOGIC;
+            dp : out  STD_LOGIC;
+            SEG : out STD_LOGIC_VECTOR (5 downto 0);
+            AN : out  STD_LOGIC_VECTOR (3 downto 0);
+            ledvalue : in  STD_LOGIC_VECTOR (15 downto 0)
+       );
+    end component;
+
     -- ----------------------------------------
     -- # SIGNALS
     -- ----------------------------------------
@@ -189,12 +199,19 @@ gpu1 : GPU port map(
 	DOUT=>joystick2
 );
 
-   DispCtrl : ssdCtrl port map(
-	  CLK=>CLK,
-	  RST=>RST,
-	  DIN=>m(9 downto 0),
-	  AN=>AN,
-	  SEG=>SEG
+--   DispCtrl : ssdCtrl port map(
+--	  CLK=>CLK,
+--	  RST=>RST,
+--	  DIN=>m(9 downto 0),
+--	  AN=>AN,
+--	  SEG=>SEG
+--);
+
+   led : leddriver port map(
+      CLK=>CLK,
+      SEG=>SEG,
+      AN=>AN,
+      ledvalue=>m
 );
 
 	cpu1: CPU port map(
