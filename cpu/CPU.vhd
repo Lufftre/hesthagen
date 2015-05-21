@@ -48,8 +48,8 @@ architecture rtl of CPU is
 
     signal ram : ram_type := (
     -- Programkod
-    X"301A", --00 ADD PLAYER 1 HP
-    X"341A", --01 ADD PLAYER 2 HP
+    X"301B", --00 ADD PLAYER 1 HP
+    X"341B", --01 ADD PLAYER 2 HP
     X"3818", --02 ADD MAP_COUNTER MAP_VALUE
     X"901E", --03 STAY UNTIL NEW FRAME
     X"A000", --04 MOVE PLAYERS
