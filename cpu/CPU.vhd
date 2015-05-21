@@ -73,7 +73,7 @@ architecture rtl of CPU is
     X"F02E", --16 BNE RESET MAP
     X"381B", --17 ADD MAP_COUNTER MAP_VALUE
     X"6020", --18 JMP START
-    X"1C25", --19 LOAD nMAPS       RESET MAP
+    X"1C22", --19 LOAD nMAPS       RESET MAP
     X"6020", --1A JMP START
     X"0FFF", --1B MAP_VALUE = FFF
     X"00FF", --1C START HP = FF
