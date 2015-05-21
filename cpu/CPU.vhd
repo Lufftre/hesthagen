@@ -58,12 +58,12 @@ architecture rtl of CPU is
     X"F01B", --08 BNE HOPPA PLAYER 2 
     X"401F", --09 SUB PLAYER_1_HÄLSA - 1
     X"F01C", --0A BNE GAMEOVER  
-    X"501E", --0C LSR 1E       PLAYER 2 HOPP
-    X"E01E", --0D BTST 1E
-    X"F01D", --0E BNE START
-    X"481F", --0F SUB PLAYER_2_HÄLSA
-    X"F01C", --10 BNE GAMEOVER
-    X"601D", --0B JMP START
+    X"501E", --0B LSR 1E       PLAYER 2 HOPP
+    X"E01E", --0C BTST 1E
+    X"F01D", --0D BNE START
+    X"481F", --0E SUB PLAYER_2_HÄLSA
+    X"F01C", --0F BNE GAMEOVER
+    X"601D", --10 JMP START
     X"0000", --11 GAMEOVER
     X"0000", --12 GAMEOVER
     X"0000", --13     
@@ -74,7 +74,7 @@ architecture rtl of CPU is
     X"0000", --18 
     X"0000", --19 
     X"000F", --1A START HP
-    X"000C", --1B PLAYER2 HOPP ADDRESS
+    X"000B", --1B PLAYER2 HOPP ADDRESS
     X"0011", --1C GAME OVER ADDRESS
     X"0002", --1D START ADDRESS
     X"0000", --1E BURNING HORSE?
