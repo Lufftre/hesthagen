@@ -51,7 +51,7 @@ architecture rtl of CPU is
     X"301C", --00 ADD PLAYER 1 HP
     X"341C", --01 ADD PLAYER 2 HP
     X"381B", --02 ADD MAP_COUNTER MAP_VALUE
-    X"3C25", --03 ADD MAP nMAPS
+    X"1C2F", --03 LOAD nMAPS
     X"9020", --04 STAY UNTIL NEW FRAME
     X"A000", --05 MOVE PLAYERS
     X"B000", --06 MOVE PROJECTILES
@@ -73,7 +73,7 @@ architecture rtl of CPU is
     X"F02E", --16 BNE RESET MAP
     X"381B", --17 ADD MAP_COUNTER MAP_VALUE
     X"6020", --18 JMP START
-    X"3C25", --19 ADD MAP nMAPS        RESET MAP
+    X"1C2F", --19 LOAD nMAPS       RESET MAP
     X"6020", --1A JMP START
     X"0FFF", --1B MAP_VALUE = FFF
     X"00FF", --1C START HP = FF
@@ -94,7 +94,10 @@ architecture rtl of CPU is
     X"0000", --2B 
     X"002D", --2C ENDSCREEN2 ADRESS
     X"0110", --2D ENDSCREEN2
-    X"0019"  --2E RESETMAP ADRESS
+    X"0019", --2E RESETMAP ADRESS
+    X"0025", --2F nMAPS ADRESS
+    X"0000", --30 
+    X"0000"  --31
     );
 
 
@@ -263,7 +266,7 @@ architecture rtl of CPU is
 begin
     flag_newframe <= NEW_FRAME;
     --current_map <= cur_map;
-    mem <= GR2_REG;
+    mem <= GR3_REG;
     current_map <= GR3_REG(2 downto 0);
 
     -- ----------------------------------------
