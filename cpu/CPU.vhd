@@ -76,7 +76,7 @@ architecture rtl of CPU is
     X"1C25", --19 LOAD nMAPS       RESET MAP
     X"6020", --1A JMP START
     X"00FF", --1B MAP_VALUE = FFF
-    X"00FF", --1C START HP = FF
+    X"006F", --1C START HP = FF
     X"000D", --1D PLAYER2 ADDRESS
     X"0026", --1E GAMEOVER1 ADDRESS
     X"002A", --1F GAMEOVER2 ADDRESS
