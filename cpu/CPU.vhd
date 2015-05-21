@@ -62,27 +62,27 @@ architecture rtl of CPU is
     X"F01D", --0B BNE GAMEOVER  
     X"501F", --0C LSR 1F                PLAYER 2 HOPP
     X"E01F", --0D BTST 1F
-    X"F01E", --0E BNE START
+    X"F022", --0E BNE MAPCOUNTER
     X"4420", --0F SUB PLAYER_2_HÄLSA
     X"F01D", --10 BNE GAMEOVER
-    X"4820", --11 SUB MAP_COUNTER
+    X"4820", --11 SUB MAP_COUNTER       MAP COUNTER
     X"F021", --12 BNE NEW MAP
     X"601E", --13 JMP START
-    X"3C20", --14 ADD MAP 20            NEW MAP 
+    X"3C20", --14 ADD MAP 1            NEW MAP 
     X"3818", --15 ADD MAP_COUNTER MAP_VALUE
     X"601E", --16 JMP START
     X"0000", --17 GAMEOVER
     X"00FF", --18 MAP VALUE
     X"0000", --19 
-    X"0000", --20
+    X"0000", --1A
     X"00FF", --1B START HP
     X"000C", --1C PLAYER2 HOPP ADDRESS
     X"0017", --1D GAME OVER ADDRESS
     X"0003", --1E START ADDRESS
     X"0000", --1F BURNING HORSE?
     X"0001", --20 ETTA
-    X"0000", --21 NEW MAP ADRESS
-    X"0000"
+    X"0014", --21 NEW MAP ADRESS
+    X"0011"  --22 MAP COUNTER ADRESS
     );
 
     --signal ram : ram_type := (
