@@ -247,6 +247,7 @@ architecture rtl of CPU is
 begin
     flag_newframe <= NEW_FRAME;
     current_map <= cur_map;
+    mem <= GR0_REG;
     -- ----------------------------------------
     -- # ASR Register
     -- ----------------------------------------
