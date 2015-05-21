@@ -57,13 +57,13 @@ architecture rtl of CPU is
     X"E01E", --07 BTST 1E
     X"F01B", --08 BNE HOPPA PLAYER 2 
     X"401F", --09 SUB PLAYER_1_HÄLSA - 1
-    X"F01B", --0A BNE PLAYER_2  
-    X"601C", --0B JMP gAMEOVER
+    X"F01C", --0A BNE GAMEOVER  
     X"501E", --0C LSR 1E       PLAYER 2 HOPP
     X"E01E", --0D BTST 1E
     X"F01D", --0E BNE START
     X"481F", --0F SUB PLAYER_2_HÄLSA
-    X"F01D", --10 BNE START
+    X"F01C", --10 BNE GAMEOVER
+    X"601D", --0B JMP START
     X"0000", --11 GAMEOVER
     X"0000", --12 GAMEOVER
     X"0000", --13     
