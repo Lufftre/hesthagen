@@ -85,7 +85,7 @@ architecture rtl of CPU is
     X"0001", --22 ETTA
     X"0015", --23 NEW MAP ADRESS
     X"0012", --24 MAP COUNTER ADRESS
-    X"0004", --25 nMAPS = 4
+    X"0003", --25 nMAPS = 4
     X"1C28", --26 LOAD ENDSCREEN1      GAMEOVER 1
     X"0000", --27
     X"0005", --28 ENDSCREEN1 ADRESS
