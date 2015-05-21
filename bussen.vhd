@@ -133,7 +133,7 @@ architecture rtl of bussen is
    signal horse_tile1 : std_logic_vector(2 downto 0);
    signal horse_tile2 : std_logic_vector(2 downto 0);
 
-   signal current_map : std_logic_vector(1 downto 0);
+   signal current_map : std_logic_vector(2 downto 0);
   
 begin
 
