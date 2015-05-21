@@ -71,7 +71,7 @@ architecture rtl of CPU is
     X"6020", --14 JMP START
     X"4C22", --15 SUB MAP 1            NEW MAP 
     X"F02E", --16 BNE RESET MAP
-    X"381B", --17 ADD MAP_COUNTER MAP_VALUE
+    X"181B", --17 ADD MAP_COUNTER MAP_VALUE
     X"6020", --18 JMP START
     X"1C22", --19 LOAD nMAPS       RESET MAP
     X"6020", --1A JMP START
