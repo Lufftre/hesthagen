@@ -286,9 +286,10 @@ architecture rtl of CPU is
 
 begin
     flag_newframe <= NEW_FRAME;
-    current_map <= cur_map;
+    --current_map <= cur_map;
     mem <= ram(30);
     current_map <= GR3_REG(1 downto 0);
+
     -- ----------------------------------------
     -- # ASR Register
     -- ----------------------------------------
