@@ -114,7 +114,7 @@ begin
  
             board_tile <= current_board(conv_integer(tile_index));
             pixel_color_index <= pixel_color_array(
-                                                  conv_integer(frame_counter(5)),
+                                                  frame_counter(5),
                                                   conv_integer(board_tile),
                                                   conv_integer(std_logic_vector((unsigned(y) mod 16)*16) + std_logic_vector((unsigned(x) mod 16)))
                                                   );
