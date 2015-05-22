@@ -146,12 +146,12 @@ architecture rtl of CPU is
     "0010" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x15 ALU magic, mp++
     "0000" & "100" & "110" & "0" & "1" & "00" & "0011" & "0000000", --0x16 AR => GRx, PC++, mpc = 0
     "0000" & "000" & "000" & "0" & "0" & "00" & "0011" & "0000000", --0x17 mpc = 0                                  (NOP)
-    "0000" & "001" & "111" & "0" & "0" & "00" & "1000" & "0010000", --0x18 IF flagga = 1 then mpc++ else mpc =>myADR (B??)
+    "0000" & "001" & "111" & "0" & "0" & "00" & "1000" & "0010000", --0x18 IF flagga = 1 then mpc++ else mpc =>myADR (BNW)
     "0000" & "000" & "000" & "0" & "1" & "00" & "0011" & "0000000", --0x19 PC++, mpc = 0
-    "1001" & "000" & "000" & "0" & "1" & "00" & "0011" & "0000000", --0x1A Grx => AR, mpc++,                        (SUPER MOVE)
-    "1011" & "000" & "000" & "0" & "1" & "00" & "0011" & "0000000", --0x1B Grx => AR, mpc++,                        (SUPER PEWPEW)
-    "1100" & "000" & "000" & "0" & "1" & "00" & "0011" & "0000000", --0x1C Grx => AR, mpc++,                        (SUPER HIT)
-    "1101" & "000" & "000" & "0" & "1" & "00" & "0011" & "0000000", --0x1D Grx => AR, mpc++,                        (SUPER LAVA)
+    "1001" & "000" & "000" & "0" & "1" & "00" & "0011" & "0000000", --0x1A ALU MAGIC, PC++, mpc = 0                (SUPER MOVE)
+    "1011" & "000" & "000" & "0" & "1" & "00" & "0011" & "0000000", --0x1B ALU MAGIC, PC++, mpc = 0                (SUPER PEWPEW)
+    "1100" & "000" & "000" & "0" & "1" & "00" & "0011" & "0000000", --0x1C ALU MAGIC, PC++, mpc = 0                (SUPER HIT)
+    "1101" & "000" & "000" & "0" & "1" & "00" & "0011" & "0000000", --0x1D 
     "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x1E
     "0000" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000",  --0x1F
 --    ALU     TB      FB      S     P    LC      SEQ       myADR      
@@ -185,7 +185,7 @@ architecture rtl of CPU is
     X"10", -- JMP    0x06
     X"11", -- RST    0x07
     X"14", -- AND    0x08
-    X"18", -- B??    0x09
+    X"18", -- BNW    0x09  (BRANCH NOT NEWFRAME)
     X"1A", -- MOVE   0x0A
     X"1B", -- PEW    0x0B
     X"1C", -- HIT    0x0C
@@ -207,14 +207,14 @@ architecture rtl of CPU is
     signal MPC : STD_LOGIC_VECTOR(7 downto 0) := X"00";
     signal myM : std_logic_vector(24 downto 0);
     -- Mym operatorer
-    signal ALU_OP : std_logic_vector(3 downto 0) := "0000"; --Best�mmer operator i ALU
-    signal TB : std_logic_vector(2 downto 0) := "000";
-    signal FB : std_logic_vector(2 downto 0) := "000";
+    signal ALU_OP : std_logic_vector(3 downto 0) := "0000"; --Bestämmer operator i ALU
+    signal TB : std_logic_vector(2 downto 0) := "000"; -- To BUSS
+    signal FB : std_logic_vector(2 downto 0) := "000"; -- From BUSS
     signal S : std_logic;
-    signal P : std_logic;
-    signal LC : std_logic_vector(1 downto 0);
-    signal SEQ : std_logic_vector(3 downto 0);
-    signal myADR : std_logic_vector(6 downto 0) := "0000000";
+    signal P : std_logic; -- Flagga för att PC ska plussas på
+    signal LC : std_logic_vector(1 downto 0); -- Används ej
+    signal SEQ : std_logic_vector(3 downto 0); -- SEQ
+    signal myADR : std_logic_vector(6 downto 0) := "0000000"; --Mikroaddress
 
 
 
@@ -222,26 +222,26 @@ architecture rtl of CPU is
 
     -- PLAYER 1
     --x
-    signal vel_x1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
-    signal delta_x1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
-    signal xpos_real1 : sfixed(9 downto -4) := to_sfixed(240, 9, -4);
-    signal jstk_x1 : std_logic_vector(9 downto 0);
+    signal vel_x1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9); -- Velocity
+    signal delta_x1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9); -- Acceleration
+    signal xpos_real1 : sfixed(9 downto -4) := to_sfixed(240, 9, -4); -- precise x value
+    signal jstk_x1 : std_logic_vector(9 downto 0); -- Joystick x value
     --y
-    signal vel_y1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
-    signal delta_y1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
-    signal ypos_real1 : sfixed(9 downto -4) := to_sfixed(240, 9, -4);
-    signal jstk_y1 : std_logic_vector(9 downto 0);
+    signal vel_y1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9); -- Velocity
+    signal delta_y1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9); -- Acceleration
+    signal ypos_real1 : sfixed(9 downto -4) := to_sfixed(240, 9, -4); -- Precise y value
+    signal jstk_y1 : std_logic_vector(9 downto 0); -- Joystick y value
     --PLAYER 2
     --x
-    signal vel_x2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
-    signal delta_x2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
-    signal xpos_real2 : sfixed(9 downto -4) := to_sfixed(240, 9, -4);
-    signal jstk_x2 : std_logic_vector(9 downto 0);
+    signal vel_x2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9); -- Velocity
+    signal delta_x2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9); -- Acceleration
+    signal xpos_real2 : sfixed(9 downto -4) := to_sfixed(240, 9, -4); -- Precise x value
+    signal jstk_x2 : std_logic_vector(9 downto 0); -- Joystick x value
     --y
-    signal vel_y2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
-    signal delta_y2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
-    signal ypos_real2 : sfixed(9 downto -4) := to_sfixed(240, 9, -4);
-    signal jstk_y2 : std_logic_vector(9 downto 0);
+    signal vel_y2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9); -- Velocity
+    signal delta_y2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9); -- Acceleration
+    signal ypos_real2 : sfixed(9 downto -4) := to_sfixed(240, 9, -4); -- Precise y value
+    signal jstk_y2 : std_logic_vector(9 downto 0); -- Joystick y value
 
 
     -- PROJECTILE SIGNALS
@@ -249,28 +249,28 @@ architecture rtl of CPU is
     --PROJ 1
     signal proj_active1 : std_logic := '0';
     --x
-    signal proj_dirx1 : std_logic_vector(9 downto 0);
-    signal proj_deltax1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
-    signal proj_real_xpos1 : sfixed(9 downto -4) := to_sfixed(120, 9, -4);
-    signal projectile_xpos1 : integer range 0 to 1023 := 32;
+    signal proj_dirx1 : std_logic_vector(9 downto 0); -- Joystick x value
+    signal proj_deltax1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9); -- Projectile x speed
+    signal proj_real_xpos1 : sfixed(9 downto -4) := to_sfixed(120, 9, -4); -- precise x position
+    signal projectile_xpos1 : integer range 0 to 1023 := 32; -- rounded x position
     --y
-    signal proj_diry1 : std_logic_vector(9 downto 0);
-    signal proj_deltay1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
-    signal proj_real_ypos1 : sfixed(9 downto -4) := to_sfixed(120, 9, -4);
-    signal projectile_ypos1 : integer range 0 to 1023 := 32;
+    signal proj_diry1 : std_logic_vector(9 downto 0); -- joystick y value
+    signal proj_deltay1 : sfixed(2 downto -9) := to_sfixed(0, 2, -9); -- y speed
+    signal proj_real_ypos1 : sfixed(9 downto -4) := to_sfixed(120, 9, -4); -- precise y position
+    signal projectile_ypos1 : integer range 0 to 1023 := 32; -- rounded y position
     
     --PROJ 2
     signal proj_active2 : std_logic := '0';
     --x
-    signal proj_dirx2 : std_logic_vector(9 downto 0);
-    signal proj_deltax2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
-    signal proj_real_xpos2 : sfixed(9 downto -4) := to_sfixed(240, 9, -4);
-    signal projectile_xpos2 : integer range 0 to 1023 := 32;
+    signal proj_dirx2 : std_logic_vector(9 downto 0); -- Joystick x value
+    signal proj_deltax2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9); -- Projectile x speed
+    signal proj_real_xpos2 : sfixed(9 downto -4) := to_sfixed(240, 9, -4); -- precise x position
+    signal projectile_xpos2 : integer range 0 to 1023 := 32; -- rounded x position
     --y
-    signal proj_diry2 : std_logic_vector(9 downto 0);
-    signal proj_deltay2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9);
-    signal proj_real_ypos2 : sfixed(9 downto -4) := to_sfixed(240, 9, -4);
-    signal projectile_ypos2 : integer range 0 to 1023 := 32;
+    signal proj_diry2 : std_logic_vector(9 downto 0); -- joystick y value
+    signal proj_deltay2 : sfixed(2 downto -9) := to_sfixed(0, 2, -9); -- y speed
+    signal proj_real_ypos2 : sfixed(9 downto -4) := to_sfixed(240, 9, -4); -- precise y position
+    signal projectile_ypos2 : integer range 0 to 1023 := 32; -- rounded y position
 
 
 
@@ -284,9 +284,13 @@ architecture rtl of CPU is
     signal cur_map : std_logic_vector(1 downto 0) := "00"; -- Current map
 
 begin
+    -- connect flag to GPU NEW_FRAME flag
     flag_newframe <= NEW_FRAME;
+    -- connect leddriver with Gr0-2
     mem <= GR0_REG(7 downto 4) & GR1_REG(7 downto 4) & GR2_REG(7 downto 0);
+    -- connect GR3 with GPU Board
     current_map <= GR3_REG(2 downto 0);
+    -- connect projectile position to GPU controller
     proj_xpos1 <= projectile_xpos1;
     proj_ypos1 <= projectile_ypos1;
     proj_xpos2 <= projectile_xpos2;
@@ -358,7 +362,7 @@ begin
     -- ----------------------------------------
     -- # MUX1 Register
     -- ----------------------------------------
-    mux1 <= IR_REG(11 downto 10);
+    mux1 <= IR_REG(11 downto 10); -- GRx
     process(CLK) begin
         if rising_edge(CLK) then
         if FB="110" then
@@ -388,6 +392,7 @@ begin
         "000" & mram(conv_integer(MPC))(12 downto 0) when "000",
         (others => '0') when others;
     
+    -- GR MUX
     with mux1 select
         current_GR <=
             GR0_REG when "00",
@@ -448,14 +453,14 @@ begin
         if rising_edge(CLK) then
             case ALU_OP is
                  when "0000" => null;
-                 when "0010" => AR_REG(15 downto 0) <= AR_REG(15 downto 0) and buss(15 downto 0);
-                 when "1000" => AR_REG(15 downto 0) <= AR_REG(15 downto 0) + buss(15 downto 0);
+                 when "0010" => AR_REG(15 downto 0) <= AR_REG(15 downto 0) and buss(15 downto 0); -- AND (används ej)
+                 when "1000" => AR_REG(15 downto 0) <= AR_REG(15 downto 0) + buss(15 downto 0); -- ADD
                  when "0001" => AR_REG(15 downto 0) <= buss(15 downto 0);
                  when "0011" => AR_REG(15 downto 0) <= X"0000";
-                 when "1110" => AR_REG(15 downto 0) <= "0" & AR_REG(15 downto 1);
-                 when "1111" => if buss(0) = '1' then z_flag <= '1'; else z_flag <= '0'; end if;
+                 when "1110" => AR_REG(15 downto 0) <= "0" & AR_REG(15 downto 1); -- LSR
+                 when "1111" => if buss(0) = '1' then z_flag <= '1'; else z_flag <= '0'; end if; -- BTST
                  when "0101" =>
-                            AR_REG(15 downto 0) <= AR_REG(15 downto 0) - buss(15 downto 0);
+                            AR_REG(15 downto 0) <= AR_REG(15 downto 0) - buss(15 downto 0); -- SUB, om skillnad är större än 0 höjs z-flaggan
                             if AR_REG = 0 then
                                 z_flag <= '0';
                             else
@@ -464,7 +469,7 @@ begin
                  when others => null;
             end case;
 
-            if ALU_OP = "0100" then
+            if ALU_OP = "0100" then -- Reset player position
                 xpos_real1 <= to_sfixed(240, 9, -4);
                 ypos_real1 <= to_sfixed(240, 9, -4);
                 xpos_real2 <= to_sfixed(240, 9, -4);
