@@ -146,7 +146,7 @@ architecture rtl of CPU is
     "0010" & "000" & "000" & "0" & "0" & "00" & "0000" & "0000000", --0x15 ALU magic, mp++
     "0000" & "100" & "110" & "0" & "1" & "00" & "0011" & "0000000", --0x16 AR => GRx, PC++, mpc = 0
     "0000" & "000" & "000" & "0" & "0" & "00" & "0011" & "0000000", --0x17 mpc = 0                                  (NOP)
-    "0000" & "001" & "111" & "0" & "0" & "00" & "1000" & "0010000", --0x18 IF flagga = 1 then mpc++ else mpc =>myADR (BNW)
+    "0000" & "001" & "111" & "0" & "0" & "00" & "1000" & "0010000", --0x18 IF flagga = 1 then mpc++ else mpc =>myADR (BNE)
     "0000" & "000" & "000" & "0" & "1" & "00" & "0011" & "0000000", --0x19 PC++, mpc = 0
     "1001" & "000" & "000" & "0" & "1" & "00" & "0011" & "0000000", --0x1A ALU MAGIC, PC++, mpc = 0                (SUPER MOVE)
     "1011" & "000" & "000" & "0" & "1" & "00" & "0011" & "0000000", --0x1B ALU MAGIC, PC++, mpc = 0                (SUPER PEWPEW)
@@ -453,7 +453,7 @@ begin
         if rising_edge(CLK) then
             case ALU_OP is
                  when "0000" => null;
-                 when "0010" => AR_REG(15 downto 0) <= AR_REG(15 downto 0) and buss(15 downto 0); -- AND (används ej)
+                 when "0010" => AR_REG(15 downto 0) <= AR_REG(15 downto 0) and buss(15 downto 0); -- AND
                  when "1000" => AR_REG(15 downto 0) <= AR_REG(15 downto 0) + buss(15 downto 0); -- ADD
                  when "0001" => AR_REG(15 downto 0) <= buss(15 downto 0);
                  when "0011" => AR_REG(15 downto 0) <= X"0000";
